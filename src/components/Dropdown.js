@@ -2,7 +2,7 @@
 import React from 'react';
 import './Dropdown.scss'
 
-export default ({menu})=>{
+function Dropdown({menu}){
 	// const [menuClass, setMenuClass] = useState(' hidden')
 	return (
 		<div className={'dropdown'} 
@@ -31,3 +31,5 @@ export default ({menu})=>{
 		</div>
 	)
 }
+
+export default Dropdown

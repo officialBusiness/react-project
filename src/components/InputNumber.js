@@ -1,7 +1,7 @@
 import React, { useState } from 'react';
 import './InputNumber.scss'
 
-export default ({onChange, step = 1, max, min, value = 0})=>{
+function InputNumber({onChange, step = 1, max, min, value = 0}){
 	const [inputValue, setInputValue] = useState(value)
 
 	return (
@@ -51,3 +51,5 @@ export default ({onChange, step = 1, max, min, value = 0})=>{
 		</div>
 	)
 }
+
+export default InputNumber

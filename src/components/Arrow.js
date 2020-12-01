@@ -1,11 +1,14 @@
 import React from 'react';
 import './Arrow.scss'
 
-export default ({direction ,width, height})=>{
+function Arrow({direction ,width, height}){
 	return (
-		<div className="leftArrow">
-			<div className="left-arrow1"></div>
-			<div className="left-arrow2"></div>
+		<div className="arrow">
+			<div className="arrow1"></div>
+			<div className="arrow2"></div>
 		</div>
 	)
 }
+
+
+export default Arrow

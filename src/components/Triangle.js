@@ -1,7 +1,7 @@
 import React from 'react';
 // import styled from 'styled-components'
 
-export default ({direction ,width, height})=>{
+function Triangle({direction ,width, height}){
 	return (
 		<div style={{
 			width: 0,
@@ -15,6 +15,7 @@ export default ({direction ,width, height})=>{
 	)
 }
 
+export default Triangle
 
 
 // export default styled.div`
