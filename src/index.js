@@ -1,11 +1,10 @@
 import React from 'react';
 import ReactDOM from 'react-dom';
 import './index.css';
-import App from './App';
 
 ReactDOM.render(
 	<div>
-		react 相关积累
-	</dov>,
+		react 相关个人积累
+	</div>,
   document.getElementById('root')
 );
