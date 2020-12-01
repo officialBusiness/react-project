@@ -1,10 +1,9 @@
 import React from 'react';
 import ReactDOM from 'react-dom';
 import './index.css';
+import Test from './Test.js'
 
 ReactDOM.render(
-	<div>
-		react 相关个人积累
-	</div>,
+	<Test/>,
   document.getElementById('root')
 );
