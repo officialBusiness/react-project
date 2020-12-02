@@ -3,7 +3,6 @@ import styled from 'styled-components';
 import Triangle from './components/Triangle.js'
 import Arrow from './components/Arrow.js'
 import InputNumber from './components/InputNumber.js'
-import Dropdown from './components/Dropdown.js'
 
 const Container = styled.div`
 	min-width: 100px;
@@ -53,9 +52,6 @@ function Test() {
 					onChange={(value)=>{
 						setInputValue( value )
 					}} />
-			</Container>
-			<Container>
-				<Dropdown menu={[1,2,3,4]}/>
 			</Container>
 		</>
 	);
