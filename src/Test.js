@@ -3,6 +3,8 @@ import styled from 'styled-components';
 import Triangle from './components/Triangle.js'
 import Arrow from './components/Arrow.js'
 import InputNumber from './components/InputNumber.js'
+import Tree from './components/Tree.js'
+import AutoComplete from './components/AutoComplete.js'
 
 const Container = styled.div`
 	min-width: 100px;
@@ -41,8 +43,7 @@ function Test() {
 			</Container>
 			<Container style={{
 				width: '100px',
-				height: '30px',
-			}}>
+				height: '30px', }}>
 				<InputNumber 
 					value={inputValue}
 					max={10}
@@ -52,6 +53,12 @@ function Test() {
 					onChange={(value)=>{
 						setInputValue( value )
 					}} />
+			</Container>
+			<Container >
+				<Tree />
+			</Container>
+			<Container >
+				<AutoComplete />
 			</Container>
 		</>
 	);

@@ -34,7 +34,6 @@ function InputNumber({
 			<div className='input'>
 				<input type={'text'} value={ value } onChange={(e)=>{
 					let value = e.target.value
-					console.log('value:', value)
 					if ( value === '' ) {
 						value = init
 					}
