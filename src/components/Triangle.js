@@ -2,17 +2,18 @@ import React from 'react';
 
 function Triangle({
 	direction = 'top' ,
-	width='10px', 
-	height='10px', 
-	color = 'red',
+	width=10, 
+	height=10,
+	unit='px',
+	color = '#000',
 	style = ''
 }){
 	let triangleStyle = {
 		width: 0,
 		height: 0,
 	},
-	heightBorder = height + ' solid ' + color,
-	widthBorder = width + ' solid transparent',
+	heightBorder = height + unit + ' solid ' + color,
+	widthBorder = width + unit + ' solid transparent',
 	noBorder = '0 solid transparent'
 	if (direction === 'top') {
 		triangleStyle.borderLeft = widthBorder

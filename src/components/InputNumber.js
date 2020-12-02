@@ -1,7 +1,7 @@
 import React, { useState } from 'react';
 import './InputNumber.scss'
 
-function InputNumber({onChange, step = 1, max, min, value = 0}){
+function InputNumber({step = 1, value = 0}){
 	const [inputValue, setInputValue] = useState(value)
 
 	return (
