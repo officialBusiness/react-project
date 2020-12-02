@@ -1,13 +1,13 @@
 import React from 'react';
-// import styled from 'styled-components'
 
 function Triangle({
 	direction = 'top' ,
 	width='10px', 
 	height='10px', 
-	color = 'red'
+	color = 'red',
+	style = ''
 }){
-	let style = {
+	let triangleStyle = {
 		width: 0,
 		height: 0,
 	},
@@ -15,43 +15,37 @@ function Triangle({
 	widthBorder = width + ' solid transparent',
 	noBorder = '0 solid transparent'
 	if (direction === 'top') {
-		style.borderLeft = widthBorder
-		style.borderRight = widthBorder
-		style.borderTop = noBorder
-		style.borderBottom = heightBorder
+		triangleStyle.borderLeft = widthBorder
+		triangleStyle.borderRight = widthBorder
+		triangleStyle.borderTop = noBorder
+		triangleStyle.borderBottom = heightBorder
 	}else if(direction === 'right'){
-		style.borderLeft = heightBorder
-		style.borderRight = noBorder
-		style.borderTop = widthBorder
-		style.borderBottom = widthBorder
+		triangleStyle.borderLeft = heightBorder
+		triangleStyle.borderRight = noBorder
+		triangleStyle.borderTop = widthBorder
+		triangleStyle.borderBottom = widthBorder
 	}else if(direction === 'bottom'){
-		style.borderLeft = widthBorder
-		style.borderRight = widthBorder
-		style.borderTop = heightBorder
-		style.borderBottom = noBorder
+		triangleStyle.borderLeft = widthBorder
+		triangleStyle.borderRight = widthBorder
+		triangleStyle.borderTop = heightBorder
+		triangleStyle.borderBottom = noBorder
 	}else if(direction === 'left'){
-		style.borderLeft = noBorder
-		style.borderRight = heightBorder
-		style.borderTop = widthBorder
-		style.borderBottom = widthBorder
+		triangleStyle.borderLeft = noBorder
+		triangleStyle.borderRight = heightBorder
+		triangleStyle.borderTop = widthBorder
+		triangleStyle.borderBottom = widthBorder
 	}else{
 		return null
 	}
-
+	if ( style ) {
+		for(let key in style){
+			triangleStyle[key] = style[key]
+		}
+	}
 	return (
-		<div style={style}>
+		<div style={triangleStyle}>
 		</div>
 	)
 }
 
 export default Triangle
-
-
-// export default styled.div`
-// 	width: 0;
-// 	height: 0;
-// 	border-top: 25px solid blue;
-// 	border-left: 25px solid red;
-// 	border-right: 25px solid purple;
-// 	border-bottom: 25px solid yellow;
-// `
