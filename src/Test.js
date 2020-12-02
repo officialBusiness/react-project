@@ -7,17 +7,21 @@ import Dropdown from './components/Dropdown.js'
 
 
 const Container = styled.div`
-	width: 100px;
-	height: 30px;
+	max-width: 100px;
+	max-height: 30px;
 	margin: 30px 0 0 30px;
 `
 
 function Test() {
 	return (
 		<>
-			<Container>
-				<Triangle />
-			</Container>
+			<div>
+				<Triangle 
+					color={'red'}
+					width={'10px'}
+					height={'10px'}
+					direction={'left'}/>
+			</div>
 			<Container>
 				<Arrow />
 			</Container>
