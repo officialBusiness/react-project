@@ -31,24 +31,26 @@ function InputNumber({
 	}
 	return (
 		<div className={'InputNumber'} >
-			<input type={'text'} value={ value } onChange={(e)=>{
-				let value = e.target.value
-				console.log('value:', value)
-				if ( value === '' ) {
-					value = init
-				}
-				if ( value === '-' ) {
-					onChange('-')
-					return
-				}
-				let number = parseInt( value )
-				if ( onChange) {
-					onChange(check(number))
-				}
-			}}/>
+			<div className='input'>
+				<input type={'text'} value={ value } onChange={(e)=>{
+					let value = e.target.value
+					console.log('value:', value)
+					if ( value === '' ) {
+						value = init
+					}
+					if ( value === '-' ) {
+						onChange('-')
+						return
+					}
+					let number = parseInt( value )
+					if ( onChange) {
+						onChange(check(number))
+					}
+				}}/>
+			</div>
 			<div className={'modified'}>
 				<div className={'unit'}>
-					{unit}
+					<span>{unit}</span>
 				</div>
 				<div className={'operation'}>
 					<div className={'add'} onClick={(e)=>{

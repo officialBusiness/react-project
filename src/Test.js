@@ -40,12 +40,16 @@ function Test() {
 						cursor: 'pointer'
 					}}/>
 			</Container>
-			<Container>
+			<Container style={{
+				width: '100px',
+				height: '30px',
+			}}>
 				<InputNumber 
 					value={inputValue}
 					max={10}
 					min={-5}
 					init={0}
+					unit={'px'}
 					onChange={(value)=>{
 						setInputValue( value )
 					}} />
