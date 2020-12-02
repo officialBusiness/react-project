@@ -1,36 +1,60 @@
-import React, { useState } from 'react';
+import React from 'react';
 import './InputNumber.scss'
 
-function InputNumber({step = 1, value = 0}){
-	const [inputValue, setInputValue] = useState(value)
-
+function InputNumber({
+	max = Infinity,
+	min = -Infinity,
+	step = 1,
+	value = 0,
+	init = 0,
+	onChange,
+	unit='',
+}){
+	if ( max < min ) {
+		throw Error('InputNumber组件参数出错：最大值max不能比最小值min小')
+	}
+	if ( !isFinite(value) && value !== '-') {
+		throw Error('InputNumber组件参数出错：value必须是数字')
+	}
+	function check(number){
+		if ( number > max ) {
+			return max
+		}
+		if ( number < min ) {
+			return min
+		}
+		if ( isFinite(number) || number === '-') {
+			return number
+		}else{
+			return init
+		}
+	}
 	return (
-		<div className={'InputNumber'} 
-			onMouseEnter={(e)=>{
-				// console.log("e:", e)
-			}}
-			onMouseLeave={(e)=>{
-				// console.log("e:", e)
-			}}>
-			<input type={'text'} value={ inputValue } onChange={(e)=>{
-				console.log('e.target.value', e.target.value)
-				if ( e.target.value === '' || e.target.value === '-') {
-					setInputValue( 0 )
+		<div className={'InputNumber'} >
+			<input type={'text'} value={ value } onChange={(e)=>{
+				let value = e.target.value
+				console.log('value:', value)
+				if ( value === '' ) {
+					value = init
+				}
+				if ( value === '-' ) {
+					onChange('-')
 					return
 				}
-				let number = parseInt(e.target.value)
-				if ( isFinite(number) ) {
-					setInputValue( number )
+				let number = parseInt( value )
+				if ( onChange) {
+					onChange(check(number))
 				}
 			}}/>
 			<div className={'modified'}>
 				<div className={'unit'}>
-					px
+					{unit}
 				</div>
 				<div className={'operation'}>
 					<div className={'add'} onClick={(e)=>{
-						console.log('数字添加')
-						setInputValue( inputValue + step )
+						if ( onChange ) {
+							onChange(check(value + step))
+						}
 					}}>
 						<div className={'top-arrow'}>
 							<div className="top-arrow1"></div>
@@ -38,8 +62,9 @@ function InputNumber({step = 1, value = 0}){
 						</div>
 					</div>
 					<div className={'reducing'} onClick={(e)=>{
-						console.log('数字减少')
-						setInputValue( inputValue - step )
+						if ( onChange ) {
+							onChange(check(value - step))
+						}
 						}}>
 						<div className={'bottom-arrow'}>
 							<div className="bottom-arrow1"></div>

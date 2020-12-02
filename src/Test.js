@@ -1,10 +1,9 @@
-import React from 'react';
+import React , { useState } from 'react';
 import styled from 'styled-components';
 import Triangle from './components/Triangle.js'
 import Arrow from './components/Arrow.js'
 import InputNumber from './components/InputNumber.js'
 import Dropdown from './components/Dropdown.js'
-
 
 const Container = styled.div`
 	min-width: 100px;
@@ -13,6 +12,7 @@ const Container = styled.div`
 `
 
 function Test() {
+	const [inputValue, setInputValue] = useState(0)
 	return (
 		<>
 			<Container>
@@ -41,7 +41,14 @@ function Test() {
 					}}/>
 			</Container>
 			<Container>
-				<InputNumber />
+				<InputNumber 
+					value={inputValue}
+					max={10}
+					min={-5}
+					init={0}
+					onChange={(value)=>{
+						setInputValue( value )
+					}} />
 			</Container>
 			<Container>
 				<Dropdown menu={[1,2,3,4]}/>

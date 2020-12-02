@@ -3,11 +3,11 @@ import Triangle from './Triangle.js'
 
 function Arrow({
 	direction='top' ,
-	width='10px', 
-	height='10px',
+	width=10, 
+	height=10,
+	thick=1, 
 	unit='px',
-	color='red',
-	thick='1px', 
+	color='#000',
 	backgroundColor='#fff',
 	style=''
 }){
@@ -18,14 +18,14 @@ function Arrow({
 			},
 			style2 = {
 				position: 'absolute',
-				[direction]: thick,
+				[direction]: thick + unit,
 			}
 	return(
 		<div className={"arrow"}
 			style={{
 				position: 'relative',
 				width: width*2 + unit,
-				height: height + unit,
+				height: height + thick + unit,
 				...style
 			}}>
 			<Triangle 
