@@ -1,10 +1,11 @@
-import React , { useState } from 'react';
+// import React , { useState } from 'react';
+import React from 'react';
 import styled from 'styled-components';
-import Triangle from './components/Triangle.js'
-import Arrow from './components/Arrow.js'
-import InputNumber from './components/InputNumber.js'
-import Tree from './components/Tree.js'
-import AutoComplete from './components/AutoComplete.js'
+// import Triangle from './components/Triangle.js'
+// import Arrow from './components/Arrow.js'
+// import InputNumber from './components/InputNumber.js'
+// import Tree from './components/Tree.js'
+import AutoShow from './components/AutoShow.js'
 
 const Container = styled.div`
 	min-width: 100px;
@@ -13,7 +14,7 @@ const Container = styled.div`
 `
 
 function Test() {
-	const [inputValue, setInputValue] = useState(0)
+	// const [inputValue, setInputValue] = useState(0)
 	return (
 		<>
 			{/* <Container>
@@ -58,7 +59,7 @@ function Test() {
 				<Tree />
 			</Container> */}
 			<Container >
-				<AutoComplete />
+				<AutoShow />
 			</Container>
 		</>
 	);
