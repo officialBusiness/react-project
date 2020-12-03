@@ -16,7 +16,7 @@ function Test() {
 	const [inputValue, setInputValue] = useState(0)
 	return (
 		<>
-			<Container>
+			{/* <Container>
 				<Triangle
 					color={'#000'}
 					width={5}
@@ -53,10 +53,10 @@ function Test() {
 					onChange={(value)=>{
 						setInputValue( value )
 					}} />
-			</Container>
-			<Container >
+			</Container> */}
+			{/* <Container >
 				<Tree />
-			</Container>
+			</Container> */}
 			<Container >
 				<AutoComplete />
 			</Container>

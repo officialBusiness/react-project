@@ -1,9 +1,9 @@
 import React from 'react';
-import './AutoComplete.scss'
+import './AutoShow.scss'
 
-function AutoComplete(){
+function AutoShow(){
 	return (
-		<div>
+		<div className={'AutoShow'}>
 			自动展开组件
 		</div>
 	)
