@@ -13,9 +13,10 @@
 		>div.rowContainer{
 			height: auto;
 			>.title{
-				padding: 0 0 0 15px;
-				width: 70%;
-				text-align: left;
+				/*padding: 0 0 0 15px;*/
+				/*text-align: left;*/
+				width: 100%;
+				text-align: center;
 			}
 		}
 	}
@@ -28,23 +29,25 @@
 		pointer-events: none;
 		transition: all .3s;
 		background-color: transparent;
+		transition-delay: 300ms;
 		>div{
-
 			background-color: #fff;
 			background-clip: padding-box;
 			border-radius: 2px;
 			outline: none;
 			-webkit-box-shadow: 0 3px 6px -4px rgba(0,0,0,.12), 0 6px 16px 0 rgba(0,0,0,.08), 0 9px 28px 8px rgba(0,0,0,.05);
 			box-shadow: 0 3px 6px -4px rgba(0,0,0,.12), 0 6px 16px 0 rgba(0,0,0,.08), 0 9px 28px 8px rgba(0,0,0,.05);
-			
-			transition: all .3s;
+
+			transition: padding .3s, opacity .1s;
+			transition-delay: 300ms;
 			>.list{
-				padding: 0;
+				padding: 5px 0;
 				box-sizing: border-box;
 				width: 100%;
 				text-align: center;
 				color: #aeaeb3;
-				transition: all .25s;
+				user-select: none;
+				transition: all .3s;
 			}
 			>.list:hover{
 				color: #40a9ff;
@@ -65,7 +68,6 @@
 		>div{
 			padding: 4px 0;
 			>.list{
-				padding: 2px 0;
 			}
 		}
 	}

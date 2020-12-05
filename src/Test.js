@@ -56,7 +56,7 @@ function Test() {
 					}} />
 			</Container>
 			<Container style={{
-				width: '150px',
+				width: '100px',
 				height: '30px',
 				fontSize: '14px',
 			}}>
