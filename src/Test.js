@@ -60,7 +60,8 @@ function Test() {
 				height: '30px',
 				fontSize: '14px',
 			}}>
-				<Dropdown />
+				<Dropdown 
+					menu={['list1','list2','list3','list4','list5']}/>
 			<Container >
 				<Tree />
 			</Container>

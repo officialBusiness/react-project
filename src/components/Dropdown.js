@@ -1,7 +1,9 @@
 import React from 'react';
 import './Dropdown.scss'
 
-function Dropdown(){
+function Dropdown({
+	menu = []
+}){
 	return (
 		<div className={'Dropdown'}>
 			<div className={'colomContainer'}>
@@ -14,22 +16,16 @@ function Dropdown(){
 				</div>
 			</div>
 			<div className={'show'}>
-				<div>
-					<div className={'list'}>
-						list1
-					</div>
-					<div className={'list'}>
-						list2
-					</div>
-					<div className={'list'}>
-						list3
-					</div>
-					<div className={'list'}>
-						list4
-					</div>
-					<div className={'list'}>
-						list5
-					</div>
+				<div className={'menu'}>
+					{
+						menu.map((item, index)=>{
+							return(
+								<div className={'list'} key={index}>
+									{item}
+								</div>
+							)
+						})
+					}
 				</div>
 			</div>
 		</div>
