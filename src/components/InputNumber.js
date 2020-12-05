@@ -30,8 +30,8 @@ function InputNumber({
 		}
 	}
 	return (
-		<div className={'InputNumber'} >
-			<div className='input'>
+		<div className={'InputNumber borderStyle rowContainer'} >
+			<div className='input colomContainer'>
 				<input type={'text'} value={ value } onChange={(e)=>{
 					let value = e.target.value
 					if ( value === '' ) {
@@ -48,11 +48,11 @@ function InputNumber({
 				}}/>
 			</div>
 			<div className={'modified'}>
-				<div className={'unit'}>
-					<span>{unit}</span>
+				<div className={'unit colomContainer'}>
+					<div>{unit}</div>
 				</div>
-				<div className={'operation'}>
-					<div className={'add'} onClick={(e)=>{
+				<div className={'operation colomContainer'}>
+					<div className={'add colomContainer'} onClick={(e)=>{
 						if ( onChange ) {
 							onChange(check(value + step))
 						}
@@ -62,7 +62,7 @@ function InputNumber({
 							<div className="top-arrow2"></div>
 						</div>
 					</div>
-					<div className={'reducing'} onClick={(e)=>{
+					<div className={'reducing colomContainer'} onClick={(e)=>{
 						if ( onChange ) {
 							onChange(check(value - step))
 						}

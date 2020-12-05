@@ -1,11 +1,11 @@
-// import React , { useState } from 'react';
-import React from 'react';
+import React , { useState } from 'react';
+// import React from 'react';
 import styled from 'styled-components';
 // import Triangle from './components/Triangle.js'
 // import Arrow from './components/Arrow.js'
-// import InputNumber from './components/InputNumber.js'
-// import Tree from './components/Tree.js'
-import AutoShow from './components/AutoShow.js'
+import InputNumber from './components/InputNumber.js'
+import Tree from './components/Tree.js'
+import Dropdown from './components/Dropdown.js'
 
 const Container = styled.div`
 	min-width: 100px;
@@ -14,7 +14,7 @@ const Container = styled.div`
 `
 
 function Test() {
-	// const [inputValue, setInputValue] = useState(0)
+	const [inputValue, setInputValue] = useState(0)
 	return (
 		<>
 			{/* <Container>
@@ -41,7 +41,7 @@ function Test() {
 						backgroundColor: '#fff',
 						cursor: 'pointer'
 					}}/>
-			</Container>
+			</Container> */}
 			<Container style={{
 				width: '100px',
 				height: '30px', }}>
@@ -54,12 +54,16 @@ function Test() {
 					onChange={(value)=>{
 						setInputValue( value )
 					}} />
-			</Container> */}
-			{/* <Container >
-				<Tree />
-			</Container> */}
+			</Container>
+			<Container style={{
+				width: '150px',
+				height: '30px',
+				fontSize: '14px',
+			}}>
+				<Dropdown />
 			<Container >
-				<AutoShow />
+				<Tree />
+			</Container>
 			</Container>
 		</>
 	);
