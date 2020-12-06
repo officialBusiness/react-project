@@ -2,7 +2,8 @@ import React from 'react';
 import './Dropdown.scss'
 
 function Dropdown({
-	menu = []
+	menu = [],
+	onClick = ()=>{},
 }){
 	return (
 		<div className={'Dropdown'}>
@@ -20,7 +21,10 @@ function Dropdown({
 					{
 						menu.map((item, index)=>{
 							return(
-								<div className={'list'} key={index}>
+								<div className={'list'} key={index}
+									onClick={(e)=>{
+										onClick(e, index)
+									}}>
 									{item}
 								</div>
 							)

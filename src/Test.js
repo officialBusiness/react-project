@@ -8,8 +8,8 @@ import Tree from './components/Tree.js'
 import Dropdown from './components/Dropdown.js'
 
 const Container = styled.div`
-	min-width: 100px;
-	min-height: 30px;
+	width: 100px;
+	height: 30px;
 	margin: 10px 0 0 30px;
 `
 
@@ -42,9 +42,7 @@ function Test() {
 						cursor: 'pointer'
 					}}/>
 			</Container> */}
-			<Container style={{
-				width: '100px',
-				height: '30px', }}>
+			<Container >
 				<InputNumber 
 					value={inputValue}
 					max={10}
@@ -56,15 +54,16 @@ function Test() {
 					}} />
 			</Container>
 			<Container style={{
-				width: '100px',
-				height: '30px',
 				fontSize: '14px',
 			}}>
 				<Dropdown 
-					menu={['list1','list2','list3','list4','list5']}/>
+					menu={['list1','list2','list3','list4','list5']}
+					onClick={(e, index)=>{
+						console.log('点击了菜单', index, e.target)
+					}}/>
+			</Container>
 			<Container >
 				<Tree />
-			</Container>
 			</Container>
 		</>
 	);

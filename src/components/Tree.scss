@@ -1,0 +1,24 @@
+.Tree{
+	.root.child{
+		opacity: 1;
+		pointer-events: all;
+		height: auto;
+	}
+	.node{
+		cursor: pointer;
+		user-select: none;
+	}
+	.child{
+		pointer-events: none;
+		opacity: 0;
+		height: 0;
+		transition: all .3s;
+		text-align: center;
+	}
+	.child:hover{
+		>.child{
+			pointer-events: all;
+			opacity: 1;
+		}
+	}
+}
