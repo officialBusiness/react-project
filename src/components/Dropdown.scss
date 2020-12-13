@@ -19,7 +19,7 @@
 			}
 		}
 	}
-	>.show{
+	>.menuContainer{
 		box-sizing: border-box;
 		position: absolute;
 		top: 100%;
@@ -47,19 +47,19 @@
 				user-select: none;
 				transition: all .3s;
 			}
-			>.list:hover{
+			>.list.hover{
 				color: #40a9ff;
 				background-color: #f5f5f5;
 			}
 		}
 	}
 }
-.Dropdown:hover{
+.Dropdown.show{
 	>div.colomContainer{
 		color: #40a9ff;
 		border-color: #40a9ff;
 	}
-	>.show{
+	>.menuContainer{
 		padding: 6px 0 0 0;
 		pointer-events: all;
 		opacity: 1;

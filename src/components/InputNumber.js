@@ -1,4 +1,4 @@
-import React from 'react';
+import React , { useState } from 'react';
 import './InputNumber.scss'
 
 function InputNumber({
@@ -10,6 +10,8 @@ function InputNumber({
 	onChange,
 	unit='',
 }){
+	const [modifiedShow, setModifiedShow] = useState(false) 
+
 	if ( max < min ) {
 		throw Error('InputNumber组件参数出错：最大值max不能比最小值min小')
 	}
@@ -30,42 +32,48 @@ function InputNumber({
 		}
 	}
 	return (
-		<div className={'InputNumber borderStyle rowContainer'} >
+		<div className={'InputNumber borderStyle rowContainer'} 
+			onMouseEnter={(e)=>{setModifiedShow(true)}}
+			onMouseLeave={(e)=>{setModifiedShow(false)}}>
 			<div className='input colomContainer'>
-				<input type={'text'} value={ value } onChange={(e)=>{
-					let value = e.target.value
-					if ( value === '' ) {
-						value = init
-					}
-					if ( value === '-' ) {
-						onChange('-')
-						return
-					}
-					let number = parseInt( value )
-					if ( onChange) {
-						onChange(check(number))
-					}
-				}}/>
+				<input type={'text'} value={ value } 
+					onChange={(e)=>{
+						let value = e.target.value
+						if ( value === '' ) {
+							value = init
+						}
+						if ( value === '-' ) {
+							onChange('-')
+							return
+						}
+						let number = parseInt( value )
+						if ( onChange) {
+							onChange(check(number))
+						}
+					}}
+					onFocus={(e)=>{setModifiedShow(true)}}/>
 			</div>
-			<div className={'modified'}>
+			<div className={'modified' + ( modifiedShow ? ' modifiedShow' : '' )}>
 				<div className={'unit colomContainer'}>
 					<div>{unit}</div>
 				</div>
 				<div className={'operation colomContainer'}>
-					<div className={'add colomContainer'} onClick={(e)=>{
-						if ( onChange ) {
-							onChange(check(value + step))
-						}
-					}}>
+					<div className={'add colomContainer'}
+						onClick={(e)=>{
+							if ( onChange ) {
+								onChange(check(value + step))
+							}
+						}}>
 						<div className={'top-arrow'}>
 							<div className="top-arrow1"></div>
 							<div className="top-arrow2"></div>
 						</div>
 					</div>
-					<div className={'reducing colomContainer'} onClick={(e)=>{
-						if ( onChange ) {
-							onChange(check(value - step))
-						}
+					<div className={'reducing colomContainer'}
+						onClick={(e)=>{
+							if ( onChange ) {
+								onChange(check(value - step))
+							}
 						}}>
 						<div className={'bottom-arrow'}>
 							<div className="bottom-arrow1"></div>

@@ -54,6 +54,31 @@ function Test() {
 					}} />
 			</Container>
 			<Container style={{
+				height: 'auto'
+			}}>
+				<Tree data={[
+					{
+							name: 'node1', id: 1,
+							children: [
+								{ name: 'child1', id: 2 },
+								{ name: 'child2', id: 3 }
+							]
+					},
+					{
+							name: 'node2', id: 4,
+							children: [
+								{
+									name: 'child3', id: 5,
+									children: [
+										{ name: 'child4', id: 6 },
+										{ name: 'child5', id: 7 }
+									]
+								}
+							]
+					}
+				]}/>
+			</Container>
+			<Container style={{
 				fontSize: '14px',
 			}}>
 				<Dropdown 
@@ -61,9 +86,6 @@ function Test() {
 					onClick={(e, index)=>{
 						console.log('点击了菜单', index, e.target)
 					}}/>
-			</Container>
-			<Container >
-				<Tree />
 			</Container>
 		</>
 	);

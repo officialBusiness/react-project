@@ -13,10 +13,12 @@ code {
 }
 /*常用css样式*/
 
-html,body,div{
+html,body,div,input{
 	margin: 0;
 	padding: 0;
 	box-sizing: border-box;
+	outline: none;
+	-webkit-tap-highlight-color: transparent;
 }
 
 .colomContainer{
@@ -31,6 +33,19 @@ html,body,div{
 	display: flex;
 	flex-direction: row;
 }
+.operationHidden{
+	opacity: 0;
+}
+.operationShow{
+	opacity: 1;
+}
+.displayHidden{
+	display: none;
+}
+.displayShow{
+	display: block;
+}
+
 /*边框效果样式*/
 .borderStyle{
 	box-sizing: border-box;
@@ -38,7 +53,6 @@ html,body,div{
 	-webkit-transition: all .3s;
 	border: 1px solid #d9d9d9;
 	border-radius: 2px;
-	cursor: pointer;
 }
 .borderStyle:hover{
 	border: 1px solid #40a9ff;
