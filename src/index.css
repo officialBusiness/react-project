@@ -13,15 +13,19 @@ code {
 }
 /*常用css样式*/
 
-html,body,div,input{
+html,body,div,input,ul,li{
 	margin: 0;
 	padding: 0;
 	box-sizing: border-box;
 	outline: none;
 	-webkit-tap-highlight-color: transparent;
 }
+li{
+	list-style: none;
+	user-select: none;
+}
 
-.colomContainer{
+.columnContainer{
 	width: 100%;
 	height: 100%;
 	display: flex;

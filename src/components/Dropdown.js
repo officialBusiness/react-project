@@ -1,4 +1,4 @@
-import React , { useState }  from 'react';
+import React , { useState }  from 'react'
 import './Dropdown.scss'
 
 function List({
@@ -25,7 +25,7 @@ function Dropdown({
 		<div className={'Dropdown' + (show ? ' show' : '')}
 			onMouseEnter={(e)=>{setShow(true)}}
 			onMouseLeave={(e)=>{setShow(false)}}>
-			<div className={'colomContainer'}
+			<div className={'columnContainer'}
 				onClick={(e)=>{setShow(true)}}>
 				<div className={'rowContainer'}>
 					<div className={'title'}>下拉菜单</div>

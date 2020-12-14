@@ -1,12 +1,29 @@
 .Tree{
-	.root.child{
-		display: block;
-		opacity: 1;
-		pointer-events: all;
-		height: auto;
+	width: 100%;
+	.treeUl{
+		overflow: hidden;
 	}
-	.node{
-		/*cursor: pointer;*/
-		user-select: none;
+	.treeLi{
+		>div.rowContainer{
+			width: auto;
+			>.treeLiIconContainer.columnContainer{
+				justify-content: center;
+				text-align: center;
+				width: 18px;
+				height: auto;
+				cursor: pointer;
+				>.treeLiIcon.rowContainer{
+					justify-content: center;
+					height: auto;
+					-webkit-transition: -webkit-transform .3s;
+					transition: -webkit-transform .3s;
+					transition: transform .3s;
+					transition: transform .3s,-webkit-transform .3s;
+				}
+			}
+			.treeLiTitle{
+
+			}
+		}
 	}
 }

@@ -1,6 +1,6 @@
-import React , { useState } from 'react';
-// import React from 'react';
-import styled from 'styled-components';
+import React , { useState } from 'react'
+// import React from 'react'
+import styled from 'styled-components'
 // import Triangle from './components/Triangle.js'
 // import Arrow from './components/Arrow.js'
 import InputNumber from './components/InputNumber.js'
@@ -54,24 +54,35 @@ function Test() {
 					}} />
 			</Container>
 			<Container style={{
-				height: 'auto'
+				minWidth: '100px',
+				width: 'auto',
+				height: 'auto',
 			}}>
 				<Tree data={[
 					{
-							name: 'node1', id: 1,
+							title: 'node1',
+							show: true,
 							children: [
-								{ name: 'child1', id: 2 },
-								{ name: 'child2', id: 3 }
+								{ title: 'child1' },
+								{ title: 'child2' }
 							]
 					},
 					{
-							name: 'node2', id: 4,
+							title: 'node2',
 							children: [
 								{
-									name: 'child3', id: 5,
+									title: 'child3',
 									children: [
-										{ name: 'child4', id: 6 },
-										{ name: 'child5', id: 7 }
+										{ title: 'child4' },
+										{ title: 'child5' },
+										{ title: 'child4' },
+										{ title: 'child5' },
+										{ title: 'child4' },
+										{ title: 'child5' },
+										{ title: 'child4' },
+										{ title: 'child5' },
+										{ title: 'child4' },
+										{ title: 'child5' },
 									]
 								}
 							]

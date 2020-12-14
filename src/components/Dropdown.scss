@@ -3,7 +3,7 @@
 	width: 100%;
 	height: 100%;
 	cursor: pointer;
-	>div.colomContainer{
+	>div.columnContainer{
 		color: #aeaeb3;
 		background: #fff;
 		border: 1px solid #d9d9d9;
@@ -55,7 +55,7 @@
 	}
 }
 .Dropdown.show{
-	>div.colomContainer{
+	>div.columnContainer{
 		color: #40a9ff;
 		border-color: #40a9ff;
 	}

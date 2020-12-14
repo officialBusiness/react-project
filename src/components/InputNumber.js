@@ -1,4 +1,4 @@
-import React , { useState } from 'react';
+import React , { useState } from 'react'
 import './InputNumber.scss'
 
 function InputNumber({
@@ -36,7 +36,7 @@ function InputNumber({
 		<div className={'InputNumber borderStyle rowContainer'} 
 			onMouseEnter={(e)=>{setModifiedShow(true)}}
 			onMouseLeave={(e)=>{setModifiedShow(false)}}>
-			<div className='input colomContainer'>
+			<div className='input columnContainer'>
 				<input type={'text'} value={ value } 
 					onChange={(e)=>{
 						let value = e.target.value
@@ -55,11 +55,11 @@ function InputNumber({
 					onFocus={(e)=>{setModifiedShow(true)}}/>
 			</div>
 			<div className={'modified' + ( modifiedShow ? ' modifiedShow' : '' )}>
-				<div className={'unit colomContainer'}>
+				<div className={'unit columnContainer'}>
 					<div>{unit}</div>
 				</div>
-				<div className={'operation colomContainer'}>
-					<div className={'add colomContainer'}
+				<div className={'operation columnContainer'}>
+					<div className={'add columnContainer'}
 						onClick={(e)=>{
 							if ( onChange ) {
 								onChange(check(value + step))
@@ -70,7 +70,7 @@ function InputNumber({
 							<div className="top-arrow2"></div>
 						</div>
 					</div>
-					<div className={'reducing colomContainer'}
+					<div className={'reducing columnContainer'}
 						onClick={(e)=>{
 							if ( onChange ) {
 								onChange(check(value - step))

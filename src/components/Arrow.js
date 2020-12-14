@@ -1,4 +1,4 @@
-import React from 'react';
+import React from 'react'
 import Triangle from './Triangle.js'
 
 function Arrow({
