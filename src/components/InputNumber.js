@@ -18,6 +18,7 @@ function InputNumber({
 	if ( !isFinite(value) && value !== '-') {
 		throw Error('InputNumber组件参数出错：value必须是数字')
 	}
+	// 对输入的数字进行检查
 	function check(number){
 		if ( number > max ) {
 			return max

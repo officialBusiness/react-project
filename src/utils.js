@@ -6,5 +6,6 @@ export function getNoneSize(dom){
 		offsetLeft: dom.offsetLeft,
 		offsetTop: dom.offsetTop
 	}
+	dom.style.cssText = `display:none;`
 	return attr
 }
