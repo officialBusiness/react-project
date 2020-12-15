@@ -15,10 +15,7 @@
 				>.treeLiIcon.rowContainer{
 					justify-content: center;
 					height: auto;
-					-webkit-transition: -webkit-transform .3s;
-					transition: -webkit-transform .3s;
-					transition: transform .3s;
-					transition: transform .3s,-webkit-transform .3s;
+					/*transition: transform 300ms;*/
 				}
 			}
 			.treeLiTitle{

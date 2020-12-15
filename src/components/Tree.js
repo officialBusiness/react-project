@@ -11,9 +11,6 @@ class TreeLi extends React.Component{
 		if ( data.show === undefined ) {
 			data.show = false
 		}
-		this.state = {
-			ulShow: data.show,
-		}
 		this.treeUlRef = React.createRef()
 		this.hasChildren = data.children && Array.isArray( data.children ) && data.children.length > 0
 	}
@@ -21,7 +18,7 @@ class TreeLi extends React.Component{
 		this.treeUlDom = ReactDOM.findDOMNode(this.treeUlRef.current)
 	}
 	render(){
-		let { data = {}, level, icon } = this.props ,
+		let { data = {}, level, icon, message } = this.props ,
 				iconRef = React.createRef()
 		return (
 			<li className={'treeLi'}>
@@ -31,19 +28,25 @@ class TreeLi extends React.Component{
 							visibility: this.hasChildren ? 'visible' : 'hidden'
 						}}
 						onClick={(e)=>{
-							if ( !this.hasChildren ) {
+							if ( !this.hasChildren ) {//没有孩子节点，即没有ul，直接返回
 								return
 							}
 							let treeUlDom = ReactDOM.findDOMNode(this.treeUlRef.current),
 									height = getSize( treeUlDom ).height,
-									ulShow = data.show
+									ulShow = data.show,
+									treeLiIconDom = iconRef.current,
+									duration = height * 5
+							// 事件最多300ms，300ms以内的话，与ul高度成比例
+							duration = duration > 300 ? 300 : duration
+							treeLiIconDom.style.transition = 'transform ' + duration + 'ms'
+							// ul展开和隐藏动画
 							Animation({
 								operation: treeUlDom.style,
 								from: {
 									height: ulShow ? height : 0,
 									opacity: ulShow ? 1 : 0 ,
 								},
-								duration: 300,
+								duration: duration,
 								to: {
 									height: ulShow ? 0 : height ,
 									opacity: ulShow ? 0 : 1 ,
@@ -61,28 +64,37 @@ class TreeLi extends React.Component{
 								},
 								onComplete: (operation, from, to)=>{
 									data.show = !ulShow
-									treeUlDom.style.height = 'auto'
+									treeUlDom.style.height = null
 									if ( ulShow ) {	//已经完全隐藏
 										treeUlDom.style.display = 'none'
 									}else{	//ul已经完全展开
+										treeUlDom.style.opacity = null
 									}
 								}
 							})
 							if ( ulShow ) {
-								iconRef.current.style.transform = `rotate(0deg)`
+								treeLiIconDom.style.transform = `rotate(0deg)`
 							}else{
-								iconRef.current.style.transform = `rotate(90deg)`
+								treeLiIconDom.style.transform = `rotate(90deg)`
 							}
 						}}>
 							<div className={'treeLiIcon rowContainer'} ref={iconRef} style={{
-								transform: this.state.ulShow ? `rotate(90deg)` : `rotate(0deg)`
+								transform: data.show ? `rotate(90deg)` : `rotate(0deg)`
 							}}>{icon}</div>
 						</div>
-					<div className={'treeLiTitle'}>{data.title}</div>
+					<div className={'treeLiTitle'} onClick={(e)=>{
+						// console.log( e.target )
+						// console.log( message )
+					}}>{data.title}</div>
 				</div>
 				{
 					this.hasChildren ?
-					<TreeUl ref={this.treeUlRef} data={data.children} level={level + 1} icon={icon} show={data.show}/> : null
+					<TreeUl ref={this.treeUlRef}
+						data={data.children}
+						level={level + 1}
+						icon={icon}
+						show={data.show}
+						message={message}/> : null
 				}
 			</li>
 		)
@@ -90,7 +102,7 @@ class TreeLi extends React.Component{
 }
 class TreeUl extends React.Component{
 	render(){
-		let { level, show, data=[], icon } = this.props
+		let { level, show, data=[], icon, message } = this.props
 		return (
 			<ul
 				className={'treeUl'}
@@ -101,7 +113,12 @@ class TreeUl extends React.Component{
 				{
 					data.map((item, index)=>{
 						return (
-							<TreeLi key={index} data={item} level={level} icon={icon}/>
+							<TreeLi
+								key={index}
+								data={item}
+								level={level}
+								icon={icon}
+								message={message}/>
 						)
 					})
 				}
@@ -111,16 +128,20 @@ class TreeUl extends React.Component{
 }
 function Tree({
 	data = [],
+	message = {},
 	icon = <Triangle direction={'right'} width={3} height={6} />,
 }){
 	// console.log( data )
 	return (
-		<div className={'Tree'}>
+		<div className={'Tree'} onClick={(e)=>{
+			// console.log( data )
+		}}>
 			<TreeUl
 				show={true}
 				data={data}
 				level={0}
-				icon={icon}/>
+				icon={icon}
+				message={message}/>
 		</div>
 	)
 }
