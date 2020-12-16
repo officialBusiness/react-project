@@ -27,7 +27,7 @@ class TreeLi extends React.Component{
 						style={{
 							visibility: this.hasChildren ? 'visible' : 'hidden'
 						}}
-						onClick={(e)=>{
+						onClick={(e)=>{//icon标签点击展开收缩ul
 							if ( !this.hasChildren ) {//没有孩子节点，即没有ul，直接返回
 								return
 							}
@@ -82,10 +82,16 @@ class TreeLi extends React.Component{
 								transform: data.show ? `rotate(90deg)` : `rotate(0deg)`
 							}}>{icon}</div>
 						</div>
-					<div className={'treeLiTitle'} onClick={(e)=>{
-						// console.log( e.target )
-						// console.log( message )
-					}}>{data.title}</div>
+					<div className={'treeLiTitle'}
+						onMouseDown={(e)=>{
+							console.log( 'treeLiTitle onMouseDown' )
+						}}
+						onMouseUp={(e)=>{
+
+						}}
+						onDrag={(e)=>{
+							
+						}}>{data.title}</div>
 				</div>
 				{
 					this.hasChildren ?
