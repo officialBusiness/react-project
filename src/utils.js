@@ -89,3 +89,36 @@ function updateProperties(from, to, object, percentage){
 	}
 }
 
+// 判断是移动端还是PC端
+export function browser(){
+	var system = { 
+			win: false,
+			mac: false,
+			ipad: false
+		}
+		// alert(navigator.platform)
+		// alert(navigator.userAgent)
+		//检测平台  
+		var p = navigator.platform
+		if ( p.indexOf('mobile') !== -1 ) {
+			return 'MOBILE'
+		}
+		system.win = p.indexOf("Win") === 0 
+		system.mac = p.indexOf("Mac") === 0
+		system.ipad = (navigator.userAgent.match(/iPad/i) !== null) ? true : false
+		// alert(JSON.stringify(system))
+		if (system.win || system.mac || system.ipad) {
+			// alert('PC')
+			return 'PC'
+		} else {
+			// alert('MOBILE')
+			var ua = navigator.userAgent.toLowerCase()
+			if(ua.match(/MicroMessenger/i) === "micromessenger") {  
+
+			} else {
+
+			}
+			return 'MOBILE'
+		}
+}
+

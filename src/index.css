@@ -13,17 +13,24 @@ code {
 }
 /*常用css样式*/
 
-html,body,div,input,ul,li{
+html,body,div,input,ul,li,a{
 	margin: 0;
 	padding: 0;
+	display: block;
 	box-sizing: border-box;
 	outline: none;
 	-webkit-tap-highlight-color: transparent;
+	user-select: none;
+}
+a{
+	text-decoration: none;
+	color: #000000;
 }
 li{
 	list-style: none;
 	user-select: none;
 }
+
 
 .columnContainer{
 	width: 100%;
@@ -34,6 +41,14 @@ li{
 .rowContainer{
 	width: 100%;
 	height: 100%;
+	display: flex;
+	flex-direction: row;
+}
+.column{
+	display: flex;
+	flex-direction: column;
+}
+.row{
 	display: flex;
 	flex-direction: row;
 }
@@ -63,3 +78,14 @@ li{
 	box-shadow: 0 0 0 2px rgba(24,144,255,.2);
 	-webkit-box-shadow: 0 0 0 2px rgba(24,144,255,.2);
 }
+/*卡片样式*/
+.cardStyle{
+	border: 1px solid #f0f0f0;
+	border-radius: 4px;
+	transition: all .3s ;
+}
+.cardStyle:hover{
+	-webkit-box-shadow: 0 6px 16px -8px rgba(0,0,0,.08), 0 9px 28px 0 rgba(0,0,0,.05), 0 12px 48px 16px rgba(0,0,0,.03);
+	box-shadow: 0 6px 16px -8px rgba(0,0,0,.08), 0 9px 28px 0 rgba(0,0,0,.05), 0 12px 48px 16px rgba(0,0,0,.03);
+}
+
