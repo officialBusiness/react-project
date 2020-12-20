@@ -1,11 +1,14 @@
 import React from 'react'
 // import ReactDOM from 'react-dom'
 
-class ThreeOperation extends React.Component{
+
+export default class ThreeOperation extends React.Component{
 	 
 	render(){
-		<div>
-
-		</div>
+		return (
+			<div>
+				三维操作工具
+			</div>
+		)
 	}
 }

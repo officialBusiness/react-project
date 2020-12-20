@@ -89,11 +89,3 @@ function updateProperties(from, to, object, percentage){
 	}
 }
 
-// 转化three的三维位置到浏览器窗口的位置
-export function getWindowPositionFromThree(threePosition){
-	
-}
-// 转化浏览器窗口的位置到three的三维位置
-export function geThreePositionFromWindow(windowPosition){
-	
-}

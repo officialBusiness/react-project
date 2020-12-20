@@ -4,6 +4,16 @@ import Triangle from './Triangle.js'
 import './Tree.scss'
 import { getSize, Animation } from '../utils.js'
 
+// class Drag extends React.Component{
+
+// 	render(){
+// 		return (
+// 			<div>
+
+// 			</div>
+// 		)
+// 	}
+// }
 class TreeLi extends React.Component{
 	constructor(props) {
 		super(props);
@@ -18,7 +28,7 @@ class TreeLi extends React.Component{
 		this.treeUlDom = ReactDOM.findDOMNode(this.treeUlRef.current)
 	}
 	render(){
-		let { data = {}, level, icon, message } = this.props ,
+		let { data = {}, level, controlIcon, message } = this.props ,
 				iconRef = React.createRef()
 		return (
 			<li className={'treeLi'}>
@@ -80,17 +90,37 @@ class TreeLi extends React.Component{
 						}}>
 							<div className={'treeLiIcon rowContainer'} ref={iconRef} style={{
 								transform: data.show ? `rotate(90deg)` : `rotate(0deg)`
-							}}>{icon}</div>
+							}}>{controlIcon}</div>
 						</div>
 					<div className={'treeLiTitle'}
 						onMouseDown={(e)=>{
-							console.log( 'treeLiTitle onMouseDown' )
+							console.log( '鼠标点击' )
 						}}
 						onMouseUp={(e)=>{
-
+							console.log( '鼠标释放' )
+						}}
+						onMouseMove={(e)=>{
+							console.log('鼠标移动')
+						}}
+						onDragStart={(e)=>{
+							console.log( '开始移动' )
 						}}
 						onDrag={(e)=>{
-							
+							console.log( '开始移动' )
+							e.preventDefault()
+						}}
+						onDragEnd={(e)=>{
+							console.log( '开始移动' )
+						}}
+						onDragEnter={(e)=>{
+							console.log( '开始移动' )
+						}}
+						onDragOver={(e)=>{
+							console.log( '开始移动' )
+							e.preventDefault()
+						}}
+						onDragLeave={(e)=>{
+							console.log( '开始移动' )
 						}}>{data.title}</div>
 				</div>
 				{
@@ -98,7 +128,7 @@ class TreeLi extends React.Component{
 					<TreeUl ref={this.treeUlRef}
 						data={data.children}
 						level={level + 1}
-						icon={icon}
+						controlIcon={controlIcon}
 						show={data.show}
 						message={message}/> : null
 				}
@@ -108,7 +138,7 @@ class TreeLi extends React.Component{
 }
 class TreeUl extends React.Component{
 	render(){
-		let { level, show, data=[], icon, message } = this.props
+		let { level, show, data=[], controlIcon, message } = this.props
 		return (
 			<ul
 				className={'treeUl'}
@@ -123,7 +153,7 @@ class TreeUl extends React.Component{
 								key={index}
 								data={item}
 								level={level}
-								icon={icon}
+								controlIcon={controlIcon}
 								message={message}/>
 						)
 					})
@@ -132,10 +162,11 @@ class TreeUl extends React.Component{
 		)
 	}
 }
-function Tree({
+
+export default function Tree({
 	data = [],
 	message = {},
-	icon = <Triangle direction={'right'} width={3} height={6} />,
+	controlIcon = <Triangle direction={'right'} width={3} height={6} />,
 }){
 	// console.log( data )
 	return (
@@ -146,10 +177,8 @@ function Tree({
 				show={true}
 				data={data}
 				level={0}
-				icon={icon}
+				controlIcon={controlIcon}
 				message={message}/>
 		</div>
 	)
 }
-
-export default Tree
