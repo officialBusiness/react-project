@@ -65,7 +65,7 @@ function InputNumber({
 								onChange(check(value + step))
 							}
 						}}>
-						<div className={'top-arrow'}>
+						<div className={'top-arrow row'}>
 							<div className="top-arrow1"></div>
 							<div className="top-arrow2"></div>
 						</div>
@@ -76,7 +76,7 @@ function InputNumber({
 								onChange(check(value - step))
 							}
 						}}>
-						<div className={'bottom-arrow'}>
+						<div className={'bottom-arrow row'}>
 							<div className="bottom-arrow1"></div>
 							<div className="bottom-arrow2"></div>
 						</div>
