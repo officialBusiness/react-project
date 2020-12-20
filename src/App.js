@@ -1,5 +1,4 @@
 import React from 'react'
-import { Link } from "react-router-dom";
 import './App.scss'
 import { browser } from './utils'
 
@@ -19,7 +18,7 @@ export default class App extends React.Component{
 							{/* <span>树</span>
 							<span>下拉菜单</span>
 							<span>数字输入框</span> */}
-							数字输入框、下拉菜单
+							树、数字输入框、下拉菜单
 						</div>
 					</a>
 					<a href={'#Test'} className={'index-content cardStyle'}>
@@ -27,9 +26,10 @@ export default class App extends React.Component{
 							源码解读
 						</div>
 						<div className={'index-content-description'}>
-							{/* <span>tween</span>
+							{/* <span>js基础</span>
+								<span>tween</span>
 							<span>jQuery</span> */}
-							tween、jQuery
+							js基础、tween、jQuery
 						</div>
 					</a>
 					<a href={'#Test'} className={'index-content cardStyle'}>
@@ -37,7 +37,7 @@ export default class App extends React.Component{
 							操作工具
 						</div>
 						<div className={'index-content-description'}>
-							三维模型操作、数据可视化
+							三维模型操作
 							{/* <span>三维模型操作</span> */}
 						</div>
 					</a>
