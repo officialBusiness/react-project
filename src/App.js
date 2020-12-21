@@ -10,7 +10,7 @@ export default class App extends React.Component{
 					react相关积累博客
 				</div>
 				<div className={'index-contents'}>
-					<a href={'#Test'} className={'index-content cardStyle'}>
+					<a href={'#404'} className={'index-content cardStyle'}>
 						<div className={'index-content-title'}>
 							小组件
 						</div>
@@ -18,10 +18,10 @@ export default class App extends React.Component{
 							{/* <span>树</span>
 							<span>下拉菜单</span>
 							<span>数字输入框</span> */}
-							树、数字输入框、下拉菜单
+							数字输入框、下拉菜单
 						</div>
 					</a>
-					<a href={'#Test'} className={'index-content cardStyle'}>
+					<a href={'#404'} className={'index-content cardStyle'}>
 						<div className={'index-content-title'}>
 							源码解读
 						</div>
@@ -32,7 +32,7 @@ export default class App extends React.Component{
 							js基础、tween、jQuery
 						</div>
 					</a>
-					<a href={'#Test'} className={'index-content cardStyle'}>
+					<a href={'#404'} className={'index-content cardStyle'}>
 						<div className={'index-content-title'}>
 							操作工具
 						</div>

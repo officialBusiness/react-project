@@ -1,12 +1,12 @@
 #index{
 	height: 100vh;
 	>.index-title{
-		padding-top: 10vw;
+		padding-top: 10vh;
 		text-align: center;
 		font-size: 40px;
 	}
 	>.index-contents{
-		margin: 5vw 0;
+		margin: 10vh 0 0 0;
 		padding-bottom: 80px;
 		display: flex;
 		flex-direction: row;
@@ -59,6 +59,7 @@
 			flex: 1;
 			flex-direction: column;
 			justify-content: space-around;
+			margin: 10px 0;
 			>.index-content{
 				max-width: 300px;
 				display: flex;

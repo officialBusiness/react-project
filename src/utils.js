@@ -91,11 +91,9 @@ function updateProperties(from, to, object, percentage){
 
 // 判断是移动端还是PC端
 export function browser(){
-	var system = { 
-			win: false,
-			mac: false,
-			ipad: false
-		}
+	var win = false,
+			mac = false,
+			ipad = false
 		// alert(navigator.platform)
 		// alert(navigator.userAgent)
 		//检测平台  
@@ -103,11 +101,11 @@ export function browser(){
 		if ( p.indexOf('mobile') !== -1 ) {
 			return 'MOBILE'
 		}
-		system.win = p.indexOf("Win") === 0 
-		system.mac = p.indexOf("Mac") === 0
-		system.ipad = (navigator.userAgent.match(/iPad/i) !== null) ? true : false
-		// alert(JSON.stringify(system))
-		if (system.win || system.mac || system.ipad) {
+		win = p.indexOf("Win") === 0 
+		mac = p.indexOf("Mac") === 0
+		ipad = (navigator.userAgent.match(/iPad/i) !== null) ? true : false
+		// alert(win || mac || ipad)
+		if (win || mac || ipad) {
 			// alert('PC')
 			return 'PC'
 		} else {
