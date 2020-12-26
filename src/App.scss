@@ -53,7 +53,7 @@
 		display: flex;
 		flex-direction: column;
 		>.index-title{
-			font-size: 30px;
+			font-size: 8vw;
 		}
 		>.index-contents{
 			flex: 1;
@@ -61,11 +61,12 @@
 			justify-content: space-around;
 			margin: 10px 0;
 			>.index-content{
-				max-width: 300px;
 				display: flex;
 				flex-direction: column;
 				justify-content: space-around;
 				margin: 0 auto;
+				max-width: 300px;
+				min-width: initial;
 				width: 80vw;
 				height: 20vh;
 				>.index-content-title{
@@ -80,6 +81,13 @@
 	}
 }
 
+@media (max-width: 200px) {
+	#index{
+		>.index-title{
+			font-size: 16px;
+		}
+	}
+}
 @media (max-height: 470px) {
 	#index{
 		>.foot{
