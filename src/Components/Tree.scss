@@ -1,0 +1,32 @@
+.Tree{
+	width: 100%;
+	.treeUl{
+		overflow: hidden;
+	}
+	.treeLi{
+		>div.rowContainer{
+			width: auto;
+			>.treeLiIconContainer.columnContainer{
+				justify-content: center;
+				text-align: center;
+				width: 18px;
+				height: auto;
+				cursor: pointer;
+				>.treeLiIcon.rowContainer{
+					justify-content: center;
+					height: auto;
+					/*transition: transform 300ms;*/
+				}
+			}
+			.treeLiTitle{
+				padding: 4px;
+				cursor: pointer;
+				-webkit-transition: background-color .3s;
+				transition: background-color .3s;
+			}
+			.treeLiTitle:hover{
+				background-color: #f5f5f5;
+			}
+		}
+	}
+}

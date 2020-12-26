@@ -1,0 +1,132 @@
+.InputNumber{
+	font-size: 14px;
+	>.input{
+		justify-content: center;
+		width: calc(100% - 25px);
+		>input{
+			display: block;
+			margin: 0;
+			/*样式可以根据具体情况设置*/
+			padding: 0 0 0 5px;
+			width: 100%;
+			text-align: left;
+			background-color: transparent;
+			background-image: none;
+			border: none;
+			outline: 0;
+		}
+	}
+	>.modified{
+		position: relative;
+		flex: 1;
+		height: 100%;
+		>div{
+			width: 100%;
+			height: 100%;
+		}
+		>.unit{
+			justify-content: center;
+			text-align: center;
+			user-select: none;
+			>div{
+				width: 100%;
+				height: auto;
+			}
+		}
+		>.operation{
+			position: absolute;
+			top: 0;
+			left: 0;
+			-webkit-transition: opacity .24s linear .1s;
+    	transition: opacity .24s linear .1s;
+			user-select: none;
+			border-left: 1px solid #d9d9d9;
+			box-sizing: border-box;
+			opacity: 0;
+			background-color: #ffffff;
+			>div{
+				justify-content: center;
+				width: 100%;
+				height: 50%;
+				cursor: pointer;
+				>div{
+					justify-content: center;
+				}
+			}
+			>div:active{
+				background-color: #f4f4f4;
+				>.top-arrow{
+					>.top-arrow2{
+						border-bottom: 5px #f4f4f4 solid;
+					}
+				}
+				>.bottom-arrow{
+					>.bottom-arrow2{
+						border-top: 5px #f4f4f4 solid;
+					}
+				}
+			}
+			>.add{
+				border-top-right-radius: 1px;
+				border-bottom: 1px solid #d9d9d9;
+				>.top-arrow{
+					position: relative;
+					margin: 0 auto;
+					>div{
+						width: 0;
+						height: 0;
+						border-top: 0 transparent dashed;
+						border-left: 4px transparent dashed;
+						border-right: 4px transparent dashed;
+					}
+					>.top-arrow1{
+						border-bottom: 5px #9a9a9a solid;
+					}
+					>.top-arrow2{
+						position: absolute;
+						right: 0;
+						left: 0;
+						margin: 0 auto;
+						top: 2px;
+						border-bottom: 5px #ffffff solid;
+						z-index: 2;
+					}
+				}
+			}
+			>.reducing{
+				border-bottom-right-radius: 1px;
+				>.bottom-arrow{
+					position: relative;
+					margin: 0 auto;
+					>div{
+						width: 0;
+						height: 0;
+						border-bottom: 0 transparent dashed;
+						border-left: 4px transparent dashed;
+						border-right: 4px transparent dashed;
+					}
+					>.bottom-arrow1{
+						border-top: 5px #9a9a9a solid;
+					}
+					>.bottom-arrow2{
+						position: absolute;
+						right: 0;
+						left: 0;
+						margin: 0 auto;
+						top: -2px;
+						border-top: 5px #ffffff solid;
+						z-index: 2;
+					}
+				}
+			}
+		}
+	}
+	>.modified.modifiedShow{
+		>.unit{
+			opacity: 0;
+		}
+		>.operation{
+			opacity: 1;
+		}
+	}
+}
