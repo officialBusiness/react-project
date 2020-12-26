@@ -1,5 +1,4 @@
 import React from 'react'
-import { browser } from './utils'
 
 export default class App extends React.Component{
 	render(){
@@ -8,7 +7,7 @@ export default class App extends React.Component{
 				padding: '30px 0 0 50px',
 				fontSize: '30px',
 			}}>
-				页面正在制作......
+				页面制作ing......
 			</div>
 		)
 	}

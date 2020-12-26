@@ -54,7 +54,8 @@ export function Animation({
 			endTime = startTime + duration,
 			tempObj = {}
 
-	initObject(tempObj, to)
+	// initObject(tempObj, to)
+	tempObj = clone(to)
 	var animationId = requestAnimationFrame(doAnimation)
 	function doAnimation(time){
 		var percentage = (time <= startTime ? 0 : time >= endTime ? 1 : (time - startTime) / duration)
@@ -69,16 +70,7 @@ export function Animation({
 		}
 	}
 }
-function initObject(object, to){
-	for( var key in to ){
-		if ( typeof to[key] === 'object' ) {
-			object[key] = {}
-			initObject( object[key], to[key] )
-		}else{
-			object[key] = to[key]
-		}
-	}
-}
+
 function updateProperties(from, to, object, percentage){
 	for( var key in to ){
 		if ( typeof to[key] === 'object' ) {
@@ -109,14 +101,81 @@ export function browser(){
 			// alert('PC')
 			return 'PC'
 		} else {
-			// alert('MOBILE')
-			var ua = navigator.userAgent.toLowerCase()
-			if(ua.match(/MicroMessenger/i) === "micromessenger") {  
-
-			} else {
-
-			}
-			return 'MOBILE'
+		// alert('MOBILE')
+		var ua = navigator.userAgent.toLowerCase()
+		if(ua.match(/MicroMessenger/i) === "micromessenger") {  
+		} else {
 		}
+		return 'MOBILE'
+	}
 }
+
+//防抖，触发之后推迟n秒执行后再次触发，不断触发不断推迟，（搜索）
+export function Debounce( { callback, wait, immediate = false, delayed } ){
+	let timer, startTimeStamp = 0, times = 0;
+	let args, context;
+ 
+	let run = (timerInterval)=>{
+		timer = setTimeout(()=>{
+			let now = (new Date()).getTime()
+			let interval = now - startTimeStamp
+			if(interval < timerInterval){//在n秒内触发了，说明被推迟了
+				startTimeStamp = now
+				run(wait - interval)
+				if ( delayed && typeof delayed === 'function') {// console.log('时间延长')
+					delayed( times )
+				}
+			}else{
+				if(!immediate) {
+						callback.apply(context, args)
+				}
+				clearTimeout(timer)
+				timer = null
+			}
+			
+		}, timerInterval)
+	}
+ 
+	return function(){
+		context = this
+		args = arguments
+		startTimeStamp = (new Date()).getTime()
+		if(!timer){
+			if(immediate) {
+				callback.apply(context, args)
+			}
+			run(wait)
+		}
+		
+	}
+ 
+}
+
+//节流，固定时间n秒内函数只会执行一次，多次触发无效（提交）
+export function Throttling({ callback, wait, immediate }){
+	let timer
+	let context, args
+ 
+	let run = () => {
+		timer = setTimeout(()=>{
+			if( !immediate ){
+				callback.apply(context,args)
+			}
+			clearTimeout(timer)
+			timer=null
+		}, wait)
+	}
+	return function () {
+		context = this
+		args = arguments
+		if( !timer ){
+			if( immediate ){
+				callback.apply(context,args)
+			}
+			run()
+		}
+	}
+}
+// 防抖和节流的最大区别就是不断地触发事件是否会将执行的时间延后
+
 

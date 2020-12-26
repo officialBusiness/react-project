@@ -1,23 +1,28 @@
 import React , { useState } from 'react'
-// import React from 'react'
 import styled from 'styled-components'
-// import Triangle from './components/Triangle.js'
-// import Arrow from './components/Arrow.js'
+import Triangle from './components/Triangle.js'
+import Arrow from './components/Arrow.js'
 import InputNumber from './components/InputNumber.js'
 import Tree from './components/Tree.js'
 import Dropdown from './components/Dropdown.js'
+import { Debounce } from './utils'
 
 const Container = styled.div`
-	width: 100px;
-	height: 30px;
-	margin: 10px 0 0 30px;
+	width: 130px;
+	height: 40px;
+	padding: 10px 0 0 30px;
 `
 
+let t = Debounce({
+	callback: (v)=>{console.log(v)}, 
+	wait: 1000,
+	immediate: true
+})
 function Test() {
 	const [inputValue, setInputValue] = useState(0)
 	return (
 		<>
-			{/* <Container>
+			<Container>
 				<Triangle
 					color={'#000'}
 					width={5}
@@ -41,7 +46,7 @@ function Test() {
 						backgroundColor: '#fff',
 						cursor: 'pointer'
 					}}/>
-			</Container> */}
+			</Container>
 			<Container >
 				<InputNumber 
 					value={inputValue}
@@ -98,6 +103,10 @@ function Test() {
 						console.log('点击了菜单', index, e.target)
 					}}/>
 			</Container>
+			<input onChange={(e)=>{
+							// console.log('change')
+							t( e.target.value )
+						}}/>
 		</>
 	);
 }
