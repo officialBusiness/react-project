@@ -103,10 +103,12 @@ function Test() {
 						console.log('点击了菜单', index, e.target)
 					}}/>
 			</Container>
-			<input onChange={(e)=>{
-							// console.log('change')
-							t( e.target.value )
-						}}/>
+			<Container >
+				<input onChange={(e)=>{
+								// console.log('change')
+								t( e.target.value )
+							}}/>
+			</Container>
 		</>
 	);
 }
