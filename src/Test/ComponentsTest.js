@@ -1,11 +1,11 @@
 import React , { useState } from 'react'
-import styled from 'styled-components'
-import Triangle from './components/Triangle.js'
-import Arrow from './components/Arrow.js'
-import InputNumber from './components/InputNumber.js'
-import Tree from './components/Tree.js'
-import Dropdown from './components/Dropdown.js'
-import { Debounce } from './utils'
+import styled from 'styled-Components'
+import Triangle from '../Components/Triangle.js'
+import Arrow from '../Components/Arrow.js'
+import InputNumber from '../Components/InputNumber.js'
+import Tree from '../Components/Tree.js'
+import Dropdown from '../Components/Dropdown.js'
+import { Debounce } from '../utils'
 
 const Container = styled.div`
 	width: 130px;
