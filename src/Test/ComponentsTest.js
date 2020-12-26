@@ -1,5 +1,5 @@
 import React , { useState } from 'react'
-import styled from 'styled-Components'
+import styled from 'styled-components'
 import Triangle from '../Components/Triangle.js'
 import Arrow from '../Components/Arrow.js'
 import InputNumber from '../Components/InputNumber.js'
