@@ -4,7 +4,7 @@ import './SourceCode.scss'
 export default class SourceCode extends React.Component{
 	render(){
 		return (
-			<div className={'SourceCode'}>
+			<div>
 			</div>
 		)
 	}

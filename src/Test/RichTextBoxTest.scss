@@ -1,0 +1,24 @@
+.RichTextBoxTest{
+	margin: 0 auto;
+	width: 80%;
+	min-width: 874px;
+	padding-top: 32px;
+	>.RichTextBox{
+		padding: 32px 64px;
+		border: 1px solid #e8e8e8;
+		box-shadow: 0 2px 8px rgba(115, 115, 115, 0.08);
+		>.title{
+			width: 100%;
+			height: 50px;
+			line-height: 50px;
+			/*line-height: 1.389;*/
+			font-size: 36px;
+			font-weight: bolder;
+			white-space: nowrap;
+			overflow: hidden;
+		}
+		>.content{
+			min-height: 1024px;
+		}
+	}
+}

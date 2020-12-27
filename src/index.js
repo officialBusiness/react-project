@@ -6,7 +6,7 @@ import App from './App.js'
 import ThreeOperation from './ThreeOperation/ThreeOperation.js'
 import ComponentsTest from './Test/ComponentsTest.js'
 // import DvaTest from './Test/DvaTest.js'
-import SourceCode from './Blog/SourceCode.js'
+import RichTextBoxTest from './Test/RichTextBoxTest.js'
 import notFound from './404.js'
 
 ReactDOM.render(
@@ -15,7 +15,7 @@ ReactDOM.render(
 			<Route path="/ThreeOperation" component={ThreeOperation}/>
 			<Route path="/ComponentsTest" component={ComponentsTest}/>
 			<Route path="/404" component={notFound}/>
-			<Route path="/SourceCode" component={SourceCode}/>
+			<Route path="/RichTextBoxTest" component={RichTextBoxTest}/>
 			<Route path="/" component={App}/>
 		</Switch>
 	</Router>,
