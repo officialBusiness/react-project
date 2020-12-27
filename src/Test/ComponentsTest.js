@@ -16,7 +16,7 @@ const Container = styled.div`
 let t = Debounce({
 	callback: (v)=>{console.log(v)}, 
 	wait: 1000,
-	immediate: true
+	// immediate: true
 })
 function Test() {
 	const [inputValue, setInputValue] = useState(0)
@@ -53,6 +53,7 @@ function Test() {
 					max={10}
 					min={-5}
 					init={0}
+					step={1}
 					unit={'px'}
 					onChange={(value)=>{
 						setInputValue( value )

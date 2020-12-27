@@ -12,13 +12,13 @@ export default class App extends React.Component{
 				<div className={'index-contents'}>
 					<a href={'#404'} className={'index-content cardStyle'}>
 						<div className={'index-content-title'}>
-							小组件
+							基础学习
 						</div>
 						<div className={'index-content-description'}>
 							{/* <span>树</span>
 							<span>下拉菜单</span>
 							<span>数字输入框</span> */}
-							数字输入框、下拉菜单
+							js、css
 						</div>
 					</a>
 					<a href={'#404'} className={'index-content cardStyle'}>
@@ -29,7 +29,7 @@ export default class App extends React.Component{
 							{/* <span>js基础</span>
 								<span>tween</span>
 							<span>jQuery</span> */}
-							js基础、tween、jQuery
+							tween
 						</div>
 					</a>
 					<a href={'#404'} className={'index-content cardStyle'}>

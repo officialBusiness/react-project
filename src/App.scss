@@ -1,5 +1,8 @@
 #index{
+	position: relative;
 	height: 100vh;
+	/*min-height: 400px;*/
+	overflow: hidden;
 	>.index-title{
 		padding-top: 10vh;
 		text-align: center;
@@ -7,7 +10,7 @@
 	}
 	>.index-contents{
 		margin: 10vh 0 0 0;
-		padding-bottom: 80px;
+		padding-bottom: 50px;
 		display: flex;
 		flex-direction: row;
 		justify-content: space-around;
@@ -31,7 +34,7 @@
 		}
 	}
 	>.foot{
-		position: fixed;
+		position: absolute;
 		bottom: 0;
 		flex-wrap: wrap;
 		justify-content: space-around;
@@ -65,10 +68,12 @@
 				flex-direction: column;
 				justify-content: space-around;
 				margin: 0 auto;
+				margin-top: 10px;
 				max-width: 300px;
 				min-width: initial;
 				width: 80vw;
 				height: 20vh;
+				/*min-height: */
 				>.index-content-title{
 				}
 				>.index-content-description{
@@ -87,14 +92,4 @@
 			font-size: 16px;
 		}
 	}
-}
-@media (max-height: 470px) {
-	#index{
-		>.foot{
-			position: initial;
-			>div{
-			}
-		}
-	}
-
 }
