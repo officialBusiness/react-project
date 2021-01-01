@@ -9,15 +9,21 @@ import ComponentsTest from './Test/ComponentsTest.js'
 import RichTextBoxTest from './Test/RichTextBoxTest.js'
 import notFound from './404.js'
 
+// ReactDOM.render(
+// 	<Router>
+// 		<Switch>
+// 			<Route path="/ThreeOperation" component={ThreeOperation}/>
+// 			<Route path="/ComponentsTest" component={ComponentsTest}/>
+// 			<Route path="/404" component={notFound}/>
+// 			<Route path="/RichTextBoxTest" component={RichTextBoxTest}/>
+// 			<Route path="/" component={App}/>
+// 		</Switch>
+// 	</Router>,
+// 	document.getElementById('root')
+// );
+
 ReactDOM.render(
-	<Router>
-		<Switch>
-			<Route path="/ThreeOperation" component={ThreeOperation}/>
-			<Route path="/ComponentsTest" component={ComponentsTest}/>
-			<Route path="/404" component={notFound}/>
-			<Route path="/RichTextBoxTest" component={RichTextBoxTest}/>
-			<Route path="/" component={App}/>
-		</Switch>
-	</Router>,
+	<>
+	</>,
 	document.getElementById('root')
 );

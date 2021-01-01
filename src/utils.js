@@ -148,7 +148,6 @@ export function Debounce( { callback, wait, immediate = false, delayed } ){
 		}
 		
 	}
- 
 }
 
 //节流，固定时间n秒内函数只会执行一次，多次触发无效（提交）
@@ -178,4 +177,25 @@ export function Throttling({ callback, wait, immediate }){
 }
 // 防抖和节流的最大区别就是不断地触发事件是否会将执行的时间延后
 
+// 
+// export function KeyDown(){
+// 	var keyCode = e.keyCode || e.which || e.charCode,
+// 			ctrlKey = e.ctrlKey || e.metaKey
 
+// }
+// window.addEventListener('keydown', keydown)
+
+//js 把字符串保存为txt文件，并下载到本地
+export function exportTxt({
+	filename, str
+}) {
+	var urlObject = window.URL || window.webkitURL || window
+	var export_blob = new Blob([str])
+	var save_link = document.createElementNS("http://www.w3.org/1999/xhtml", "a")
+	save_link.href = urlObject.createObjectURL(export_blob)
+	save_link.download = filename
+
+	var event = document.createEvent("MouseEvents")
+	event.initMouseEvent("click", true, false, window, 0, 0, 0, 0, 0, false, false, false, false, 0, null)
+	save_link.dispatchEvent(event)
+} 
