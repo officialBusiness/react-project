@@ -61,18 +61,18 @@ class TreeLi extends React.Component{
 									height: ulShow ? 0 : height ,
 									opacity: ulShow ? 0 : 1 ,
 								},
-								onStart: (operation, from, to)=>{
+								onStart: ({operation, from, to})=>{
 									if ( ulShow ) {
 										treeUlDom.style.height = height + 'px'
 									}else{
 										treeUlDom.style.display = 'block'
 									}
 								},
-								onUpdate: (operation, from, to, now)=>{
+								onUpdate: ({operation, from, to, now})=>{
 									operation.height = now.height + 'px'
 									operation.opacity = now.opacity
 								},
-								onComplete: (operation, from, to)=>{
+								onComplete: ({operation, from, to})=>{
 									data.show = !ulShow
 									treeUlDom.style.height = null
 									if ( ulShow ) {	//已经完全隐藏
