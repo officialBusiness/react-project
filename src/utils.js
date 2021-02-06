@@ -205,3 +205,7 @@ export function exportTxt({
 	event.initMouseEvent("click", true, false, window, 0, 0, 0, 0, 0, false, false, false, false, 0, null)
 	save_link.dispatchEvent(event)
 } 
+
+export function stringIsColor(str){
+	return /^([0-9a-fA-F]{6}|[0-9a-fA-F]{3})$/.test( str )
+}
