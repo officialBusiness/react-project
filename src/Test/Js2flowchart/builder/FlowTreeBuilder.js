@@ -28,31 +28,7 @@ const buildFlowTree = (astTree, astVisitorConfig) => {
         : { name: 'Root', type: TOKEN_TYPES.PROGRAM, body: treeNodes };
 };
 
-//TODO: seems redundant abstraction, refactor
-export const createFlowTreeModifier = () => {
-    const modifiers = FlowTreeModifier();
-
-    return {
-        setModifier(modifier) {
-            modifiers.addModifier(modifier);
-        },
-
-        registerNewModifier(test, updates) {
-            modifiers.create(test, updates);
-        },
-
-        destructNodeTree(test, newNameFn) {
-            this.setModifier(destructionModifier(test, newNameFn));
-        },
-
-        applyToFlowTree(flowTree) {
-            modifiers.applyTo(flowTree);
-            return flowTree;
-        }
-    };
-};
-
-export default ({ astParser = {}, astVisitor = {} } = {}) => {
+export default function flowTreeBuilder({ astParser = {}, astVisitor = {} } = {}) {
     const astParserConfig = {
         ...astParser
     };
@@ -104,5 +80,29 @@ export default ({ astParser = {}, astVisitor = {} } = {}) => {
         }
     };
 };
+//TODO: seems redundant abstraction, refactor
+export const createFlowTreeModifier = () => {
+    const modifiers = FlowTreeModifier();
+
+    return {
+        setModifier(modifier) {
+            modifiers.addModifier(modifier);
+        },
+
+        registerNewModifier(test, updates) {
+            modifiers.create(test, updates);
+        },
+
+        destructNodeTree(test, newNameFn) {
+            this.setModifier(destructionModifier(test, newNameFn));
+        },
+
+        applyToFlowTree(flowTree) {
+            modifiers.applyTo(flowTree);
+            return flowTree;
+        }
+    };
+};
+
 
 export { DEFINED_MODIFIERS, MODIFIER_PRESETS, ABSTRACTION_LEVELS };

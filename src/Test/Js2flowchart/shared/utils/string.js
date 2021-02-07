@@ -35,25 +35,25 @@ export const splitNameString = (str, maxLineLength, nameSplitterTokensIterator) 
     return [str.slice(0, maxLineLength) + '...'];
     //TODO: fix
 
-    let parts = [],
-        currentPositionIndex = 0,
-        splitter = nameSplitterTokensIterator.getNext();
+    // let parts = [],
+    //     currentPositionIndex = 0,
+    //     splitter = nameSplitterTokensIterator.getNext();
 
-    while (currentPositionIndex < strLength) {
-        const splitterIndex = str.indexOf(splitter, currentPositionIndex);
+    // while (currentPositionIndex < strLength) {
+    //     const splitterIndex = str.indexOf(splitter, currentPositionIndex);
 
-        if (splitterIndex !== -1) {
-            parts.push(str.slice(currentPositionIndex, splitterIndex + splitter.length));
-            currentPositionIndex += splitterIndex + splitter.length;
-        } else {
-            //TODO: try other splitters then
-            //splitter = nameSplitterTokensIterator.getNext(),
-            parts.push(str.slice(currentPositionIndex, str.length));
-            currentPositionIndex = str.length;
-        }
-    }
+    //     if (splitterIndex !== -1) {
+    //         parts.push(str.slice(currentPositionIndex, splitterIndex + splitter.length));
+    //         currentPositionIndex += splitterIndex + splitter.length;
+    //     } else {
+    //         //TODO: try other splitters then
+    //         //splitter = nameSplitterTokensIterator.getNext(),
+    //         parts.push(str.slice(currentPositionIndex, str.length));
+    //         currentPositionIndex = str.length;
+    //     }
+    // }
 
-    return parts;
+    // return parts;
 };
 
 export const getMaxStringLengthFromList = list =>

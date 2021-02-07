@@ -101,8 +101,8 @@ export const buildConnections = (shapesTree, styleTheme) => {
             return connection;
         };
 
-    let latestShape = null,
-        latestParentShape = null;
+    let latestShape = null
+        // latestParentShape = null;
 
     complexTraversal(
         shapesTree,
@@ -119,7 +119,7 @@ export const buildConnections = (shapesTree, styleTheme) => {
             return shape;
         },
         parentShape => {
-            latestParentShape = parentShape;
+            // latestParentShape = parentShape;
             if (parentShape.getNodeType() !== TOKEN_TYPES.LOOP) return;
 
             const { max } = parentShape.getChildBoundaries();

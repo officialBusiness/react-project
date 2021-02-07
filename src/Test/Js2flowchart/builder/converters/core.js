@@ -285,19 +285,19 @@ export const objectPropertyConverter = path => {
     return generate(node).code;
 };
 
-const getFirstCallee = callee => {
-    if (!callee) return callee;
-    if (
-        callee.type === TOKEN_TYPES.MEMBER_EXPRESSION &&
-        callee.object.type === TOKEN_TYPES.CALL_EXPRESSION
-    ) {
-        return getFirstCallee(callee.object);
-    }
+// function getFirstCallee(callee) {
+//     if (!callee) return callee;
+//     if (
+//         callee.type === TOKEN_TYPES.MEMBER_EXPRESSION &&
+//         callee.object.type === TOKEN_TYPES.CALL_EXPRESSION
+//     ) {
+//         return getFirstCallee(callee.object);
+//     }
 
-    return callee;
-};
+//     return callee;
+// }
 
-export const isFunctionType = type => {
+export function isFunctionType(type) {
     return [
         TOKEN_TYPES.FUNCTION_EXPRESSION,
         TOKEN_TYPES.FUNCTION,
@@ -306,7 +306,7 @@ export const isFunctionType = type => {
     ].includes(type);
 };
 
-export const isNodeContainsFunc = node => {
+export function isNodeContainsFunc(node) {
     const functions = [TOKEN_TYPES.ARROW_FUNCTION_EXPRESSION, TOKEN_TYPES.FUNCTION_EXPRESSION];
 
     return node && functions.indexOf(node.type) !== -1;

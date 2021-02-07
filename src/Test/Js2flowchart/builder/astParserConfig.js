@@ -1,4 +1,4 @@
-export default {
+const astParserConfig = {
     sourceType: 'module',
     plugins: [
         'objectRestSpread',
@@ -8,6 +8,8 @@ export default {
         'asyncGenerators',
         'dynamicImport',
         'exportDefaultFrom',
-        'exportNamespaceFrom'
+        'exportNamespaceFrom',
     ]
-};
+}
+
+export default astParserConfig

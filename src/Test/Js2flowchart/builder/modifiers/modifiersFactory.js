@@ -1,14 +1,14 @@
-import { TOKEN_TYPES, TOKEN_KEYS, MODIFIED_TYPES } from '../../shared/constants';
+import { TOKEN_TYPES, MODIFIED_TYPES } from '../../shared/constants';
 
 const extractNodeName = (node, field) => {
-    const name = node.name.split(`.${field}(`)[0];
+    const name = node.name.split(`.${field}(`)[0]
 
     if (name.includes('=')) {
-        return name.split('=');
+        return name.split('=')
     }
 
-    return [name];
-};
+    return [name]
+}
 
 const testNode = (node, field) => node.name.includes(`.${field}(`);
 

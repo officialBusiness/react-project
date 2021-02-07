@@ -105,7 +105,7 @@ export const ShapesTreeEditor = svgObjectsTree => {
     };
 };
 
-export default (customStyleTheme = {}) => {
+export default function SVGRender (customStyleTheme = {}){
     let theme = applyStyleToTheme(getDefaultTheme(), customStyleTheme);
 
     return {

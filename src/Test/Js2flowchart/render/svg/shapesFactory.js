@@ -34,7 +34,7 @@ export const getConnectionConfig = ({ startPoint, endPoint, boundaryPoint, arrow
     const config = {
         linePoints: [],
         arrowPoint: { x: endPoint.x, y: endPoint.y }
-    };
+    }
 
     switch (arrowType) {
         case ARROW_TYPE.RIGHT:
@@ -74,6 +74,8 @@ export const getConnectionConfig = ({ startPoint, endPoint, boundaryPoint, arrow
                 { x: endPoint.x, y: endPoint.y - theme.lineTurnOffset },
                 { x: endPoint.x, y: endPoint.y }
             ];
+            break;
+        default:
             break;
     }
 

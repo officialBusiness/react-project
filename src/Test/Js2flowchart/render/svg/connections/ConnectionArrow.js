@@ -85,4 +85,6 @@ const setupPrintBehaviour = state => ({
 export const ConnectionArrow = state =>
     assignState(state, [setupUpdateBehaviour, setupPrintBehaviour, setupSelectors]);
 
-export default (config, theme) => ConnectionArrow({ config, theme, originalTheme: theme });
+export default function connectionArrow(config, theme){
+   return ConnectionArrow({ config, theme, originalTheme: theme })
+}

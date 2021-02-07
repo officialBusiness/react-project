@@ -42,7 +42,7 @@ const applyModifierUpdates = (tree, modifier) => {
     }
 };
 
-export default () => {
+export default function flowTreeModifier () {
     const modifiersList = [];
 
     return {
