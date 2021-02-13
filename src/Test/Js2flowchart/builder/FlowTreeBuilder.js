@@ -57,8 +57,7 @@ export default function flowTreeBuilder({ astParser = {}, astVisitor = {} } = {}
         },
 
         build(code) {
-            const ast = this.buildAst(code);
-            return this.buildFlowTreeFromAst(ast);
+            return this.buildFlowTreeFromAst( this.buildAst(code) );
         },
 
         buildAst(code) {
@@ -71,6 +70,7 @@ export default function flowTreeBuilder({ astParser = {}, astVisitor = {} } = {}
             try {
                 flowTree = buildFlowTree(ast, astVisitorConfig);
                 defaultModifier.applyToFlowTree(flowTree);
+                // console.log( 'flowTree:', flowTree )
             } catch (e) {
                 logError('Error at buildFlowTreeFromAst' + e.message, e.stack);
                 throw e;

@@ -1,4 +1,6 @@
 import * as babelParser from '@babel/parser';
+// import Parser from './BabelParser.copy.js'
+import Parser from './BabelParserCopy/BabelParserCopy.js'
 import { mergeObjectStructures } from '../shared/utils/composition';
 
 import { TOKEN_KEYS } from '../shared/constants';
@@ -10,7 +12,9 @@ export const parseCodeToAST = (code, config = {}) => {
     let ast = [];
 
     try {
-        ast = babelParser.parse(code, mergeObjectStructures(defaultAstConfig, config));
+        // console.log( 'babelParser.parse:', babelParser.parse )
+        ast = new Parser(mergeObjectStructures(defaultAstConfig, config), code).parse()
+        // ast = babelParser.parse(code, mergeObjectStructures(defaultAstConfig, config));
     } catch (e) {
         logError('Error at parseCodeToAST: ' + e.message, e.loc, e.stack);
         throw e;
