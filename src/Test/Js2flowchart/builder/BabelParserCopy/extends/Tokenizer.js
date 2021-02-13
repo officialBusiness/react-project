@@ -11,7 +11,6 @@ export default class Tokenizer extends ParserError {
     this.tokens.push(token);
     ++this.state.tokensLength;
   }
-
   next() {
     if (!this.isLookahead) {
       this.checkKeywordEscapes();
@@ -27,7 +26,6 @@ export default class Tokenizer extends ParserError {
     this.state.lastTokStartLoc = this.state.startLoc;
     this.nextToken();
   }
-
   eat(type) {
     if (this.match(type)) {
       this.next();
@@ -36,11 +34,9 @@ export default class Tokenizer extends ParserError {
       return false;
     }
   }
-
   match(type) {
     return this.state.type === type;
   }
-
   lookahead() {
     const old = this.state;
     this.state = old.clone(true);
@@ -51,21 +47,17 @@ export default class Tokenizer extends ParserError {
     this.state = old;
     return curr;
   }
-
   nextTokenStart() {
     return this.nextTokenStartSince(this.state.pos);
   }
-
   nextTokenStartSince(pos) {
     skipWhiteSpace.lastIndex = pos;
     const skip = skipWhiteSpace.exec(this.input);
     return pos + skip[0].length;
   }
-
   lookaheadCharCode() {
     return this.input.charCodeAt(this.nextTokenStart());
   }
-
   setStrict(strict) {
     this.state.strict = strict;
 
@@ -74,11 +66,9 @@ export default class Tokenizer extends ParserError {
       this.state.strictErrors.clear();
     }
   }
-
   curContext() {
     return this.state.context[this.state.context.length - 1];
   }
-
   nextToken() {
     const curContext = this.curContext();
     if (!(curContext == null ? void 0 : curContext.preserveSpace)) this.skipSpace();
@@ -98,7 +88,6 @@ export default class Tokenizer extends ParserError {
       this.getTokenFromCode(this.input.codePointAt(this.state.pos));
     }
   }
-
   pushComment(block, text, start, end, startLoc, endLoc) {
     const comment = {
       type: block ? "CommentBlock" : "CommentLine",
@@ -111,7 +100,6 @@ export default class Tokenizer extends ParserError {
     this.state.comments.push(comment);
     this.addComment(comment);
   }
-
   skipBlockComment() {
     const startLoc = this.state.curPosition();
     const start = this.state.pos;
@@ -129,7 +117,6 @@ export default class Tokenizer extends ParserError {
     if (this.isLookahead) return;
     this.pushComment(true, this.input.slice(start + 2, end), start, this.state.pos, startLoc, this.state.curPosition());
   }
-
   skipLineComment(startSkip) {
     const start = this.state.pos;
     const startLoc = this.state.curPosition();
@@ -144,7 +131,6 @@ export default class Tokenizer extends ParserError {
     if (this.isLookahead) return;
     this.pushComment(false, this.input.slice(start + startSkip, this.state.pos), start, this.state.pos, startLoc, this.state.curPosition());
   }
-
   skipSpace() {
     loop: while (this.state.pos < this.length) {
       const ch = this.input.charCodeAt(this.state.pos);
@@ -195,7 +181,6 @@ export default class Tokenizer extends ParserError {
       }
     }
   }
-
   finishToken(type, val) {
     this.state.end = this.state.pos;
     this.state.endLoc = this.state.curPosition();
@@ -204,7 +189,6 @@ export default class Tokenizer extends ParserError {
     this.state.value = val;
     if (!this.isLookahead) this.updateContext(prevType);
   }
-
   readToken_numberSign() {
     if (this.state.pos === 0 && this.readToken_interpreter()) {
       return;
@@ -235,7 +219,6 @@ export default class Tokenizer extends ParserError {
       this.finishOp(types.hash, 1);
     }
   }
-
   readToken_dot() {
     const next = this.input.charCodeAt(this.state.pos + 1);
 
@@ -252,7 +235,6 @@ export default class Tokenizer extends ParserError {
       this.finishToken(types.dot);
     }
   }
-
   readToken_slash() {
     if (this.state.exprAllowed && !this.state.inType) {
       ++this.state.pos;
@@ -268,7 +250,6 @@ export default class Tokenizer extends ParserError {
       this.finishOp(types.slash, 1);
     }
   }
-
   readToken_interpreter() {
     if (this.state.pos !== 0 || this.length < 2) return false;
     let ch = this.input.charCodeAt(this.state.pos + 1);
@@ -284,7 +265,6 @@ export default class Tokenizer extends ParserError {
     this.finishToken(types.interpreterDirective, value);
     return true;
   }
-
   readToken_mult_modulo(code) {
     let type = code === 42 ? types.star : types.modulo;
     let width = 1;
@@ -304,7 +284,6 @@ export default class Tokenizer extends ParserError {
 
     this.finishOp(type, width);
   }
-
   readToken_pipe_amp(code) {
     const next = this.input.charCodeAt(this.state.pos + 1);
 
@@ -350,7 +329,6 @@ export default class Tokenizer extends ParserError {
 
     this.finishOp(code === 124 ? types.bitwiseOR : types.bitwiseAND, 1);
   }
-
   readToken_caret() {
     const next = this.input.charCodeAt(this.state.pos + 1);
 
@@ -360,7 +338,6 @@ export default class Tokenizer extends ParserError {
       this.finishOp(types.bitwiseXOR, 1);
     }
   }
-
   readToken_plus_min(code) {
     const next = this.input.charCodeAt(this.state.pos + 1);
 
@@ -382,7 +359,6 @@ export default class Tokenizer extends ParserError {
       this.finishOp(types.plusMin, 1);
     }
   }
-
   readToken_lt_gt(code) {
     const next = this.input.charCodeAt(this.state.pos + 1);
     let size = 1;
@@ -412,7 +388,6 @@ export default class Tokenizer extends ParserError {
 
     this.finishOp(types.relational, size);
   }
-
   readToken_eq_excl(code) {
     const next = this.input.charCodeAt(this.state.pos + 1);
 
@@ -429,7 +404,6 @@ export default class Tokenizer extends ParserError {
 
     this.finishOp(code === 61 ? types.eq : types.bang, 1);
   }
-
   readToken_question() {
     const next = this.input.charCodeAt(this.state.pos + 1);
     const next2 = this.input.charCodeAt(this.state.pos + 2);
@@ -448,7 +422,6 @@ export default class Tokenizer extends ParserError {
       this.finishToken(types.question);
     }
   }
-
   getTokenFromCode(code) {
     switch (code) {
       case 46:
@@ -631,13 +604,11 @@ export default class Tokenizer extends ParserError {
 
     throw this.raise(this.state.pos, ErrorMessages.InvalidOrUnexpectedToken, String.fromCodePoint(code));
   }
-
   finishOp(type, size) {
     const str = this.input.slice(this.state.pos, this.state.pos + size);
     this.state.pos += size;
     this.finishToken(type, str);
   }
-
   readRegexp() {
     const start = this.state.pos;
     let escaped, inClass;
@@ -697,7 +668,6 @@ export default class Tokenizer extends ParserError {
       flags: mods
     });
   }
-
   readInt(radix, len, forceLen, allowNumSeparator = true) {
     const start = this.state.pos;
     const forbiddenSiblings = radix === 16 ? forbiddenNumericSeparatorSiblings.hex : forbiddenNumericSeparatorSiblings.decBinOct;
@@ -759,7 +729,6 @@ export default class Tokenizer extends ParserError {
 
     return total;
   }
-
   readRadixNumber(radix) {
     const start = this.state.pos;
     let isBigInt = false;
@@ -791,7 +760,6 @@ export default class Tokenizer extends ParserError {
 
     this.finishToken(types.num, val);
   }
-
   readNumber(startsWithDot) {
     const start = this.state.pos;
     let isFloat = false;
@@ -885,7 +853,6 @@ export default class Tokenizer extends ParserError {
     const val = isOctal ? parseInt(str, 8) : parseFloat(str);
     this.finishToken(types.num, val);
   }
-
   readCodePoint(throwOnInvalid) {
     const ch = this.input.charCodeAt(this.state.pos);
     let code;
@@ -908,7 +875,6 @@ export default class Tokenizer extends ParserError {
 
     return code;
   }
-
   readString(quote) {
     let out = "",
         chunkStart = ++this.state.pos;
@@ -939,7 +905,6 @@ export default class Tokenizer extends ParserError {
     out += this.input.slice(chunkStart, this.state.pos++);
     this.finishToken(types.string, out);
   }
-
   readTmplToken() {
     let out = "",
         chunkStart = this.state.pos,
@@ -1008,7 +973,6 @@ export default class Tokenizer extends ParserError {
       }
     }
   }
-
   recordStrictModeErrors(pos, message) {
     if (this.state.strict && !this.state.strictErrors.has(pos)) {
       this.raise(pos, message);
@@ -1016,7 +980,6 @@ export default class Tokenizer extends ParserError {
       this.state.strictErrors.set(pos, message);
     }
   }
-
   readEscapedChar(inTemplate) {
     const throwOnInvalid = !inTemplate;
     const ch = this.input.charCodeAt(++this.state.pos);
@@ -1103,7 +1066,6 @@ export default class Tokenizer extends ParserError {
         return String.fromCharCode(ch);
     }
   }
-
   readHexChar(len, forceLen, throwOnInvalid) {
     const codePos = this.state.pos;
     const n = this.readInt(16, len, forceLen, false);
@@ -1118,7 +1080,6 @@ export default class Tokenizer extends ParserError {
 
     return n;
   }
-
   readWord1() {
     let word = "";
     this.state.containsEsc = false;
@@ -1162,11 +1123,9 @@ export default class Tokenizer extends ParserError {
 
     return word + this.input.slice(chunkStart, this.state.pos);
   }
-
   isIterator(word) {
     return word === "@@iterator" || word === "@@asyncIterator";
   }
-
   readWord() {
     const word = this.readWord1();
     const type = keywords.get(word) || types.name;
@@ -1177,7 +1136,6 @@ export default class Tokenizer extends ParserError {
 
     this.finishToken(type, word);
   }
-
   checkKeywordEscapes() {
     const kw = this.state.type.keyword;
 
@@ -1185,7 +1143,6 @@ export default class Tokenizer extends ParserError {
       this.raise(this.state.start, ErrorMessages.InvalidEscapedReservedWord, kw);
     }
   }
-
   braceIsBlock(prevType) {
     const parent = this.curContext();
 
@@ -1219,7 +1176,6 @@ export default class Tokenizer extends ParserError {
 
     return !this.state.exprAllowed;
   }
-
   updateContext(prevType) {
     const type = this.state.type;
     let update;
@@ -1232,5 +1188,4 @@ export default class Tokenizer extends ParserError {
       this.state.exprAllowed = type.beforeExpr;
     }
   }
-
 }

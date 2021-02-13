@@ -54,6 +54,7 @@ export default class Parser extends StatementParser {
     this.scope.enter(SCOPE_PROGRAM);
     this.prodParam.enter(paramFlags);
     const file = this.startNode();
+    // console.log( 'file:', file )
     const program = this.startNode();
     this.nextToken();
     file.errors = null;

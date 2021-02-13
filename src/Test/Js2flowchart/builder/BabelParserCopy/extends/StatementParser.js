@@ -23,7 +23,6 @@ export default class StatementParser extends ExpressionParser {
     if (this.options.tokens) file.tokens = this.tokens;
     return this.finishNode(file, "File");
   }
-
   stmtToDirective(stmt) {
     const expr = stmt.expression;
     const directiveLiteral = this.startNodeAt(expr.start, expr.loc.start);
@@ -35,7 +34,6 @@ export default class StatementParser extends ExpressionParser {
     directive.value = this.finishNodeAt(directiveLiteral, "DirectiveLiteral", expr.end, expr.loc.end);
     return this.finishNodeAt(directive, "Directive", stmt.end, stmt.loc.end);
   }
-
   parseInterpreterDirective() {
     if (!this.match(types.interpreterDirective)) {
       return null;
@@ -46,7 +44,6 @@ export default class StatementParser extends ExpressionParser {
     this.next();
     return this.finishNode(node, "InterpreterDirective");
   }
-
   isLet(context) {
     if (!this.isContextual("let")) {
       return false;
@@ -71,7 +68,6 @@ export default class StatementParser extends ExpressionParser {
 
     return false;
   }
-
   parseStatement(context, topLevel) {
     if (this.match(types.at)) {
       this.parseDecorators(true);
@@ -79,7 +75,6 @@ export default class StatementParser extends ExpressionParser {
 
     return this.parseStatementContent(context, topLevel);
   }
-
   parseStatementContent(context, topLevel) {
     let starttype = this.state.type;
     const node = this.startNode();
@@ -216,97 +211,90 @@ export default class StatementParser extends ExpressionParser {
       return this.parseExpressionStatement(node, expr);
     }
   }
+  // assertModuleNodeAllowed(node) {
+  //   if (!this.options.allowImportExportEverywhere && !this.inModule) {
+  //     this.raiseWithData(node.start, {
+  //       code: "BABEL_PARSER_SOURCETYPE_MODULE_REQUIRED"
+  //     }, ErrorMessages.ImportOutsideModule);
+  //   }
+  // }
+  // takeDecorators(node) {
+  //   const decorators = this.state.decoratorStack[this.state.decoratorStack.length - 1];
 
-  assertModuleNodeAllowed(node) {
-    if (!this.options.allowImportExportEverywhere && !this.inModule) {
-      this.raiseWithData(node.start, {
-        code: "BABEL_PARSER_SOURCETYPE_MODULE_REQUIRED"
-      }, ErrorMessages.ImportOutsideModule);
-    }
-  }
+  //   if (decorators.length) {
+  //     node.decorators = decorators;
+  //     this.resetStartLocationFromNode(node, decorators[0]);
+  //     this.state.decoratorStack[this.state.decoratorStack.length - 1] = [];
+  //   }
+  // }
+  // canHaveLeadingDecorator() {
+  //   return this.match(types._class);
+  // }
+  // parseDecorators(allowExport) {
+  //   const currentContextDecorators = this.state.decoratorStack[this.state.decoratorStack.length - 1];
 
-  takeDecorators(node) {
-    const decorators = this.state.decoratorStack[this.state.decoratorStack.length - 1];
+  //   while (this.match(types.at)) {
+  //     const decorator = this.parseDecorator();
+  //     currentContextDecorators.push(decorator);
+  //   }
 
-    if (decorators.length) {
-      node.decorators = decorators;
-      this.resetStartLocationFromNode(node, decorators[0]);
-      this.state.decoratorStack[this.state.decoratorStack.length - 1] = [];
-    }
-  }
+  //   if (this.match(types._export)) {
+  //     if (!allowExport) {
+  //       this.unexpected();
+  //     }
 
-  canHaveLeadingDecorator() {
-    return this.match(types._class);
-  }
+  //     if (this.hasPlugin("decorators") && !this.getPluginOption("decorators", "decoratorsBeforeExport")) {
+  //       this.raise(this.state.start, ErrorMessages.DecoratorExportClass);
+  //     }
+  //   } else if (!this.canHaveLeadingDecorator()) {
+  //     throw this.raise(this.state.start, ErrorMessages.UnexpectedLeadingDecorator);
+  //   }
+  // }
+  // parseDecorator() {
+  //   this.expectOnePlugin(["decorators-legacy", "decorators"]);
+  //   const node = this.startNode();
+  //   this.next();
 
-  parseDecorators(allowExport) {
-    const currentContextDecorators = this.state.decoratorStack[this.state.decoratorStack.length - 1];
+  //   if (this.hasPlugin("decorators")) {
+  //     this.state.decoratorStack.push([]);
+  //     const startPos = this.state.start;
+  //     const startLoc = this.state.startLoc;
+  //     let expr;
 
-    while (this.match(types.at)) {
-      const decorator = this.parseDecorator();
-      currentContextDecorators.push(decorator);
-    }
+  //     if (this.eat(types.parenL)) {
+  //       expr = this.parseExpression();
+  //       this.expect(types.parenR);
+  //     } else {
+  //       expr = this.parseIdentifier(false);
 
-    if (this.match(types._export)) {
-      if (!allowExport) {
-        this.unexpected();
-      }
+  //       while (this.eat(types.dot)) {
+  //         const node = this.startNodeAt(startPos, startLoc);
+  //         node.object = expr;
+  //         node.property = this.parseIdentifier(true);
+  //         node.computed = false;
+  //         expr = this.finishNode(node, "MemberExpression");
+  //       }
+  //     }
 
-      if (this.hasPlugin("decorators") && !this.getPluginOption("decorators", "decoratorsBeforeExport")) {
-        this.raise(this.state.start, ErrorMessages.DecoratorExportClass);
-      }
-    } else if (!this.canHaveLeadingDecorator()) {
-      throw this.raise(this.state.start, ErrorMessages.UnexpectedLeadingDecorator);
-    }
-  }
+  //     node.expression = this.parseMaybeDecoratorArguments(expr);
+  //     this.state.decoratorStack.pop();
+  //   } else {
+  //     node.expression = this.parseExprSubscripts();
+  //   }
 
-  parseDecorator() {
-    this.expectOnePlugin(["decorators-legacy", "decorators"]);
-    const node = this.startNode();
-    this.next();
+  //   return this.finishNode(node, "Decorator");
+  // }
+  // parseMaybeDecoratorArguments(expr) {
+  //   if (this.eat(types.parenL)) {
+  //     const node = this.startNodeAtNode(expr);
+  //     node.callee = expr;
+  //     node.arguments = this.parseCallExpressionArguments(types.parenR, false);
+  //     this.toReferencedList(node.arguments);
+  //     return this.finishNode(node, "CallExpression");
+  //   }
 
-    if (this.hasPlugin("decorators")) {
-      this.state.decoratorStack.push([]);
-      const startPos = this.state.start;
-      const startLoc = this.state.startLoc;
-      let expr;
-
-      if (this.eat(types.parenL)) {
-        expr = this.parseExpression();
-        this.expect(types.parenR);
-      } else {
-        expr = this.parseIdentifier(false);
-
-        while (this.eat(types.dot)) {
-          const node = this.startNodeAt(startPos, startLoc);
-          node.object = expr;
-          node.property = this.parseIdentifier(true);
-          node.computed = false;
-          expr = this.finishNode(node, "MemberExpression");
-        }
-      }
-
-      node.expression = this.parseMaybeDecoratorArguments(expr);
-      this.state.decoratorStack.pop();
-    } else {
-      node.expression = this.parseExprSubscripts();
-    }
-
-    return this.finishNode(node, "Decorator");
-  }
-
-  parseMaybeDecoratorArguments(expr) {
-    if (this.eat(types.parenL)) {
-      const node = this.startNodeAtNode(expr);
-      node.callee = expr;
-      node.arguments = this.parseCallExpressionArguments(types.parenR, false);
-      this.toReferencedList(node.arguments);
-      return this.finishNode(node, "CallExpression");
-    }
-
-    return expr;
-  }
-
+  //   return expr;
+  // }
   parseBreakContinueStatement(node, keyword) {
     const isBreak = keyword === "break";
     this.next();
@@ -321,7 +309,6 @@ export default class StatementParser extends ExpressionParser {
     this.verifyBreakContinue(node, keyword);
     return this.finishNode(node, isBreak ? "BreakStatement" : "ContinueStatement");
   }
-
   verifyBreakContinue(node, keyword) {
     const isBreak = keyword === "break";
     let i;
@@ -339,20 +326,17 @@ export default class StatementParser extends ExpressionParser {
       this.raise(node.start, ErrorMessages.IllegalBreakContinue, keyword);
     }
   }
-
   parseDebuggerStatement(node) {
     this.next();
     this.semicolon();
     return this.finishNode(node, "DebuggerStatement");
   }
-
   parseHeaderExpression() {
     this.expect(types.parenL);
     const val = this.parseExpression();
     this.expect(types.parenR);
     return val;
   }
-
   parseDoStatement(node) {
     this.next();
     this.state.labels.push(loopLabel);
@@ -363,7 +347,6 @@ export default class StatementParser extends ExpressionParser {
     this.eat(types.semi);
     return this.finishNode(node, "DoWhileStatement");
   }
-
   parseForStatement(node) {
     this.next();
     this.state.labels.push(loopLabel);
@@ -422,12 +405,10 @@ export default class StatementParser extends ExpressionParser {
 
     return this.parseFor(node, init);
   }
-
   parseFunctionStatement(node, isAsync, declarationPosition) {
     this.next();
     return this.parseFunction(node, FUNC_STATEMENT | (declarationPosition ? 0 : FUNC_HANGING_STATEMENT), isAsync);
   }
-
   parseIfStatement(node) {
     this.next();
     node.test = this.parseHeaderExpression();
@@ -435,7 +416,6 @@ export default class StatementParser extends ExpressionParser {
     node.alternate = this.eat(types._else) ? this.parseStatement("if") : null;
     return this.finishNode(node, "IfStatement");
   }
-
   parseReturnStatement(node) {
     if (!this.prodParam.hasReturn && !this.options.allowReturnOutsideFunction) {
       this.raise(this.state.start, ErrorMessages.IllegalReturn);
@@ -452,7 +432,6 @@ export default class StatementParser extends ExpressionParser {
 
     return this.finishNode(node, "ReturnStatement");
   }
-
   parseSwitchStatement(node) {
     this.next();
     node.discriminant = this.parseHeaderExpression();
@@ -497,7 +476,6 @@ export default class StatementParser extends ExpressionParser {
     this.state.labels.pop();
     return this.finishNode(node, "SwitchStatement");
   }
-
   parseThrowStatement(node) {
     this.next();
 
@@ -509,7 +487,6 @@ export default class StatementParser extends ExpressionParser {
     this.semicolon();
     return this.finishNode(node, "ThrowStatement");
   }
-
   parseCatchClauseParam() {
     const param = this.parseBindingAtom();
     const simple = param.type === "Identifier";
@@ -517,7 +494,6 @@ export default class StatementParser extends ExpressionParser {
     this.checkLVal(param, "catch clause", BIND_LEXICAL);
     return param;
   }
-
   parseTryStatement(node) {
     this.next();
     node.block = this.parseBlock();
@@ -549,14 +525,12 @@ export default class StatementParser extends ExpressionParser {
 
     return this.finishNode(node, "TryStatement");
   }
-
   parseVarStatement(node, kind) {
     this.next();
     this.parseVar(node, false, kind);
     this.semicolon();
     return this.finishNode(node, "VariableDeclaration");
   }
-
   parseWhileStatement(node) {
     this.next();
     node.test = this.parseHeaderExpression();
@@ -565,7 +539,6 @@ export default class StatementParser extends ExpressionParser {
     this.state.labels.pop();
     return this.finishNode(node, "WhileStatement");
   }
-
   parseWithStatement(node) {
     if (this.state.strict) {
       this.raise(this.state.start, ErrorMessages.StrictWith);
@@ -576,12 +549,10 @@ export default class StatementParser extends ExpressionParser {
     node.body = this.withTopicForbiddingContext(() => this.parseStatement("with"));
     return this.finishNode(node, "WithStatement");
   }
-
   parseEmptyStatement(node) {
     this.next();
     return this.finishNode(node, "EmptyStatement");
   }
-
   parseLabeledStatement(node, maybeName, expr, context) {
     for (let _i2 = 0, _this$state$labels = this.state.labels; _i2 < _this$state$labels.length; _i2++) {
       const label = _this$state$labels[_i2];
@@ -614,13 +585,11 @@ export default class StatementParser extends ExpressionParser {
     node.label = expr;
     return this.finishNode(node, "LabeledStatement");
   }
-
   parseExpressionStatement(node, expr) {
     node.expression = expr;
     this.semicolon();
     return this.finishNode(node, "ExpressionStatement");
   }
-
   parseBlock(allowDirectives = false, createNewLexicalScope = true, afterBlockParse) {
     const node = this.startNode();
 
@@ -642,17 +611,14 @@ export default class StatementParser extends ExpressionParser {
 
     return this.finishNode(node, "BlockStatement");
   }
-
   isValidDirective(stmt) {
     return stmt.type === "ExpressionStatement" && stmt.expression.type === "StringLiteral" && !stmt.expression.extra.parenthesized;
   }
-
   parseBlockBody(node, allowDirectives, topLevel, end, afterBlockParse) {
     const body = node.body = [];
     const directives = node.directives = [];
     this.parseBlockOrModuleBlockBody(body, allowDirectives ? directives : undefined, topLevel, end, afterBlockParse);
   }
-
   parseBlockOrModuleBlockBody(body, directives, topLevel, end, afterBlockParse) {
     const oldStrict = this.state.strict;
     let hasStrictModeDirective = false;
@@ -691,7 +657,6 @@ export default class StatementParser extends ExpressionParser {
 
     this.next();
   }
-
   parseFor(node, init) {
     node.init = init;
     this.expect(types.semi);
@@ -704,7 +669,6 @@ export default class StatementParser extends ExpressionParser {
     this.state.labels.pop();
     return this.finishNode(node, "ForStatement");
   }
-
   parseForIn(node, init, awaitAt) {
     const isForIn = this.match(types._in);
     this.next();
@@ -729,7 +693,6 @@ export default class StatementParser extends ExpressionParser {
     this.state.labels.pop();
     return this.finishNode(node, isForIn ? "ForInStatement" : "ForOfStatement");
   }
-
   parseVar(node, isFor, kind) {
     const declarations = node.declarations = [];
     const isTypescript = this.hasPlugin("typescript");
@@ -759,12 +722,10 @@ export default class StatementParser extends ExpressionParser {
 
     return node;
   }
-
   parseVarId(decl, kind) {
     decl.id = this.parseBindingAtom();
     this.checkLVal(decl.id, "variable declaration", kind === "var" ? BIND_VAR : BIND_LEXICAL, undefined, kind !== "var");
   }
-
   parseFunction(node, statement = FUNC_NO_FLAGS, isAsync = false) {
     const isStatement = statement & FUNC_STATEMENT;
     const isHangingStatement = statement & FUNC_HANGING_STATEMENT;
@@ -804,23 +765,19 @@ export default class StatementParser extends ExpressionParser {
     this.state.maybeInArrowParameters = oldMaybeInArrowParameters;
     return node;
   }
-
   parseFunctionId(requireId) {
     return requireId || this.match(types.name) ? this.parseIdentifier() : null;
   }
-
   parseFunctionParams(node, allowModifiers) {
     this.expect(types.parenL);
     this.expressionScope.enter(newParameterDeclarationScope());
     node.params = this.parseBindingList(types.parenR, 41, false, allowModifiers);
     this.expressionScope.exit();
   }
-
   registerFunctionStatementId(node) {
     if (!node.id) return;
     this.scope.declareName(node.id.name, this.state.strict || node.generator || node.async ? this.scope.treatFunctionsAsVar ? BIND_VAR : BIND_LEXICAL : BIND_FUNCTION, node.id.start);
   }
-
   parseClass(node, isStatement, optionalId) {
     this.next();
     this.takeDecorators(node);
@@ -831,19 +788,15 @@ export default class StatementParser extends ExpressionParser {
     node.body = this.parseClassBody(!!node.superClass, oldStrict);
     return this.finishNode(node, isStatement ? "ClassDeclaration" : "ClassExpression");
   }
-
   isClassProperty() {
     return this.match(types.eq) || this.match(types.semi) || this.match(types.braceR);
   }
-
   isClassMethod() {
     return this.match(types.parenL);
   }
-
   isNonstaticConstructor(method) {
     return !method.computed && !method.static && (method.key.name === "constructor" || method.key.value === "constructor");
   }
-
   parseClassBody(constructorAllowsSuper, oldStrict) {
     this.classScope.enter();
     const state = {
@@ -895,7 +848,6 @@ export default class StatementParser extends ExpressionParser {
     this.classScope.exit();
     return this.finishNode(classBody, "ClassBody");
   }
-
   parseClassMemberFromModifier(classBody, member) {
     const key = this.parseIdentifier(true);
 
@@ -918,7 +870,6 @@ export default class StatementParser extends ExpressionParser {
 
     return false;
   }
-
   parseClassMember(classBody, member, state) {
     const isStatic = this.isContextual("static");
 
@@ -935,7 +886,6 @@ export default class StatementParser extends ExpressionParser {
 
     this.parseClassMemberWithIsStatic(classBody, member, state, isStatic);
   }
-
   parseClassMemberWithIsStatic(classBody, member, state, isStatic) {
     const publicMethod = member;
     const privateMethod = member;
@@ -1043,7 +993,6 @@ export default class StatementParser extends ExpressionParser {
       this.unexpected();
     }
   }
-
   parseClassElementName(member) {
     const key = this.parsePropertyName(member, true);
 
@@ -1057,7 +1006,6 @@ export default class StatementParser extends ExpressionParser {
 
     return key;
   }
-
   parseClassStaticBlock(classBody, member, state) {
     var _member$decorators;
 
@@ -1085,7 +1033,6 @@ export default class StatementParser extends ExpressionParser {
 
     state.hadStaticBlock = true;
   }
-
   pushClassProperty(classBody, prop) {
     if (!prop.computed && (prop.key.name === "constructor" || prop.key.value === "constructor")) {
       this.raise(prop.key.start, ErrorMessages.ConstructorClassField);
@@ -1093,18 +1040,15 @@ export default class StatementParser extends ExpressionParser {
 
     classBody.body.push(this.parseClassProperty(prop));
   }
-
   pushClassPrivateProperty(classBody, prop) {
     this.expectPlugin("classPrivateProperties", prop.key.start);
     const node = this.parseClassPrivateProperty(prop);
     classBody.body.push(node);
     this.classScope.declarePrivateName(this.getPrivateNameSV(node.key), CLASS_ELEMENT_OTHER, node.key.start);
   }
-
   pushClassMethod(classBody, method, isGenerator, isAsync, isConstructor, allowsDirectSuper) {
     classBody.body.push(this.parseMethod(method, isGenerator, isAsync, isConstructor, allowsDirectSuper, "ClassMethod", true));
   }
-
   pushClassPrivateMethod(classBody, method, isGenerator, isAsync) {
     this.expectPlugin("classPrivateMethods", method.key.start);
     const node = this.parseMethod(method, isGenerator, isAsync, false, false, "ClassPrivateMethod", true);
@@ -1112,15 +1056,12 @@ export default class StatementParser extends ExpressionParser {
     const kind = node.kind === "get" ? node.static ? CLASS_ELEMENT_STATIC_GETTER : CLASS_ELEMENT_INSTANCE_GETTER : node.kind === "set" ? node.static ? CLASS_ELEMENT_STATIC_SETTER : CLASS_ELEMENT_INSTANCE_SETTER : CLASS_ELEMENT_OTHER;
     this.classScope.declarePrivateName(this.getPrivateNameSV(node.key), kind, node.key.start);
   }
-
   parsePostMemberNameModifiers(methodOrProp) {}
-
   parseClassPrivateProperty(node) {
     this.parseInitializer(node);
     this.semicolon();
     return this.finishNode(node, "ClassPrivateProperty");
   }
-
   parseClassProperty(node) {
     if (!node.typeAnnotation || this.match(types.eq)) {
       this.expectPlugin("classProperties");
@@ -1130,7 +1071,6 @@ export default class StatementParser extends ExpressionParser {
     this.semicolon();
     return this.finishNode(node, "ClassProperty");
   }
-
   parseInitializer(node) {
     this.scope.enter(SCOPE_CLASS | SCOPE_SUPER);
     this.expressionScope.enter(newExpressionScope());
@@ -1140,7 +1080,6 @@ export default class StatementParser extends ExpressionParser {
     this.prodParam.exit();
     this.scope.exit();
   }
-
   parseClassId(node, isStatement, optionalId, bindingType = BIND_CLASS) {
     if (this.match(types.name)) {
       node.id = this.parseIdentifier();
@@ -1156,11 +1095,9 @@ export default class StatementParser extends ExpressionParser {
       }
     }
   }
-
   parseClassSuper(node) {
     node.superClass = this.eat(types._extends) ? this.parseExprSubscripts() : null;
   }
-
   parseExport(node) {
     const hasDefault = this.maybeParseExportDefaultSpecifier(node);
     const parseAfterDefault = !hasDefault || this.eat(types.comma);
@@ -1203,11 +1140,9 @@ export default class StatementParser extends ExpressionParser {
 
     throw this.unexpected(null, types.braceL);
   }
-
   eatExportStar(node) {
     return this.eat(types.star);
   }
-
   maybeParseExportDefaultSpecifier(node) {
     if (this.isExportDefaultSpecifier()) {
       this.expectPlugin("exportDefaultFrom");
@@ -1219,7 +1154,6 @@ export default class StatementParser extends ExpressionParser {
 
     return false;
   }
-
   maybeParseExportNamespaceSpecifier(node) {
     if (this.isContextual("as")) {
       if (!node.specifiers) node.specifiers = [];
@@ -1232,7 +1166,6 @@ export default class StatementParser extends ExpressionParser {
 
     return false;
   }
-
   maybeParseExportNamedSpecifiers(node) {
     if (this.match(types.braceL)) {
       if (!node.specifiers) node.specifiers = [];
@@ -1244,7 +1177,6 @@ export default class StatementParser extends ExpressionParser {
 
     return false;
   }
-
   maybeParseExportDeclaration(node) {
     if (this.shouldParseExportDeclaration()) {
       node.specifiers = [];
@@ -1255,13 +1187,11 @@ export default class StatementParser extends ExpressionParser {
 
     return false;
   }
-
   isAsyncFunction() {
     if (!this.isContextual("async")) return false;
     const next = this.nextTokenStart();
     return !lineBreak.test(this.input.slice(this.state.pos, next)) && this.isUnparsedContextual(next, "function");
   }
-
   parseExportDefaultExpression() {
     const expr = this.startNode();
     const isAsync = this.isAsyncFunction();
@@ -1291,11 +1221,9 @@ export default class StatementParser extends ExpressionParser {
       return res;
     }
   }
-
   parseExportDeclaration(node) {
     return this.parseStatement(null);
   }
-
   isExportDefaultSpecifier() {
     if (this.match(types.name)) {
       const value = this.state.value;
@@ -1330,7 +1258,6 @@ export default class StatementParser extends ExpressionParser {
 
     return false;
   }
-
   parseExportFrom(node, expect) {
     if (this.eatContextual("from")) {
       node.source = this.parseImportSource();
@@ -1350,7 +1277,6 @@ export default class StatementParser extends ExpressionParser {
 
     this.semicolon();
   }
-
   shouldParseExportDeclaration() {
     if (this.match(types.at)) {
       this.expectOnePlugin(["decorators", "decorators-legacy"]);
@@ -1366,7 +1292,6 @@ export default class StatementParser extends ExpressionParser {
 
     return this.state.type.keyword === "var" || this.state.type.keyword === "const" || this.state.type.keyword === "function" || this.state.type.keyword === "class" || this.isLet() || this.isAsyncFunction();
   }
-
   checkExport(node, checkNames, isDefault, isFrom) {
     if (checkNames) {
       if (isDefault) {
@@ -1423,7 +1348,6 @@ export default class StatementParser extends ExpressionParser {
       throw this.raise(node.start, ErrorMessages.UnsupportedDecoratorExport);
     }
   }
-
   checkDeclaration(node) {
     if (node.type === "Identifier") {
       this.checkDuplicateExports(node, node.name);
@@ -1448,7 +1372,6 @@ export default class StatementParser extends ExpressionParser {
       this.checkDeclaration(node.left);
     }
   }
-
   checkDuplicateExports(node, name) {
     if (this.state.exportedIdentifiers.indexOf(name) > -1) {
       this.raise(node.start, name === "default" ? ErrorMessages.DuplicateDefaultExport : ErrorMessages.DuplicateExport, name);
@@ -1456,7 +1379,6 @@ export default class StatementParser extends ExpressionParser {
 
     this.state.exportedIdentifiers.push(name);
   }
-
   parseExportSpecifiers() {
     const nodes = [];
     let first = true;
@@ -1478,7 +1400,6 @@ export default class StatementParser extends ExpressionParser {
 
     return nodes;
   }
-
   parseModuleExportName() {
     if (this.match(types.string)) {
       this.expectPlugin("moduleStringNames");
@@ -1494,7 +1415,6 @@ export default class StatementParser extends ExpressionParser {
 
     return this.parseIdentifier(true);
   }
-
   parseImport(node) {
     node.specifiers = [];
 
@@ -1522,22 +1442,18 @@ export default class StatementParser extends ExpressionParser {
     this.semicolon();
     return this.finishNode(node, "ImportDeclaration");
   }
-
   parseImportSource() {
     if (!this.match(types.string)) this.unexpected();
     return this.parseExprAtom();
   }
-
   shouldParseDefaultImport(node) {
     return this.match(types.name);
   }
-
   parseImportSpecifierLocal(node, specifier, type, contextDescription) {
     specifier.local = this.parseIdentifier();
     this.checkLVal(specifier.local, contextDescription, BIND_LEXICAL);
     node.specifiers.push(this.finishNode(specifier, type));
   }
-
   parseAssertEntries() {
     const attrs = [];
     const attrNames = new Set();
@@ -1579,7 +1495,6 @@ export default class StatementParser extends ExpressionParser {
 
     return attrs;
   }
-
   maybeParseModuleAttributes() {
     if (this.match(types._with) && !this.hasPrecedingLineBreak()) {
       this.expectPlugin("moduleAttributes");
@@ -1618,7 +1533,6 @@ export default class StatementParser extends ExpressionParser {
 
     return attrs;
   }
-
   maybeParseImportAssertions() {
     if (this.isContextual("assert") && !this.hasPrecedingLineBreak()) {
       this.expectPlugin("importAssertions");
@@ -1633,7 +1547,6 @@ export default class StatementParser extends ExpressionParser {
     this.eat(types.braceR);
     return attrs;
   }
-
   maybeParseDefaultImportSpecifier(node) {
     if (this.shouldParseDefaultImport(node)) {
       this.parseImportSpecifierLocal(node, this.startNode(), "ImportDefaultSpecifier", "default import specifier");
@@ -1642,7 +1555,6 @@ export default class StatementParser extends ExpressionParser {
 
     return false;
   }
-
   maybeParseStarImportSpecifier(node) {
     if (this.match(types.star)) {
       const specifier = this.startNode();
@@ -1654,7 +1566,6 @@ export default class StatementParser extends ExpressionParser {
 
     return false;
   }
-
   parseNamedImportSpecifiers(node) {
     let first = true;
     this.expect(types.braceL);
@@ -1674,7 +1585,6 @@ export default class StatementParser extends ExpressionParser {
       this.parseImportSpecifier(node);
     }
   }
-
   parseImportSpecifier(node) {
     const specifier = this.startNode();
     specifier.imported = this.parseModuleExportName();
