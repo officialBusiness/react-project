@@ -89,18 +89,6 @@ export function isInAstralSet(code, set) {
 
   return false;
 }
-export function isIdentifierStart(code) {
-  if (code < 65) return code === 36;
-  if (code <= 90) return true;
-  if (code < 97) return code === 95;
-  if (code <= 122) return true;
-
-  if (code <= 0xffff) {
-    return code >= 0xaa && nonASCIIidentifierStart.test(String.fromCharCode(code));
-  }
-
-  return isInAstralSet(code, astralIdentifierStartCodes);
-}
 export function isIdentifierChar(code) {
   if (code < 48) return code === 36;
   if (code < 58) return true;

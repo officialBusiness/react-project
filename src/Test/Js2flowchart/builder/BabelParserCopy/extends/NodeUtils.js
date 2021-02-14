@@ -4,6 +4,8 @@ import Node from '../Node.js'
 export default class NodeUtils extends UtilParser {
   startNode() {
     // console.log( 'this.state:', this.state )
+    // console.log( 'this.state.start:', this.state.start )
+    // console.log( 'this.state.startLoc:', this.state.startLoc )
     return new Node(this, this.state.start, this.state.startLoc);
   }
   startNodeAt(pos, loc) {

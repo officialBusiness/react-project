@@ -35,7 +35,7 @@ export default class ExpressionParser extends LValParser {
     if (refExpressionErrors) {
       ownExpressionErrors = false;
     } else {
-      refExpressionErrors = new ExpressionErrors();
+      // refExpressionErrors = new ExpressionErrors();
       ownExpressionErrors = true;
     }
 
@@ -431,56 +431,6 @@ export default class ExpressionParser extends LValParser {
             throw this.raise(callee.start, ErrorMessages.UnsupportedBind);
           }
         }
-
-      case types.hash:
-        {
-          if (this.state.inPipeline) {
-            node = this.startNode();
-
-            if (this.getPluginOption("pipelineOperator", "proposal") !== "smart") {
-              this.raise(node.start, ErrorMessages.PrimaryTopicRequiresSmartPipeline);
-            }
-
-            this.next();
-
-            if (!this.primaryTopicReferenceIsAllowedInCurrentTopicContext()) {
-              this.raise(node.start, ErrorMessages.PrimaryTopicNotAllowed);
-            }
-
-            this.registerTopicReference();
-            return this.finishNode(node, "PipelinePrimaryTopicReference");
-          }
-
-          const nextCh = this.input.codePointAt(this.state.end);
-
-          if (isIdentifierStart(nextCh) || nextCh === 92) {
-            const start = this.state.start;
-            node = this.parseMaybePrivateName(true);
-
-            if (this.match(types._in)) {
-              this.expectPlugin("privateIn");
-              this.classScope.usePrivateName(node.id.name, node.start);
-            } else if (this.hasPlugin("privateIn")) {
-              this.raise(this.state.start, ErrorMessages.PrivateInExpectedIn, node.id.name);
-            } else {
-              throw this.unexpected(start);
-            }
-
-            return node;
-          }
-        }
-
-      case types.relational:
-        {
-          if (this.state.value === "<") {
-            const lookaheadCh = this.input.codePointAt(this.nextTokenStart());
-
-            if (isIdentifierStart(lookaheadCh) || lookaheadCh === 62) {
-                this.expectOnePlugin(["jsx", "flow", "typescript"]);
-              }
-          }
-        }
-
       default:
         throw this.unexpected();
     }
@@ -492,7 +442,7 @@ export default class ExpressionParser extends LValParser {
     this.addExtra(node, "rawValue", value);
     this.addExtra(node, "raw", this.input.slice(startPos, this.state.end));
     node.value = value;
-    this.next();
+    this.nextToken();
     return this.finishNode(node, type);
   }
   parseIdentifier(liberal) {
@@ -531,7 +481,7 @@ export default class ExpressionParser extends LValParser {
       this.checkReservedWord(name, start, !!type.keyword, false);
     }
 
-    this.next();
+    this.nextToken();
     return name;
   }
   checkReservedWord(word, startLoc, checkKeywords, isBinding) {

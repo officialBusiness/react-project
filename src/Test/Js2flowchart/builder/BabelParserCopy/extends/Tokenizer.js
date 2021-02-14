@@ -1,28 +1,26 @@
 import CommentsParser from './CommentsParser.js'
 import types from '../types.js'
 import types$1 from '../types$1.js'
-import { Token, _isDigit, forbiddenNumericSeparatorSiblings, VALID_REGEX_FLAGS, lineBreak, allowedNumericSeparatorSiblings, keywords, isIdentifierChar, isIdentifierStart, isWhitespace, skipWhiteSpace , SourceLocation, lineBreakG, isNewLine } from '../Parameter.js'
+import { isInAstralSet, astralIdentifierStartCodes, Token, _isDigit, forbiddenNumericSeparatorSiblings, VALID_REGEX_FLAGS, lineBreak,nonASCIIidentifierStart, allowedNumericSeparatorSiblings, keywords, isIdentifierChar, isWhitespace, skipWhiteSpace , SourceLocation, lineBreakG, isNewLine } from '../Parameter.js'
 import ErrorMessages from '../ErrorMessages.js'
 
-export default class Tokenizer  extends CommentsParser{
-  next() {
-    if (!this.isLookahead) {
-      this.checkKeywordEscapes();
-
-      if (this.options.tokens) {
-        this.pushToken(new Token(this.state));
-      }
-    }
-
-    this.state.lastTokEnd = this.state.end;
-    this.state.lastTokStart = this.state.start;
-    this.state.lastTokEndLoc = this.state.endLoc;
-    this.state.lastTokStartLoc = this.state.startLoc;
-    this.nextToken();
+function isIdentifierStart(code) {
+  if (code < 65) return code === 36;
+  if (code <= 90) return true;
+  if (code < 97) return code === 95;
+  if (code <= 122) return true;
+  if (code <= 0xffff) {
+    return code >= 0xaa && nonASCIIidentifierStart.test(String.fromCharCode(code));
   }
+  return isInAstralSet(code, astralIdentifierStartCodes);
+}
+export default class Tokenizer  extends CommentsParser{
+  // next() {
+  //   this.nextToken();
+  // }
   eat(type) {
     if (this.match(type)) {
-      this.next();
+      this.nextToken();
       return true;
     } else {
       return false;
@@ -32,46 +30,42 @@ export default class Tokenizer  extends CommentsParser{
     return this.state.type === type;
   }
   curContext() {
-    console.log()
     return this.state.context[this.state.context.length - 1];
   }
   nextToken() {
     const curContext = this.curContext();
-    if (!(curContext == null ? void 0 : curContext.preserveSpace)) this.skipSpace();
+    if (!(curContext == null ? void 0 : curContext.preserveSpace)){
+      this.skipSpace();
+    }
     this.state.start = this.state.pos;
     this.state.startLoc = this.state.curPosition();
-
     if (this.state.pos >= this.length) {
       this.finishToken(types.eof);
       return;
     }
-
     const override = curContext == null ? void 0 : curContext.override;
 
     if (override) {
-      // console.log( 'if' )
-      // override(this);
     } else {
-      // console.log( 'else' )
       this.getTokenFromCode(this.input.codePointAt(this.state.pos));
     }
   }
   skipSpace() {
     loop: while (this.state.pos < this.length) {
+      // console.log( 'this.state.pos:', this.state.pos )
       const ch = this.input.charCodeAt(this.state.pos);
-
+      // console.log( 'ch:', ch )
+      // console.log( this.input[this.state.pos] )
       switch (ch) {
         case 32:
         case 160:
         case 9:
           ++this.state.pos;
           break;
-
         case 13:
           if (this.input.charCodeAt(this.state.pos + 1) === 10) {
             ++this.state.pos;
           }
-
         case 10:
         case 8232:
         case 8233:
@@ -79,30 +73,24 @@ export default class Tokenizer  extends CommentsParser{
           ++this.state.curLine;
           this.state.lineStart = this.state.pos;
           break;
-
         case 47:
           switch (this.input.charCodeAt(this.state.pos + 1)) {
             case 42:
               this.skipBlockComment();
               break;
-
             case 47:
               this.skipLineComment(2);
               break;
-
             default:
               break loop;
           }
-
           break;
-
         default:
           if (isWhitespace(ch)) {
             ++this.state.pos;
           } else {
             break loop;
           }
-
       }
     }
   }
@@ -112,11 +100,14 @@ export default class Tokenizer  extends CommentsParser{
     const prevType = this.state.type;
     this.state.type = type;
     this.state.value = val;
-    if (!this.isLookahead) this.updateContext(prevType);
+    if (!this.isLookahead) {
+      this.updateContext(prevType)
+    }
   }
   readToken_eq_excl(code) {
     const next = this.input.charCodeAt(this.state.pos + 1);
-
+    // console.log( 'next:', next )
+    // console.log( this.input[this.state.pos] )
     if (next === 61) {
       this.finishOp(types.equality, this.input.charCodeAt(this.state.pos + 2) === 61 ? 3 : 2);
       return;
@@ -131,110 +122,31 @@ export default class Tokenizer  extends CommentsParser{
     this.finishOp(code === 61 ? types.eq : types.bang, 1);
   }
   getTokenFromCode(code) {
+    // console.log( 'code:', code )
     switch (code) {
-      case 46:
-        this.readToken_dot();
-        return;
-
-      case 40:
-        ++this.state.pos;
-        this.finishToken(types.parenL);
-        return;
-
-      case 41:
-        ++this.state.pos;
-        this.finishToken(types.parenR);
-        return;
-
-      case 59:
-        ++this.state.pos;
-        this.finishToken(types.semi);
-        return;
-
       case 44:
         ++this.state.pos;
         this.finishToken(types.comma);
         return;
-
       case 91:
         if (this.hasPlugin("recordAndTuple") && this.input.charCodeAt(this.state.pos + 1) === 124) {
           if (this.getPluginOption("recordAndTuple", "syntaxType") !== "bar") {
             throw this.raise(this.state.pos, ErrorMessages.TupleExpressionBarIncorrectStartSyntaxType);
           }
-
           this.finishToken(types.bracketBarL);
           this.state.pos += 2;
         } else {
           ++this.state.pos;
           this.finishToken(types.bracketL);
         }
-
         return;
-
-      case 93:
-        ++this.state.pos;
-        this.finishToken(types.bracketR);
-        return;
-
-      case 123:
-        if (this.hasPlugin("recordAndTuple") && this.input.charCodeAt(this.state.pos + 1) === 124) {
-          if (this.getPluginOption("recordAndTuple", "syntaxType") !== "bar") {
-            throw this.raise(this.state.pos, ErrorMessages.RecordExpressionBarIncorrectStartSyntaxType);
-          }
-
-          this.finishToken(types.braceBarL);
-          this.state.pos += 2;
-        } else {
-          ++this.state.pos;
-          this.finishToken(types.braceL);
-        }
-
-        return;
-
-      case 125:
-        ++this.state.pos;
-        this.finishToken(types.braceR);
-        return;
-
-      case 58:
-        if (this.hasPlugin("functionBind") && this.input.charCodeAt(this.state.pos + 1) === 58) {
-          this.finishOp(types.doubleColon, 2);
-        } else {
-          ++this.state.pos;
-          this.finishToken(types.colon);
-        }
-
-        return;
-
       case 63:
         this.readToken_question();
         return;
-
       case 96:
         ++this.state.pos;
         this.finishToken(types.backQuote);
         return;
-
-      case 48:
-        {
-          const next = this.input.charCodeAt(this.state.pos + 1);
-
-          if (next === 120 || next === 88) {
-            this.readRadixNumber(16);
-            return;
-          }
-
-          if (next === 111 || next === 79) {
-            this.readRadixNumber(8);
-            return;
-          }
-
-          if (next === 98 || next === 66) {
-            this.readRadixNumber(2);
-            return;
-          }
-        }
-
       case 49:
       case 50:
       case 51:
@@ -246,62 +158,31 @@ export default class Tokenizer  extends CommentsParser{
       case 57:
         this.readNumber(false);
         return;
-
-      case 34:
-      case 39:
-        this.readString(code);
-        return;
-
-      case 47:
-        this.readToken_slash();
-        return;
-
-      case 37:
-      case 42:
-        this.readToken_mult_modulo(code);
-        return;
-
-      case 124:
-      case 38:
-        this.readToken_pipe_amp(code);
-        return;
-
-      case 94:
-        this.readToken_caret();
-        return;
-
       case 43:
       case 45:
         this.readToken_plus_min(code);
         return;
-
       case 60:
       case 62:
         this.readToken_lt_gt(code);
         return;
-
       case 61:
       case 33:
         this.readToken_eq_excl(code);
         return;
-
       case 126:
         this.finishOp(types.tilde, 1);
         return;
-
       case 64:
         ++this.state.pos;
         this.finishToken(types.at);
         return;
-
       case 35:
         this.readToken_numberSign();
         return;
-
       case 92:
         this.readWord();
         return;
-
       default:
         if (isIdentifierStart(code)) {
           this.readWord();

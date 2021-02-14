@@ -1152,7 +1152,6 @@ const code10 = `
 
         return format(name);
     }
-
     class Animal {
         constructor(breed) {
             this.breed = breed;
@@ -1176,11 +1175,11 @@ const code10 = `
             console.log('name', this.name);
        }
     }
-
     export default Man;
 `;
 const testCode = `
-	var a = 1
+	var a = 1,
+			b = 2
 `
 
 export default class JsCodeToSvgFlowchart extends React.Component{
