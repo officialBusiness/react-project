@@ -2,7 +2,7 @@ import CommentsParser from './CommentsParser.js'
 import types from '../types.js'
 import types$1 from '../types$1.js'
 import { isInAstralSet, astralIdentifierStartCodes, Token, _isDigit, forbiddenNumericSeparatorSiblings, VALID_REGEX_FLAGS, lineBreak,nonASCIIidentifierStart, allowedNumericSeparatorSiblings, keywords, isIdentifierChar, isWhitespace, skipWhiteSpace , SourceLocation, lineBreakG, isNewLine } from '../Parameter.js'
-import ErrorMessages from '../ErrorMessages.js'
+// import ErrorMessages from '../ErrorMessages.js'
 
 function isIdentifierStart(code) {
   if (code < 65) return code === 36;
@@ -131,7 +131,7 @@ export default class Tokenizer  extends CommentsParser{
       case 91:
         if (this.hasPlugin("recordAndTuple") && this.input.charCodeAt(this.state.pos + 1) === 124) {
           if (this.getPluginOption("recordAndTuple", "syntaxType") !== "bar") {
-            throw this.raise(this.state.pos, ErrorMessages.TupleExpressionBarIncorrectStartSyntaxType);
+            // throw this.raise(this.state.pos, ErrorMessages.TupleExpressionBarIncorrectStartSyntaxType);
           }
           this.finishToken(types.bracketBarL);
           this.state.pos += 2;
@@ -191,7 +191,7 @@ export default class Tokenizer  extends CommentsParser{
 
     }
 
-    throw this.raise(this.state.pos, ErrorMessages.InvalidOrUnexpectedToken, String.fromCodePoint(code));
+    // throw this.raise(this.state.pos, ErrorMessages.InvalidOrUnexpectedToken, String.fromCodePoint(code));
   }
   finishOp(type, size) {
     const str = this.input.slice(this.state.pos, this.state.pos + size);
@@ -214,13 +214,13 @@ export default class Tokenizer  extends CommentsParser{
         const next = this.input.charCodeAt(this.state.pos + 1);
 
         if (allowedSiblings.indexOf(next) === -1) {
-          this.raise(this.state.pos, ErrorMessages.UnexpectedNumericSeparator);
+          // this.raise(this.state.pos, ErrorMessages.UnexpectedNumericSeparator);
         } else if (forbiddenSiblings.indexOf(prev) > -1 || forbiddenSiblings.indexOf(next) > -1 || Number.isNaN(next)) {
-          this.raise(this.state.pos, ErrorMessages.UnexpectedNumericSeparator);
+          // this.raise(this.state.pos, ErrorMessages.UnexpectedNumericSeparator);
         }
 
         if (!allowNumSeparator) {
-          this.raise(this.state.pos, ErrorMessages.NumericSeparatorInEscapeSequence);
+          // this.raise(this.state.pos, ErrorMessages.NumericSeparatorInEscapeSequence);
         }
 
         ++this.state.pos;
@@ -240,7 +240,7 @@ export default class Tokenizer  extends CommentsParser{
       if (val >= radix) {
         if (this.options.errorRecovery && val <= 9) {
           val = 0;
-          this.raise(this.state.start + i + 2, ErrorMessages.InvalidDigit, radix);
+          // this.raise(this.state.start + i + 2, ErrorMessages.InvalidDigit, radix);
         } else if (forceLen) {
           val = 0;
           invalid = true;
@@ -268,20 +268,20 @@ export default class Tokenizer  extends CommentsParser{
     let isOctal = false;
 
     if (!startsWithDot && this.readInt(10) === null) {
-      this.raise(start, ErrorMessages.InvalidNumber);
+      // this.raise(start, ErrorMessages.InvalidNumber);
     }
 
     const hasLeadingZero = this.state.pos - start >= 2 && this.input.charCodeAt(start) === 48;
 
     if (hasLeadingZero) {
       const integer = this.input.slice(start, this.state.pos);
-      this.recordStrictModeErrors(start, ErrorMessages.StrictOctalLiteral);
+      // this.recordStrictModeErrors(start, ErrorMessages.StrictOctalLiteral);
 
       if (!this.state.strict) {
         const underscorePos = integer.indexOf("_");
 
         if (underscorePos > 0) {
-          this.raise(underscorePos + start, ErrorMessages.ZeroDigitNumericSeparator);
+          // this.raise(underscorePos + start, ErrorMessages.ZeroDigitNumericSeparator);
         }
       }
 
@@ -305,7 +305,7 @@ export default class Tokenizer  extends CommentsParser{
       }
 
       if (this.readInt(10) === null) {
-        this.raise(start, ErrorMessages.InvalidOrMissingExponent);
+        // this.raise(start, ErrorMessages.InvalidOrMissingExponent);
       }
 
       isFloat = true;
@@ -315,7 +315,7 @@ export default class Tokenizer  extends CommentsParser{
 
     if (next === 110) {
       if (isFloat || hasLeadingZero) {
-        this.raise(start, ErrorMessages.InvalidBigIntLiteral);
+        // this.raise(start, ErrorMessages.InvalidBigIntLiteral);
       }
 
       ++this.state.pos;
@@ -326,7 +326,7 @@ export default class Tokenizer  extends CommentsParser{
       this.expectPlugin("decimal", this.state.pos);
 
       if (hasExponent || hasLeadingZero) {
-        this.raise(start, ErrorMessages.InvalidDecimal);
+        // this.raise(start, ErrorMessages.InvalidDecimal);
       }
 
       ++this.state.pos;
@@ -334,7 +334,7 @@ export default class Tokenizer  extends CommentsParser{
     }
 
     if (isIdentifierStart(this.input.codePointAt(this.state.pos))) {
-      throw this.raise(this.state.pos, ErrorMessages.NumberIdentifier);
+      // throw this.raise(this.state.pos, ErrorMessages.NumberIdentifier);
     }
 
     const str = this.input.slice(start, this.state.pos).replace(/[_mn]/g, "");
@@ -372,7 +372,7 @@ export default class Tokenizer  extends CommentsParser{
         const identifierCheck = this.state.pos === start ? isIdentifierStart : isIdentifierChar;
 
         if (this.input.charCodeAt(++this.state.pos) !== 117) {
-          this.raise(this.state.pos, ErrorMessages.MissingUnicodeEscape);
+          // this.raise(this.state.pos, ErrorMessages.MissingUnicodeEscape);
           continue;
         }
 
@@ -381,7 +381,7 @@ export default class Tokenizer  extends CommentsParser{
 
         if (esc !== null) {
           if (!identifierCheck(esc)) {
-            this.raise(escStart, ErrorMessages.EscapedCharNotAnIdentifier);
+            // this.raise(escStart, ErrorMessages.EscapedCharNotAnIdentifier);
           }
 
           word += String.fromCodePoint(esc);
@@ -400,7 +400,7 @@ export default class Tokenizer  extends CommentsParser{
     const type = keywords.get(word) || types.name;
 
     if (this.state.isIterator && (!this.isIterator(word) || !this.state.inType)) {
-      this.raise(this.state.pos, ErrorMessages.InvalidIdentifier, word);
+      // this.raise(this.state.pos, ErrorMessages.InvalidIdentifier, word);
     }
 
     this.finishToken(type, word);
@@ -409,7 +409,7 @@ export default class Tokenizer  extends CommentsParser{
     const kw = this.state.type.keyword;
 
     if (kw && this.state.containsEsc) {
-      this.raise(this.state.start, ErrorMessages.InvalidEscapedReservedWord, kw);
+      // this.raise(this.state.start, ErrorMessages.InvalidEscapedReservedWord, kw);
     }
   }
   updateContext(prevType) {

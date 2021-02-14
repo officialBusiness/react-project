@@ -1,6 +1,6 @@
 import Tokenizer from './Tokenizer.js'
 import types from '../types.js'
-import ErrorMessages from '../ErrorMessages.js'
+// import ErrorMessages from '../ErrorMessages.js'
 import { isIdentifierChar, lineBreak } from '../Parameter.js'
 
 
@@ -35,7 +35,7 @@ export default class UtilParser extends Tokenizer {
     }
 
     if (doubleProto >= 0) {
-      this.raise(doubleProto, ErrorMessages.DuplicateProto);
+      // this.raise(doubleProto, ErrorMessages.DuplicateProto);
     }
   }
 }

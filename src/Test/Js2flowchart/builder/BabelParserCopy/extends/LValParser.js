@@ -1,6 +1,6 @@
 import NodeUtils from './NodeUtils.js'
 import { unwrapParenthesizedExpression, BIND_NONE, isStrictBindReservedWord, isStrictBindOnlyReservedWord } from '../Parameter.js'
-import ErrorMessages from '../ErrorMessages.js'
+// import ErrorMessages from '../ErrorMessages.js'
 import types from '../types.js'
 
 export default class LValParser extends NodeUtils {
@@ -27,17 +27,17 @@ export default class LValParser extends NodeUtils {
           name
         } = expr;
         if (this.state.strict && (strictModeChanged ? isStrictBindReservedWord(name, this.inModule) : isStrictBindOnlyReservedWord(name))) {
-          this.raise(expr.start, bindingType === BIND_NONE ? ErrorMessages.StrictEvalArguments : ErrorMessages.StrictEvalArgumentsBinding, name);
+          // this.raise(expr.start, bindingType === BIND_NONE ? ErrorMessages.StrictEvalArguments : ErrorMessages.StrictEvalArgumentsBinding, name);
         }
         if (checkClashes) {
           if (checkClashes.has(name)) {
-            this.raise(expr.start, ErrorMessages.ParamDupe);
+            // this.raise(expr.start, ErrorMessages.ParamDupe);
           } else {
             checkClashes.add(name);
           }
         }
         if (disallowLetBinding && name === "let") {
-          this.raise(expr.start, ErrorMessages.LetInLexicalBinding);
+          // this.raise(expr.start, ErrorMessages.LetInLexicalBinding);
         }
         if (!(bindingType & BIND_NONE)) {
           this.scope.declareName(name, bindingType, expr.start);
@@ -45,7 +45,7 @@ export default class LValParser extends NodeUtils {
         break;
       case "MemberExpression":
         if (bindingType !== BIND_NONE) {
-          this.raise(expr.start, ErrorMessages.InvalidPropertyBindingPattern);
+          // this.raise(expr.start, ErrorMessages.InvalidPropertyBindingPattern);
         }
         break;
       case "ObjectPattern":
@@ -75,7 +75,7 @@ export default class LValParser extends NodeUtils {
         break;
       default:
         {
-          this.raise(expr.start, bindingType === BIND_NONE ? ErrorMessages.InvalidLhs : ErrorMessages.InvalidLhsBinding, contextDescription);
+          // this.raise(expr.start, bindingType === BIND_NONE ? ErrorMessages.InvalidLhs : ErrorMessages.InvalidLhsBinding, contextDescription);
         }
     }
   }

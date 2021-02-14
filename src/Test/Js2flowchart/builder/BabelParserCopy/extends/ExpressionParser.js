@@ -1,5 +1,5 @@
 import LValParser from './LValParser.js'
-import ErrorMessages from '../ErrorMessages.js'
+// import ErrorMessages from '../ErrorMessages.js'
 import { isStrictReservedWord, isStrictBindReservedWord, isReservedWord, isKeyword, PARAM , PARAM_AWAIT, SCOPE_PROGRAM , newAsyncArrowScope ,isIdentifierStart, functionFlags, newArrowHeadScope, SCOPE_FUNCTION, SCOPE_SUPER, SCOPE_CLASS, SCOPE_DIRECT_SUPER, SCOPE_ARROW, PARAM_IN, newExpressionScope, PARAM_RETURN, BIND_OUTSIDE, BIND_VAR} from '../Parameter.js'
 import types from '../types.js'
 import types$1 from '../types$1.js'
@@ -134,7 +134,7 @@ export default class ExpressionParser extends LValParser {
         node.operator = this.state.value;
 
         if (op === types.exponent && left.type === "UnaryExpression" && (this.options.createParenthesizedExpressions || !(left.extra && left.extra.parenthesized))) {
-          this.raise(left.argument.start, ErrorMessages.UnexpectedTokenUnaryExponentiation);
+          // this.raise(left.argument.start, ErrorMessages.UnexpectedTokenUnaryExponentiation);
         }
 
         const logical = op === types.logicalOR || op === types.logicalAND;
@@ -148,7 +148,7 @@ export default class ExpressionParser extends LValParser {
 
         if (op === types.pipeline && this.getPluginOption("pipelineOperator", "proposal") === "minimal") {
           if (this.match(types.name) && this.state.value === "await" && this.prodParam.hasAwait) {
-            throw this.raise(this.state.start, ErrorMessages.UnexpectedAwaitAfterPipelineBody);
+            // throw this.raise(this.state.start, ErrorMessages.UnexpectedAwaitAfterPipelineBody);
           }
         }
 
@@ -157,7 +157,7 @@ export default class ExpressionParser extends LValParser {
         const nextOp = this.state.type;
 
         if (coalesce && (nextOp === types.logicalOR || nextOp === types.logicalAND) || logical && nextOp === types.nullishCoalescing) {
-          throw this.raise(this.state.start, ErrorMessages.MixingCoalesceWithLogical);
+          // throw this.raise(this.state.start, ErrorMessages.MixingCoalesceWithLogical);
         }
 
         return this.parseExprOp(node, leftStartPos, leftStartLoc, minPrec);
@@ -191,9 +191,9 @@ export default class ExpressionParser extends LValParser {
         const arg = node.argument;
 
         if (arg.type === "Identifier") {
-          this.raise(node.start, ErrorMessages.StrictDelete);
+          // this.raise(node.start, ErrorMessages.StrictDelete);
         } else if (this.hasPropertyAsPrivateName(arg)) {
-          this.raise(node.start, ErrorMessages.DeletePrivateField);
+          // this.raise(node.start, ErrorMessages.DeletePrivateField);
         }
       }
 
@@ -302,7 +302,7 @@ export default class ExpressionParser extends LValParser {
         }
 
         if (!this.match(types.parenL)) {
-          this.raise(this.state.lastTokStart, ErrorMessages.UnsupportedImport);
+          // this.raise(this.state.lastTokStart, ErrorMessages.UnsupportedImport);
         }
 
         return this.finishNode(node, "Import");
@@ -428,7 +428,7 @@ export default class ExpressionParser extends LValParser {
           if (callee.type === "MemberExpression") {
             return this.finishNode(node, "BindExpression");
           } else {
-            throw this.raise(callee.start, ErrorMessages.UnsupportedBind);
+            // throw this.raise(callee.start, ErrorMessages.UnsupportedBind);
           }
         }
       default:
@@ -486,26 +486,26 @@ export default class ExpressionParser extends LValParser {
   }
   checkReservedWord(word, startLoc, checkKeywords, isBinding) {
     if (this.prodParam.hasYield && word === "yield") {
-      this.raise(startLoc, ErrorMessages.YieldBindingIdentifier);
+      // this.raise(startLoc, ErrorMessages.YieldBindingIdentifier);
       return;
     }
 
     if (word === "await") {
       if (this.prodParam.hasAwait) {
-        this.raise(startLoc, ErrorMessages.AwaitBindingIdentifier);
+        // this.raise(startLoc, ErrorMessages.AwaitBindingIdentifier);
         return;
       } else {
-        this.expressionScope.recordAsyncArrowParametersError(startLoc, ErrorMessages.AwaitBindingIdentifier);
+        // this.expressionScope.recordAsyncArrowParametersError(startLoc, ErrorMessages.AwaitBindingIdentifier);
       }
     }
 
     if (this.scope.inClass && !this.scope.inNonArrowFunction && word === "arguments") {
-      this.raise(startLoc, ErrorMessages.ArgumentsInClass);
+      // this.raise(startLoc, ErrorMessages.ArgumentsInClass);
       return;
     }
 
     if (checkKeywords && isKeyword(word)) {
-      this.raise(startLoc, ErrorMessages.UnexpectedKeyword, word);
+      // this.raise(startLoc, ErrorMessages.UnexpectedKeyword, word);
       return;
     }
 
@@ -513,9 +513,9 @@ export default class ExpressionParser extends LValParser {
 
     if (reservedTest(word, this.inModule)) {
       if (!this.prodParam.hasAwait && word === "await") {
-        this.raise(startLoc, this.hasPlugin("topLevelAwait") ? ErrorMessages.AwaitNotInAsyncContext : ErrorMessages.AwaitNotInAsyncFunction);
+        // this.raise(startLoc, this.hasPlugin("topLevelAwait") ? ErrorMessages.AwaitNotInAsyncContext : ErrorMessages.AwaitNotInAsyncFunction);
       } else {
-        this.raise(startLoc, ErrorMessages.UnexpectedReservedWord, word);
+        // this.raise(startLoc, ErrorMessages.UnexpectedReservedWord, word);
       }
     }
   }

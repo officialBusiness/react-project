@@ -1,6 +1,6 @@
 import ExpressionParser from './ExpressionParser.js'
 import types from '../types.js'
-import ErrorMessages from '../ErrorMessages.js'
+// import ErrorMessages from '../ErrorMessages.js'
 import { loneSurrogate, lineBreak, BIND_CLASS, CLASS_ELEMENT_INSTANCE_SETTER, CLASS_ELEMENT_STATIC_SETTER, CLASS_ELEMENT_INSTANCE_GETTER, CLASS_ELEMENT_STATIC_GETTER, CLASS_ELEMENT_OTHER, PARAM, newExpressionScope, SCOPE_SUPER, SCOPE_CLASS, BIND_FUNCTION, newParameterDeclarationScope, functionFlags, SCOPE_FUNCTION, FUNC_NULLABLE_ID, FUNC_NO_FLAGS, BIND_VAR, BIND_LEXICAL, SCOPE_SIMPLE_CATCH, switchLabel, isIdentifierStart, isIdentifierChar, keywordRelationalOperator, loopLabel, SCOPE_OTHER, FUNC_STATEMENT, FUNC_HANGING_STATEMENT } from '../Parameter.js'
 import ExpressionErrors from '../ExpressionErrors.js'
 
@@ -42,7 +42,7 @@ export default class StatementParser extends ExpressionParser {
       case types._var:
         kind = kind || this.state.value;
         if (context && kind !== "var") {
-          this.raise(this.state.start, ErrorMessages.UnexpectedLexicalDeclaration);
+          // this.raise(this.state.start, ErrorMessages.UnexpectedLexicalDeclaration);
         }
         return this.parseVarStatement(node, kind);
       default:
@@ -104,10 +104,10 @@ export default class StatementParser extends ExpressionParser {
       } else {
         if (kind === "const" && !(this.match(types._in) || this.isContextual("of"))) {
           if (!isTypescript) {
-            this.raise(this.state.lastTokEnd, ErrorMessages.DeclarationMissingInitializer, "Const declarations");
+            // this.raise(this.state.lastTokEnd, ErrorMessages.DeclarationMissingInitializer, "Const declarations");
           }
         } else if (decl.id.type !== "Identifier" && !(isFor && (this.match(types._in) || this.isContextual("of")))) {
-          this.raise(this.state.lastTokEnd, ErrorMessages.DeclarationMissingInitializer, "Complex binding patterns");
+          // this.raise(this.state.lastTokEnd, ErrorMessages.DeclarationMissingInitializer, "Complex binding patterns");
         }
         decl.init = null;
       }
