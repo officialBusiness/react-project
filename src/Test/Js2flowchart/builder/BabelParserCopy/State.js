@@ -1,6 +1,6 @@
 import types from './types.js'
 import types$1 from './types$1.js'
-import { Position } from './Parameter.js'
+// import { Position } from './Parameter.js'
 
 export default class State {
   constructor() {
@@ -58,6 +58,9 @@ export default class State {
   }
 
   curPosition() {
-    return new Position(this.curLine, this.pos - this.lineStart);
+    return {
+      line: this.curLine,
+      column: this.pos - this.lineStart
+    }
   }
 }

@@ -23,30 +23,26 @@ export default class LValParser extends NodeUtils {
   checkLVal(expr, contextDescription, bindingType = BIND_NONE, checkClashes, disallowLetBinding, strictModeChanged = false) {
     switch (expr.type) {
       case "Identifier":
-        {
-          const {
-            name
-          } = expr;
-          if (this.state.strict && (strictModeChanged ? isStrictBindReservedWord(name, this.inModule) : isStrictBindOnlyReservedWord(name))) {
-            this.raise(expr.start, bindingType === BIND_NONE ? ErrorMessages.StrictEvalArguments : ErrorMessages.StrictEvalArgumentsBinding, name);
-          }
-          if (checkClashes) {
-            if (checkClashes.has(name)) {
-              this.raise(expr.start, ErrorMessages.ParamDupe);
-            } else {
-              checkClashes.add(name);
-            }
-          }
-          if (disallowLetBinding && name === "let") {
-            this.raise(expr.start, ErrorMessages.LetInLexicalBinding);
-          }
-
-          if (!(bindingType & BIND_NONE)) {
-            this.scope.declareName(name, bindingType, expr.start);
-          }
-
-          break;
+        const {
+          name
+        } = expr;
+        if (this.state.strict && (strictModeChanged ? isStrictBindReservedWord(name, this.inModule) : isStrictBindOnlyReservedWord(name))) {
+          this.raise(expr.start, bindingType === BIND_NONE ? ErrorMessages.StrictEvalArguments : ErrorMessages.StrictEvalArgumentsBinding, name);
         }
+        if (checkClashes) {
+          if (checkClashes.has(name)) {
+            this.raise(expr.start, ErrorMessages.ParamDupe);
+          } else {
+            checkClashes.add(name);
+          }
+        }
+        if (disallowLetBinding && name === "let") {
+          this.raise(expr.start, ErrorMessages.LetInLexicalBinding);
+        }
+        if (!(bindingType & BIND_NONE)) {
+          this.scope.declareName(name, bindingType, expr.start);
+        }
+        break;
       case "MemberExpression":
         if (bindingType !== BIND_NONE) {
           this.raise(expr.start, ErrorMessages.InvalidPropertyBindingPattern);

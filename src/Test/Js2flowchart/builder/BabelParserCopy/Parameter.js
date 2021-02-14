@@ -1,5 +1,5 @@
 import ExpressionScope from './ExpressionScope.js'
-import ArrowHeadParsingScope from './ArrowHeadParsingScope.js'
+// import ArrowHeadParsingScope from './ArrowHeadParsingScope.js'
 
 export const	PARAM =        0b0000
 export const	PARAM_YIELD =  0b0001
@@ -60,10 +60,10 @@ export function newParameterDeclarationScope() {
   return new ExpressionScope(kParameterDeclaration);
 }
 export function newArrowHeadScope() {
-  return new ArrowHeadParsingScope(kMaybeArrowParameterDeclaration);
+  // return new ArrowHeadParsingScope(kMaybeArrowParameterDeclaration);
 }
 export function newAsyncArrowScope() {
-  return new ArrowHeadParsingScope(kMaybeAsyncArrowParameterDeclaration);
+  // return new ArrowHeadParsingScope(kMaybeAsyncArrowParameterDeclaration);
 }
 export function newExpressionScope() {
   return new ExpressionScope();
@@ -235,19 +235,12 @@ export function getLineInfo(input, offset) {
     line++;
     lineStart = lineBreakG.lastIndex;
   }
-
-  return new Position(line, offset - lineStart);
-}
-
-export class Position {
-  constructor(line, col) {
-    this.line = void 0;
-    this.column = void 0;
-    this.line = line;
-    this.column = col;
+  return {
+    line: line,
+    column: offset - lineStart
   }
-
 }
+
 export const VALID_REGEX_FLAGS = new Set(["g", "m", "s", "i", "y", "u"]);
 export const allowedNumericSeparatorSiblings = {
   bin: [48, 49],

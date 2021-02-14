@@ -28,13 +28,10 @@ export default class Parser extends StatementParser {
     console.log( 'Parser解析初始化' )
     super(defaultOptions, code)
     this.options = defaultOptions
-    // this.inModule = this.options.sourceType === "module"
     this.scope = new ScopeHandler(this.raise.bind(this), this.inModule)
-    // this.classScope = new ClassScopeHandler(this.raise.bind(this));
     this.prodParam = new ProductionParameterHandler()
     this.expressionScope = new ExpressionScopeHandler(this.raise.bind(this))
     this.plugins = new Map()
-    // this.filename = defaultOptions.sourceFilename
 
     this.tokens = [];
     this.state = new State();
@@ -51,18 +48,12 @@ export default class Parser extends StatementParser {
   }
   parse() {
     let paramFlags = PARAM;
-    // if (this.hasPlugin("topLevelAwait") && this.inModule) {
-    //   paramFlags |= PARAM_AWAIT;
-    // }
-    this.scope.enter(SCOPE_PROGRAM);
-    this.prodParam.enter(paramFlags);
-    const file = this.startNode();
-    // console.log( 'file:', file )
-    const program = this.startNode();
+    const file = this.startNode()
+    const program = this.startNode()
     this.nextToken();
-    file.errors = null;
-    this.parseTopLevel(file, program);
-    file.errors = this.state.errors;
+    this.parseTopLevel(file, program)
+    // console.log( 'program:', program )
+    // console.log( 'file:', file )
     return file;
   }
   hasPlugin(name) {

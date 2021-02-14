@@ -32,6 +32,7 @@ export default class Tokenizer  extends CommentsParser{
     return this.state.type === type;
   }
   curContext() {
+    console.log()
     return this.state.context[this.state.context.length - 1];
   }
   nextToken() {
@@ -48,8 +49,10 @@ export default class Tokenizer  extends CommentsParser{
     const override = curContext == null ? void 0 : curContext.override;
 
     if (override) {
-      override(this);
+      // console.log( 'if' )
+      // override(this);
     } else {
+      // console.log( 'else' )
       this.getTokenFromCode(this.input.codePointAt(this.state.pos));
     }
   }
