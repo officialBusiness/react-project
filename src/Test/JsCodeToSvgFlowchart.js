@@ -947,7 +947,6 @@ const code8 = `
 	import { SVGBase } from './SVGBase';
 	import { createShapeForNode, createRootCircle, createConnectionArrow } from './shapesFactory';
 	import { TOKEN_TYPES, TOKEN_KEYS, ARROW_TYPE } from 'shared/constants';
-
 	export const buildSVGObjectsTree = (flowTree, styleTheme) => {
 	    const svg = SVGBase();
 
@@ -959,7 +958,6 @@ const code8 = `
 
 	    return svg;
 	};
-
 	export const buildShapeStructures = (flowTree, styleTheme) => {
 	    const root = createRootCircle(flowTree, styleTheme),
 	        position = { ...root.getChildOffsetPoint() },
@@ -1013,7 +1011,6 @@ const code8 = `
 	        root: root
 	    };
 	};
-
 	const addExtraSpacingBeforeShape = (theme, node, latestNode = {}) => {
 	    const complexNodeTypes = [
 	        TOKEN_TYPES.FUNCTION,
@@ -1036,7 +1033,6 @@ const code8 = `
 
 	    return 0;
 	};
-
 	export const buildConnections = (shapesTree, styleTheme) => {
 	    const connections = [],
 	        pushArrow = config => {
@@ -1085,7 +1081,6 @@ const code8 = `
 
 	    return connections;
 	};
-
 	const isNoArrow = (toShape, fromShape) => {
 	    if (
 	        [
@@ -1114,7 +1109,6 @@ const code8 = `
 	        return true;
 	    }
 	};
-
 	const buildConnectionConfig = (toShape, fromShape) => {
 	    const config = {
 	        endPoint: toShape.getToPoint(),
@@ -1136,9 +1130,7 @@ const code8 = `
 
 	    return config;
 	};
-
-    `;
-
+`;
 const code9 = `
         const list = [1, 2, 3, 4];
 
@@ -1187,13 +1179,14 @@ const code10 = `
 
     export default Man;
 `;
-
-
-
+const testCode = `
+	var a = 1
+`
 
 export default class JsCodeToSvgFlowchart extends React.Component{
 	componentDidMount(){
-		this.flowchartDom.innerHTML = convertCodeToSvg(code)
+		this.flowchartDom.innerHTML = convertCodeToSvg(testCode)
+		// this.flowchartDom.innerHTML = convertCodeToSvg(code)
 		// console.log( babelParser.parse )
 		// console.log( babelParser.parse(code, {
 		// sourceType: 'module',

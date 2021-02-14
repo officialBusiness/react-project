@@ -60,23 +60,4 @@ export default class State {
   curPosition() {
     return new Position(this.curLine, this.pos - this.lineStart);
   }
-
-  clone(skipArrays) {
-    const state = new State();
-    const keys = Object.keys(this);
-
-    for (let i = 0, length = keys.length; i < length; i++) {
-      const key = keys[i];
-      let val = this[key];
-
-      if (!skipArrays && Array.isArray(val)) {
-        val = val.slice();
-      }
-
-      state[key] = val;
-    }
-
-    return state;
-  }
-
 }

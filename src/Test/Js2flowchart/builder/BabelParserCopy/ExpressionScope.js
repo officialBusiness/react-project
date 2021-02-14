@@ -5,11 +5,9 @@ export default class ExpressionScope {
     this.type = void 0;
     this.type = type;
   }
-
   canBeArrowParameterDeclaration() {
     return this.type === kMaybeAsyncArrowParameterDeclaration || this.type === kMaybeArrowParameterDeclaration;
   }
-
   isCertainlyParameterDeclaration() {
     return this.type === kParameterDeclaration;
   }

@@ -10,151 +10,18 @@ export default class UtilParser extends Tokenizer {
     const extra = node.extra = node.extra || {};
     extra[key] = val;
   }
-
-  isRelational(op) {
-    return this.match(types.relational) && this.state.value === op;
-  }
-
-  expectRelational(op) {
-    if (this.isRelational(op)) {
-      this.next();
-    } else {
-      this.unexpected(null, types.relational);
-    }
-  }
-
   isContextual(name) {
     return this.match(types.name) && this.state.value === name && !this.state.containsEsc;
   }
-
-  isUnparsedContextual(nameStart, name) {
-    const nameEnd = nameStart + name.length;
-    return this.input.slice(nameStart, nameEnd) === name && (nameEnd === this.input.length || !isIdentifierChar(this.input.charCodeAt(nameEnd)));
-  }
-
-  isLookaheadContextual(name) {
-    const next = this.nextTokenStart();
-    return this.isUnparsedContextual(next, name);
-  }
-
-  eatContextual(name) {
-    return this.isContextual(name) && this.eat(types.name);
-  }
-
-  expectContextual(name, message) {
-    if (!this.eatContextual(name)) this.unexpected(null, message);
-  }
-
   canInsertSemicolon() {
     return this.match(types.eof) || this.match(types.braceR) || this.hasPrecedingLineBreak();
   }
-
-  hasPrecedingLineBreak() {
-    return lineBreak.test(this.input.slice(this.state.lastTokEnd, this.state.start));
-  }
-
   isLineTerminator() {
     return this.eat(types.semi) || this.canInsertSemicolon();
   }
-
   semicolon() {
     if (!this.isLineTerminator()) this.unexpected(null, types.semi);
   }
-
-  expect(type, pos) {
-    this.eat(type) || this.unexpected(pos, type);
-  }
-
-  assertNoSpace(message = "Unexpected space.") {
-    if (this.state.start > this.state.lastTokEnd) {
-      this.raise(this.state.lastTokEnd, message);
-    }
-  }
-
-  unexpected(pos, messageOrType = "Unexpected token") {
-    if (typeof messageOrType !== "string") {
-      messageOrType = `Unexpected token, expected "${messageOrType.label}"`;
-    }
-
-    throw this.raise(pos != null ? pos : this.state.start, messageOrType);
-  }
-
-  expectPlugin(name, pos) {
-    if (!this.hasPlugin(name)) {
-      throw this.raiseWithData(pos != null ? pos : this.state.start, {
-        missingPlugin: [name]
-      }, `This experimental syntax requires enabling the parser plugin: '${name}'`);
-    }
-
-    return true;
-  }
-
-  expectOnePlugin(names, pos) {
-    if (!names.some(n => this.hasPlugin(n))) {
-      throw this.raiseWithData(pos != null ? pos : this.state.start, {
-        missingPlugin: names
-      }, `This experimental syntax requires enabling one of the following parser plugin(s): '${names.join(", ")}'`);
-    }
-  }
-
-  tryParse(fn, oldState = this.state.clone()) {
-    const abortSignal = {
-      node: null
-    };
-
-    try {
-      const node = fn((node = null) => {
-        abortSignal.node = node;
-        throw abortSignal;
-      });
-
-      if (this.state.errors.length > oldState.errors.length) {
-        const failState = this.state;
-        this.state = oldState;
-        return {
-          node,
-          error: failState.errors[oldState.errors.length],
-          thrown: false,
-          aborted: false,
-          failState
-        };
-      }
-
-      return {
-        node,
-        error: null,
-        thrown: false,
-        aborted: false,
-        failState: null
-      };
-    } catch (error) {
-      const failState = this.state;
-      this.state = oldState;
-
-      if (error instanceof SyntaxError) {
-        return {
-          node: null,
-          error,
-          thrown: true,
-          aborted: false,
-          failState
-        };
-      }
-
-      if (error === abortSignal) {
-        return {
-          node: abortSignal.node,
-          error: null,
-          thrown: false,
-          aborted: true,
-          failState
-        };
-      }
-
-      throw error;
-    }
-  }
-
   checkExpressionErrors(refExpressionErrors, andThrow) {
     if (!refExpressionErrors) return false;
     const {
@@ -171,33 +38,4 @@ export default class UtilParser extends Tokenizer {
       this.raise(doubleProto, ErrorMessages.DuplicateProto);
     }
   }
-
-  isLiteralPropertyName() {
-    return this.match(types.name) || !!this.state.type.keyword || this.match(types.string) || this.match(types.num) || this.match(types.bigint) || this.match(types.decimal);
-  }
-
-  isPrivateName(node) {
-    return node.type === "PrivateName";
-  }
-
-  getPrivateNameSV(node) {
-    return node.id.name;
-  }
-
-  hasPropertyAsPrivateName(node) {
-    return (node.type === "MemberExpression" || node.type === "OptionalMemberExpression") && this.isPrivateName(node.property);
-  }
-
-  isOptionalChain(node) {
-    return node.type === "OptionalMemberExpression" || node.type === "OptionalCallExpression";
-  }
-
-  isObjectProperty(node) {
-    return node.type === "ObjectProperty";
-  }
-
-  isObjectMethod(node) {
-    return node.type === "ObjectMethod";
-  }
-
 }

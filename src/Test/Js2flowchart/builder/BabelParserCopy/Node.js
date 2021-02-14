@@ -18,18 +18,4 @@ export default class Node {
     if (parser == null ? void 0 : parser.options.ranges) this.range = [pos, 0];
     if (parser == null ? void 0 : parser.filename) this.loc.filename = parser.filename;
   }
-
-  __clone() {
-    const newNode = new Node();
-    const keys = Object.keys(this);
-
-    for (let i = 0, length = keys.length; i < length; i++) {
-      const key = keys[i];
-
-      if (key !== "leadingComments" && key !== "trailingComments" && key !== "innerComments") {
-        newNode[key] = this[key];
-      }
-    }
-    return newNode;
-  }
 }

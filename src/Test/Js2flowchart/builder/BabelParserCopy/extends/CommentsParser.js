@@ -1,65 +1,6 @@
 import { last } from '../Parameter.js'
 
 export default class CommentsParser {
-  addComment(comment) {
-    if (this.filename) comment.loc.filename = this.filename;
-    this.state.trailingComments.push(comment);
-    this.state.leadingComments.push(comment);
-  }
-
-  adjustCommentsAfterTrailingComma(node, elements, takeAllComments) {
-    if (this.state.leadingComments.length === 0) {
-      return;
-    }
-
-    let lastElement = null;
-    let i = elements.length;
-
-    while (lastElement === null && i > 0) {
-      lastElement = elements[--i];
-    }
-
-    if (lastElement === null) {
-      return;
-    }
-
-    for (let j = 0; j < this.state.leadingComments.length; j++) {
-      if (this.state.leadingComments[j].end < this.state.commentPreviousNode.end) {
-        this.state.leadingComments.splice(j, 1);
-        j--;
-      }
-    }
-
-    const newTrailingComments = [];
-
-    for (let i = 0; i < this.state.leadingComments.length; i++) {
-      const leadingComment = this.state.leadingComments[i];
-
-      if (leadingComment.end < node.end) {
-        newTrailingComments.push(leadingComment);
-
-        if (!takeAllComments) {
-          this.state.leadingComments.splice(i, 1);
-          i--;
-        }
-      } else {
-        if (node.trailingComments === undefined) {
-          node.trailingComments = [];
-        }
-
-        node.trailingComments.push(leadingComment);
-      }
-    }
-
-    if (takeAllComments) this.state.leadingComments = [];
-
-    if (newTrailingComments.length > 0) {
-      lastElement.trailingComments = newTrailingComments;
-    } else if (lastElement.trailingComments !== undefined) {
-      lastElement.trailingComments = [];
-    }
-  }
-
   processComment(node) {
     if (node.type === "Program" && node.body.length > 0) return;
     const stack = this.state.commentStack;
@@ -186,5 +127,4 @@ export default class CommentsParser {
 
     stack.push(node);
   }
-
 }

@@ -12,12 +12,13 @@ export const parseCodeToAST = (code, config = {}) => {
     let ast = [];
 
     try {
+        // console.log( 'code.length:', code.length )
         // console.log( 'babelParser.parse:', babelParser.parse )
-        // ast = new Parser(mergeObjectStructures(defaultAstConfig, config), code).parse()
-        let testAst = new Parser(mergeObjectStructures(defaultAstConfig, config), code).parse()
+        ast = new Parser(mergeObjectStructures(defaultAstConfig, config), code).parse()
+        // let testAst = new Parser(mergeObjectStructures(defaultAstConfig, config), code).parse()
         // console.log( 'testAst:', testAst )
-
-        ast = babelParser.parse(code, mergeObjectStructures(defaultAstConfig, config));
+        // ast = babelParser.parse(code, mergeObjectStructures(defaultAstConfig, config));
+        console.log('ast:', ast)
     } catch (e) {
         logError('Error at parseCodeToAST: ' + e.message, e.loc, e.stack);
         throw e;

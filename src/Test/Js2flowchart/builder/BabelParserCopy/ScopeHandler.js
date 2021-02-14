@@ -20,47 +20,15 @@ export default class ScopeHandler {
     this.raise = raise;
     this.inModule = inModule;
   }
-
-  get inFunction() {
-    return (this.currentVarScope().flags & SCOPE_FUNCTION) > 0;
-  }
-
-  get allowSuper() {
-    return (this.currentThisScope().flags & SCOPE_SUPER) > 0;
-  }
-
-  get allowDirectSuper() {
-    return (this.currentThisScope().flags & SCOPE_DIRECT_SUPER) > 0;
-  }
-
-  get inClass() {
-    return (this.currentThisScope().flags & SCOPE_CLASS) > 0;
-  }
-
-  get inNonArrowFunction() {
-    return (this.currentThisScope().flags & SCOPE_FUNCTION) > 0;
-  }
-
-  get treatFunctionsAsVar() {
-    return this.treatFunctionsAsVarInScope(this.currentScope());
-  }
-
   createScope(flags) {
     return new Scope(flags);
   }
-
   enter(flags) {
     this.scopeStack.push(this.createScope(flags));
   }
-
-  exit() {
-    this.scopeStack.pop();
-  }
-
   treatFunctionsAsVarInScope(scope) {
     return !!(scope.flags & SCOPE_FUNCTION || !this.inModule && scope.flags & SCOPE_PROGRAM);
   }
-
   declareName(name, bindingType, pos) {
     let scope = this.currentScope();
 
@@ -90,19 +58,16 @@ export default class ScopeHandler {
       this.undefinedExports.delete(name);
     }
   }
-
   maybeExportDefined(scope, name) {
     if (this.inModule && scope.flags & SCOPE_PROGRAM) {
       this.undefinedExports.delete(name);
     }
   }
-
   checkRedeclarationInScope(scope, name, bindingType, pos) {
     if (this.isRedeclaredInScope(scope, name, bindingType)) {
       this.raise(pos, ErrorMessages.VarRedeclaration, name);
     }
   }
-
   isRedeclaredInScope(scope, name, bindingType) {
     if (!(bindingType & BIND_KIND_VALUE)) return false;
 
@@ -116,32 +81,15 @@ export default class ScopeHandler {
 
     return scope.lexical.indexOf(name) > -1 && !(scope.flags & SCOPE_SIMPLE_CATCH && scope.lexical[0] === name) || !this.treatFunctionsAsVarInScope(scope) && scope.functions.indexOf(name) > -1;
   }
-
-  checkLocalExport(id) {
-    if (this.scopeStack[0].lexical.indexOf(id.name) === -1 && this.scopeStack[0].var.indexOf(id.name) === -1 && this.scopeStack[0].functions.indexOf(id.name) === -1) {
-      this.undefinedExports.set(id.name, id.start);
-    }
-  }
-
   currentScope() {
     return this.scopeStack[this.scopeStack.length - 1];
   }
-
-  currentVarScope() {
-    for (let i = this.scopeStack.length - 1;; i--) {
-      const scope = this.scopeStack[i];
-
-      if (scope.flags & SCOPE_VAR) {
-        return scope;
-      }
-    }
-  }
-
   currentThisScope() {
     for (let i = this.scopeStack.length - 1;; i--) {
       const scope = this.scopeStack[i];
 
-      if ((scope.flags & SCOPE_VAR || scope.flags & SCOPE_CLASS) && !(scope.flags & SCOPE_ARROW)) {
+      if ((scope.flags & SCOPE_VAR || scope.flags & SCOPE_CLASS) && 
+        !(scope.flags & SCOPE_ARROW)) {
         return scope;
       }
     }

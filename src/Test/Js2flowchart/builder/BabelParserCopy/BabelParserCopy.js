@@ -46,6 +46,9 @@ export default class Parser extends StatementParser {
     this.sawUnambiguousESM = false;
     this.ambiguousScriptDifferentAst = false;
   }
+  raise(pos, errorTemplate, ...params) {
+    return this.raiseWithData(pos, undefined, errorTemplate, ...params);
+  }
   parse() {
     let paramFlags = PARAM;
     // if (this.hasPlugin("topLevelAwait") && this.inModule) {
