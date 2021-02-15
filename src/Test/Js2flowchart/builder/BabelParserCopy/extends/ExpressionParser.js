@@ -1,13 +1,13 @@
-import LValParser from './LValParser.js'
+import NodeUtils from './NodeUtils.js'
 import { isStrictReservedWord, isStrictBindReservedWord, isReservedWord, isKeyword, PARAM , PARAM_AWAIT, SCOPE_PROGRAM , newAsyncArrowScope ,isIdentifierStart, functionFlags, newArrowHeadScope, SCOPE_FUNCTION, SCOPE_SUPER, SCOPE_CLASS, SCOPE_DIRECT_SUPER, SCOPE_ARROW, PARAM_IN, newExpressionScope, PARAM_RETURN, BIND_OUTSIDE, BIND_VAR} from '../Parameter.js'
 import types from '../types.js'
 import types$1 from '../types$1.js'
 import ExpressionErrors from '../ExpressionErrors.js'
 import ExpressionScope from '../ExpressionScope.js'
 
-export default class ExpressionParser extends LValParser {
-  shouldExitDescending(expr, potentialArrowAt) {
-    return expr.type === "ArrowFunctionExpression" && expr.start === potentialArrowAt;
+export default class ExpressionParser extends NodeUtils {
+  parseBindingAtom() {
+    return this.parseIdentifier();
   }
   parseMaybeAssignAllowIn(refExpressionErrors, afterLeftParse, refNeedsArrowPos) {
     return this.allowInAnd(() => this.parseMaybeAssign(refExpressionErrors, afterLeftParse, refNeedsArrowPos));
@@ -64,11 +64,6 @@ export default class ExpressionParser extends LValParser {
     const startLoc = this.state.startLoc;
     const potentialArrowAt = this.state.potentialArrowAt;
     const expr = this.parseExprOps(refExpressionErrors);
-
-    if (this.shouldExitDescending(expr, potentialArrowAt)) {
-      return expr;
-    }
-
     return this.parseConditional(expr, startPos, startLoc, refNeedsArrowPos);
   }
   parseConditional(expr, startPos, startLoc, refNeedsArrowPos) {
@@ -86,13 +81,7 @@ export default class ExpressionParser extends LValParser {
   parseExprOps(refExpressionErrors) {
     const startPos = this.state.start;
     const startLoc = this.state.startLoc;
-    const potentialArrowAt = this.state.potentialArrowAt;
     const expr = this.parseMaybeUnary(refExpressionErrors);
-
-    if (this.shouldExitDescending(expr, potentialArrowAt)) {
-      return expr;
-    }
-
     return this.parseExprOp(expr, startPos, startLoc, -1);
   }
   parseExprOp(left, leftStartPos, leftStartLoc, minPrec) {
@@ -191,7 +180,7 @@ export default class ExpressionParser extends LValParser {
     const startPos = this.state.start;
     const startLoc = this.state.startLoc;
     let expr = this.parseExprSubscripts(refExpressionErrors);
-    
+
     while (this.state.type.postfix && !this.canInsertSemicolon()) {
       const node = this.startNodeAt(startPos, startLoc);
       node.operator = this.state.value;
@@ -209,10 +198,6 @@ export default class ExpressionParser extends LValParser {
     const startLoc = this.state.startLoc;
     const potentialArrowAt = this.state.potentialArrowAt;
     const expr = this.parseExprAtom(refExpressionErrors);
-
-    if (this.shouldExitDescending(expr, potentialArrowAt)) {
-      return expr;
-    }
 
     return this.parseSubscripts(expr, startPos, startLoc);
   }
