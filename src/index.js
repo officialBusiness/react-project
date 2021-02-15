@@ -4,6 +4,7 @@ import { HashRouter as Router, Route, Switch } from "react-router-dom";
 import './index.css'
 import App from './App.js'
 import ThreeOperation from './ThreeOperation/ThreeOperation.js'
+import CodeParse from './CodeParse/CodeParse.js'
 import ComponentsTest from './Test/ComponentsTest.js'
 // import DvaTest from './Test/DvaTest.js'
 import RichTextBoxTest from './Test/RichTextBoxTest.js'
@@ -14,6 +15,7 @@ ReactDOM.render(
 	<Router>
 		<Switch>
 			<Route path="/ThreeOperation" component={ThreeOperation}/>
+			<Route path="/CodeParse" component={CodeParse}/>
 			<Route path="/404" component={notFound}/>
 			<Route path="/Test/ComponentsTest" component={ComponentsTest}/>
 			<Route path="/Test/RichTextBoxTest" component={RichTextBoxTest}/>

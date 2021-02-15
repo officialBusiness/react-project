@@ -1,5 +1,4 @@
 import ExpressionScope from './ExpressionScope.js'
-// import ArrowHeadParsingScope from './ArrowHeadParsingScope.js'
 
 export const	PARAM =        0b0000
 export const	PARAM_YIELD =  0b0001

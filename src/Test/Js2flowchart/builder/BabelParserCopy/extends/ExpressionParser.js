@@ -1,5 +1,4 @@
 import LValParser from './LValParser.js'
-// import ErrorMessages from '../ErrorMessages.js'
 import { isStrictReservedWord, isStrictBindReservedWord, isReservedWord, isKeyword, PARAM , PARAM_AWAIT, SCOPE_PROGRAM , newAsyncArrowScope ,isIdentifierStart, functionFlags, newArrowHeadScope, SCOPE_FUNCTION, SCOPE_SUPER, SCOPE_CLASS, SCOPE_DIRECT_SUPER, SCOPE_ARROW, PARAM_IN, newExpressionScope, PARAM_RETURN, BIND_OUTSIDE, BIND_VAR} from '../Parameter.js'
 import types from '../types.js'
 import types$1 from '../types$1.js'
@@ -29,16 +28,6 @@ export default class ExpressionParser extends LValParser {
         return left;
       }
     }
-
-    let ownExpressionErrors;
-
-    if (refExpressionErrors) {
-      ownExpressionErrors = false;
-    } else {
-      // refExpressionErrors = new ExpressionErrors();
-      ownExpressionErrors = true;
-    }
-
     if (this.match(types.parenL) || this.match(types.name)) {
       this.state.potentialArrowAt = this.state.start;
     }
@@ -55,8 +44,6 @@ export default class ExpressionParser extends LValParser {
       node.operator = operator;
 
       if (this.match(types.eq)) {
-        node.left = this.toAssignable(left, true);
-        refExpressionErrors.doubleProto = -1;
       } else {
         node.left = left;
       }
@@ -69,10 +56,7 @@ export default class ExpressionParser extends LValParser {
       this.next();
       node.right = this.parseMaybeAssign();
       return this.finishNode(node, "AssignmentExpression");
-    } else if (ownExpressionErrors) {
-      this.checkExpressionErrors(refExpressionErrors, true);
     }
-
     return left;
   }
   parseMaybeConditional(refExpressionErrors, refNeedsArrowPos) {
@@ -189,12 +173,6 @@ export default class ExpressionParser extends LValParser {
 
       if (this.state.strict && isDelete) {
         const arg = node.argument;
-
-        if (arg.type === "Identifier") {
-          // this.raise(node.start, ErrorMessages.StrictDelete);
-        } else if (this.hasPropertyAsPrivateName(arg)) {
-          // this.raise(node.start, ErrorMessages.DeletePrivateField);
-        }
       }
 
       if (!update) {
@@ -213,8 +191,7 @@ export default class ExpressionParser extends LValParser {
     const startPos = this.state.start;
     const startLoc = this.state.startLoc;
     let expr = this.parseExprSubscripts(refExpressionErrors);
-    if (this.checkExpressionErrors(refExpressionErrors, false)) return expr;
-
+    
     while (this.state.type.postfix && !this.canInsertSemicolon()) {
       const node = this.startNodeAt(startPos, startLoc);
       node.operator = this.state.value;

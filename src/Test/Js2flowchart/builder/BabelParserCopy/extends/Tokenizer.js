@@ -2,7 +2,6 @@ import CommentsParser from './CommentsParser.js'
 import types from '../types.js'
 import types$1 from '../types$1.js'
 import { isInAstralSet, astralIdentifierStartCodes, Token, _isDigit, forbiddenNumericSeparatorSiblings, VALID_REGEX_FLAGS, lineBreak,nonASCIIidentifierStart, allowedNumericSeparatorSiblings, keywords, isIdentifierChar, isWhitespace, skipWhiteSpace , SourceLocation, lineBreakG, isNewLine } from '../Parameter.js'
-// import ErrorMessages from '../ErrorMessages.js'
 
 function isIdentifierStart(code) {
   if (code < 65) return code === 36;
@@ -40,6 +39,7 @@ export default class Tokenizer  extends CommentsParser{
     this.state.start = this.state.pos;
     this.state.startLoc = this.state.curPosition();
     if (this.state.pos >= this.length) {
+      // console.log( 'types.eof:', types.eof )
       this.finishToken(types.eof);
       return;
     }
@@ -266,13 +266,10 @@ export default class Tokenizer  extends CommentsParser{
     let isDecimal = false;
     let hasExponent = false;
     let isOctal = false;
-
     if (!startsWithDot && this.readInt(10) === null) {
       // this.raise(start, ErrorMessages.InvalidNumber);
     }
-
     const hasLeadingZero = this.state.pos - start >= 2 && this.input.charCodeAt(start) === 48;
-
     if (hasLeadingZero) {
       const integer = this.input.slice(start, this.state.pos);
       // this.recordStrictModeErrors(start, ErrorMessages.StrictOctalLiteral);
@@ -284,12 +281,9 @@ export default class Tokenizer  extends CommentsParser{
           // this.raise(underscorePos + start, ErrorMessages.ZeroDigitNumericSeparator);
         }
       }
-
       isOctal = hasLeadingZero && !/[89]/.test(integer);
     }
-
     let next = this.input.charCodeAt(this.state.pos);
-
     if (next === 46 && !isOctal) {
       ++this.state.pos;
       this.readInt(10);

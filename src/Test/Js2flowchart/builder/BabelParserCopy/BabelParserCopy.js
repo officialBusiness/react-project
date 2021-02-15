@@ -2,7 +2,6 @@ import StatementParser from './extends/StatementParser.js'
 import ScopeHandler from './ScopeHandler.js'
 import ProductionParameterHandler from './ProductionParameterHandler.js'
 import ExpressionScopeHandler from './ExpressionScopeHandler.js'
-// import ClassScopeHandler from './ClassScopeHandler.js'
 import State from './State.js'
 import { PARAM, PARAM_AWAIT, SCOPE_PROGRAM } from './Parameter.js'
 
@@ -55,12 +54,5 @@ export default class Parser extends StatementParser {
     // console.log( 'program:', program )
     // console.log( 'file:', file )
     return file;
-  }
-  hasPlugin(name) {
-    // return this.plugins.has(name);
-    return this.plugins.has(name);
-  }
-  getPluginOption(plugin, name) {
-    if (this.hasPlugin(plugin)) return this.plugins.get(plugin)[name];
   }
 }
