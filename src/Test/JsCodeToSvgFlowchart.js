@@ -1177,7 +1177,7 @@ const code10 = `
     }
     export default Man;
 `;
-const testCode = `var a = 1`
+const testCode = `var a = 123`
 
 export default class JsCodeToSvgFlowchart extends React.Component{
 	componentDidMount(){

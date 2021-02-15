@@ -5,6 +5,7 @@ import ExpressionErrors from '../ExpressionErrors.js'
 
 export default class StatementParser extends ExpressionParser {
   parseTopLevel(file, program) {
+      // console.log( 'this.state.type.label:' , this.state.type.label )
     this.parseBlockBody(program, true, true, types.eof);
     file.program = this.finishNode(program, "Program")
     return this.finishNode(file, "File");
@@ -61,8 +62,6 @@ export default class StatementParser extends ExpressionParser {
       this.parseVarId(decl, kind);
       if (this.eat(types.eq)) {
         decl.init = isFor ? this.parseMaybeAssignDisallowIn() : this.parseMaybeAssignAllowIn();
-      } else {
-        decl.init = null;
       }
       declarations.push(this.finishNode(decl, "VariableDeclarator"));
       if (!this.eat(types.comma)) break;

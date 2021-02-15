@@ -17,8 +17,6 @@ export default class Tokenizer{
     if (this.match(type)) {
       this.nextToken();
       return true;
-    } else {
-      return false;
     }
   }
   match(type) {
@@ -28,6 +26,7 @@ export default class Tokenizer{
     return this.state.context[this.state.context.length - 1];
   }
   nextToken() {
+    // console.log( 'this.input:', this.input )
     const curContext = this.curContext();
     if (!(curContext == null ? void 0 : curContext.preserveSpace)){
       this.skipSpace();
@@ -39,14 +38,17 @@ export default class Tokenizer{
       this.finishToken(types.eof);
       return;
     }
+    // console.log( 'this.state.type:', this.state.type )
     const override = curContext == null ? void 0 : curContext.override;
-
     if (override) {
     } else {
+      // console.log( 'this.state.type:', this.state.type )
       // console.log( 'this.input.codePointAt(this.state.pos):', this.input.codePointAt(this.state.pos) )
       // console.log( this.state.pos , this.input[this.state.pos] )
       this.getTokenFromCode(this.input.codePointAt(this.state.pos));
+      // console.log( 'this.state.type:', this.state.type )
     }
+    // console.log( 'this.state.type:', this.state.type )
   }
   skipSpace() {
     loop: while (this.state.pos < this.length) {
@@ -98,9 +100,6 @@ export default class Tokenizer{
     const prevType = this.state.type;
     this.state.type = type;
     this.state.value = val;
-    if (!this.isLookahead) {
-      this.updateContext(prevType)
-    }
   }
   readToken_eq_excl(code) {
     const next = this.input.charCodeAt(this.state.pos + 1);
@@ -156,15 +155,14 @@ export default class Tokenizer{
     let total = 0;
     for (let i = 0, e = len == null ? Infinity : len; i < e; ++i) {
       const code = this.input.charCodeAt(this.state.pos);
+      // console.log( this.state.pos, this.input[this.state.pos] )
       let val;
       if (code === 95) {
         const prev = this.input.charCodeAt(this.state.pos - 1);
         const next = this.input.charCodeAt(this.state.pos + 1);
-
         ++this.state.pos;
         continue;
       }
-
       if (code >= 97) {
         val = code - 97 + 10;
       } else if (code >= 65) {
@@ -199,114 +197,22 @@ export default class Tokenizer{
   }
   readNumber(startsWithDot) {
     const start = this.state.pos;
-    let isFloat = false;
-    let isBigInt = false;
-    let isDecimal = false;
-    let hasExponent = false;
     let isOctal = false;
     if (!startsWithDot && this.readInt(10) === null) {
-      // this.raise(start, ErrorMessages.InvalidNumber);
     }
-    const hasLeadingZero = this.state.pos - start >= 2 && this.input.charCodeAt(start) === 48;
-    if (hasLeadingZero) {
-      const integer = this.input.slice(start, this.state.pos);
-      // this.recordStrictModeErrors(start, ErrorMessages.StrictOctalLiteral);
-
-      if (!this.state.strict) {
-        const underscorePos = integer.indexOf("_");
-
-        if (underscorePos > 0) {
-          // this.raise(underscorePos + start, ErrorMessages.ZeroDigitNumericSeparator);
-        }
-      }
-      isOctal = hasLeadingZero && !/[89]/.test(integer);
-    }
-    let next = this.input.charCodeAt(this.state.pos);
-    if (next === 46 && !isOctal) {
-      ++this.state.pos;
-      this.readInt(10);
-      isFloat = true;
-      next = this.input.charCodeAt(this.state.pos);
-    }
-
-    if ((next === 69 || next === 101) && !isOctal) {
-      next = this.input.charCodeAt(++this.state.pos);
-
-      if (next === 43 || next === 45) {
-        ++this.state.pos;
-      }
-
-      if (this.readInt(10) === null) {
-        // this.raise(start, ErrorMessages.InvalidOrMissingExponent);
-      }
-
-      isFloat = true;
-      hasExponent = true;
-      next = this.input.charCodeAt(this.state.pos);
-    }
-
-    if (next === 110) {
-      if (isFloat || hasLeadingZero) {
-        // this.raise(start, ErrorMessages.InvalidBigIntLiteral);
-      }
-
-      ++this.state.pos;
-      isBigInt = true;
-    }
-
-    if (next === 109) {
-      this.expectPlugin("decimal", this.state.pos);
-
-      if (hasExponent || hasLeadingZero) {
-        // this.raise(start, ErrorMessages.InvalidDecimal);
-      }
-
-      ++this.state.pos;
-      isDecimal = true;
-    }
-
-    if (isIdentifierStart(this.input.codePointAt(this.state.pos))) {
-      // throw this.raise(this.state.pos, ErrorMessages.NumberIdentifier);
-    }
-
     const str = this.input.slice(start, this.state.pos).replace(/[_mn]/g, "");
-
-    if (isBigInt) {
-      this.finishToken(types.bigint, str);
-      return;
-    }
-
-    if (isDecimal) {
-      this.finishToken(types.decimal, str);
-      return;
-    }
-
     const val = isOctal ? parseInt(str, 8) : parseFloat(str);
     this.finishToken(types.num, val);
   }
   readWord1() {
     let word = "";
-    this.state.containsEsc = false;
     const start = this.state.pos;
     let chunkStart = this.state.pos;
-
     while (this.state.pos < this.length) {
       const ch = this.input.codePointAt(this.state.pos);
-
+      console.log( 'this.input['+this.state.pos+']:', this.input[this.state.pos] )
       if (isIdentifierChar(ch)) {
         this.state.pos += ch <= 0xffff ? 1 : 2;
-      } else if (this.state.isIterator && ch === 64) {
-        ++this.state.pos;
-      } else if (ch === 92) {
-        this.state.containsEsc = true;
-        word += this.input.slice(chunkStart, this.state.pos);
-        const escStart = this.state.pos;
-        const identifierCheck = this.state.pos === start ? isIdentifierStart : isIdentifierChar;
-
-        ++this.state.pos;
-        const esc = this.readCodePoint(true);
-
-        chunkStart = this.state.pos;
       } else {
         break;
       }
@@ -315,6 +221,7 @@ export default class Tokenizer{
   }
   readWord() {
     const word = this.readWord1();
+    // console.log( 'word:', word )
     const type = keywords.get(word) || types.name;
     this.finishToken(type, word);
   }
@@ -322,15 +229,5 @@ export default class Tokenizer{
     // const kw = this.state.type.keyword;
   }
   updateContext(prevType) {
-    const type = this.state.type;
-    let update;
-
-    if (type.keyword && (prevType === types.dot || prevType === types.questionDot)) {
-      this.state.exprAllowed = false;
-    } else if (update = type.updateContext) {
-      update.call(this, prevType);
-    } else {
-      this.state.exprAllowed = type.beforeExpr;
-    }
   }
 }

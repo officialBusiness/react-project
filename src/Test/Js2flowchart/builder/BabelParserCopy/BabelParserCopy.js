@@ -31,14 +31,12 @@ export default class Parser extends StatementParser {
     this.prodParam = new ProductionParameterHandler()
     this.expressionScope = new ExpressionScopeHandler(this.raise.bind(this))
     this.plugins = new Map()
-
     this.tokens = [];
     this.state = new State();
     this.state.init(options);
     this.input = code;
     this.length = code.length;
     this.isLookahead = false;
-
     this.sawUnambiguousESM = false;
     this.ambiguousScriptDifferentAst = false;
   }
