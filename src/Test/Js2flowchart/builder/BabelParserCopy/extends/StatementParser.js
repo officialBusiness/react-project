@@ -6,31 +6,30 @@ import ExpressionErrors from '../ExpressionErrors.js'
 export default class StatementParser extends ExpressionParser {
   parseTopLevel(file, program) {
     this.parseBlockBody(program, true, true, types.eof);
-    if (this.inModule && !this.options.allowUndeclaredExports && this.scope.undefinedExports.size > 0) {
-      for (let _i = 0, _Array$from = Array.from(this.scope.undefinedExports); _i < _Array$from.length; _i++) {
-        const [name] = _Array$from[_i]
-      }
-    }
     file.program = this.finishNode(program, "Program")
     return this.finishNode(file, "File");
   }
-  parseInterpreterDirective() {
-    if (!this.match(types.interpreterDirective)) {
-      return null;
-    }
-
-    const node = this.startNode();
-    node.value = this.state.value;
-    this.next();
-    return this.finishNode(node, "InterpreterDirective");
+  parseBlockBody(node, allowDirectives, topLevel, end, afterBlockParse) {
+    const body = node.body = [];
+    const directives = node.directives = [];
+    this.parseBlockOrModuleBlockBody(body, allowDirectives ? directives : undefined, topLevel, end, afterBlockParse);
   }
-  parseStatement(context, topLevel) {
-    return this.parseStatementContent(context, topLevel);
+  parseBlockOrModuleBlockBody(body, directives, topLevel, end, afterBlockParse) {
+    // console.log( 'topLevel:', topLevel )
+    const oldStrict = this.state.strict;
+    let hasStrictModeDirective = false;
+    let parsedNonDirective = false;
+    while (!this.match(end)) {
+      const stmt = this.parseStatementContent(null, topLevel);
+      body.push(stmt);
+    }
+    this.nextToken();
   }
   parseStatementContent(context, topLevel) {
     let starttype = this.state.type;
     const node = this.startNode();
     let kind;
+    // console.log( 'starttype:', starttype )
     switch (starttype) {
       case types._const:
       case types._var:
@@ -39,26 +38,20 @@ export default class StatementParser extends ExpressionParser {
       default:
     }
   }
+  parseInterpreterDirective() {
+    if (!this.match(types.interpreterDirective)) {
+      return null;
+    }
+    const node = this.startNode();
+    node.value = this.state.value;
+    this.next();
+    return this.finishNode(node, "InterpreterDirective");
+  }
   parseVarStatement(node, kind) {
     this.nextToken();
     this.parseVar(node, false, kind);
     this.semicolon();
     return this.finishNode(node, "VariableDeclaration");
-  }
-  parseBlockBody(node, allowDirectives, topLevel, end, afterBlockParse) {
-    const body = node.body = [];
-    const directives = node.directives = [];
-    this.parseBlockOrModuleBlockBody(body, allowDirectives ? directives : undefined, topLevel, end, afterBlockParse);
-  }
-  parseBlockOrModuleBlockBody(body, directives, topLevel, end, afterBlockParse) {
-    const oldStrict = this.state.strict;
-    let hasStrictModeDirective = false;
-    let parsedNonDirective = false;
-    while (!this.match(end)) {
-      const stmt = this.parseStatement(null, topLevel);
-      body.push(stmt);
-    }
-    this.nextToken();
   }
   parseVar(node, isFor, kind) {
     const declarations = node.declarations = [];

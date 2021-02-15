@@ -54,5 +54,6 @@ export default class Parser extends StatementParser {
     // console.log( 'program:', program )
     // console.log( 'file:', file )
     return file;
+    // return []
   }
 }

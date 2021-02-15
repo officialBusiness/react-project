@@ -1,4 +1,3 @@
-import CommentsParser from './CommentsParser.js'
 import types from '../types.js'
 import types$1 from '../types$1.js'
 import { isInAstralSet, astralIdentifierStartCodes, Token, _isDigit, forbiddenNumericSeparatorSiblings, VALID_REGEX_FLAGS, lineBreak,nonASCIIidentifierStart, allowedNumericSeparatorSiblings, keywords, isIdentifierChar, isWhitespace, skipWhiteSpace , SourceLocation, lineBreakG, isNewLine } from '../Parameter.js'
@@ -13,10 +12,7 @@ function isIdentifierStart(code) {
   }
   return isInAstralSet(code, astralIdentifierStartCodes);
 }
-export default class Tokenizer  extends CommentsParser{
-  // next() {
-  //   this.nextToken();
-  // }
+export default class Tokenizer{
   eat(type) {
     if (this.match(type)) {
       this.nextToken();
@@ -47,6 +43,8 @@ export default class Tokenizer  extends CommentsParser{
 
     if (override) {
     } else {
+      // console.log( 'this.input.codePointAt(this.state.pos):', this.input.codePointAt(this.state.pos) )
+      // console.log( this.state.pos , this.input[this.state.pos] )
       this.getTokenFromCode(this.input.codePointAt(this.state.pos));
     }
   }
@@ -55,7 +53,7 @@ export default class Tokenizer  extends CommentsParser{
       // console.log( 'this.state.pos:', this.state.pos )
       const ch = this.input.charCodeAt(this.state.pos);
       // console.log( 'ch:', ch )
-      // console.log( this.input[this.state.pos] )
+      // console.log( 'code['+this.state.pos+']:', this.input[this.state.pos] )
       switch (ch) {
         case 32:
         case 160:
@@ -122,31 +120,7 @@ export default class Tokenizer  extends CommentsParser{
     this.finishOp(code === 61 ? types.eq : types.bang, 1);
   }
   getTokenFromCode(code) {
-    // console.log( 'code:', code )
     switch (code) {
-      case 44:
-        ++this.state.pos;
-        this.finishToken(types.comma);
-        return;
-      case 91:
-        if (this.hasPlugin("recordAndTuple") && this.input.charCodeAt(this.state.pos + 1) === 124) {
-          if (this.getPluginOption("recordAndTuple", "syntaxType") !== "bar") {
-            // throw this.raise(this.state.pos, ErrorMessages.TupleExpressionBarIncorrectStartSyntaxType);
-          }
-          this.finishToken(types.bracketBarL);
-          this.state.pos += 2;
-        } else {
-          ++this.state.pos;
-          this.finishToken(types.bracketL);
-        }
-        return;
-      case 63:
-        this.readToken_question();
-        return;
-      case 96:
-        ++this.state.pos;
-        this.finishToken(types.backQuote);
-        return;
       case 49:
       case 50:
       case 51:
@@ -158,40 +132,16 @@ export default class Tokenizer  extends CommentsParser{
       case 57:
         this.readNumber(false);
         return;
-      case 43:
-      case 45:
-        this.readToken_plus_min(code);
-        return;
-      case 60:
-      case 62:
-        this.readToken_lt_gt(code);
-        return;
       case 61:
       case 33:
         this.readToken_eq_excl(code);
-        return;
-      case 126:
-        this.finishOp(types.tilde, 1);
-        return;
-      case 64:
-        ++this.state.pos;
-        this.finishToken(types.at);
-        return;
-      case 35:
-        this.readToken_numberSign();
-        return;
-      case 92:
-        this.readWord();
         return;
       default:
         if (isIdentifierStart(code)) {
           this.readWord();
           return;
         }
-
     }
-
-    // throw this.raise(this.state.pos, ErrorMessages.InvalidOrUnexpectedToken, String.fromCodePoint(code));
   }
   finishOp(type, size) {
     const str = this.input.slice(this.state.pos, this.state.pos + size);
@@ -204,24 +154,12 @@ export default class Tokenizer  extends CommentsParser{
     const allowedSiblings = radix === 16 ? allowedNumericSeparatorSiblings.hex : radix === 10 ? allowedNumericSeparatorSiblings.dec : radix === 8 ? allowedNumericSeparatorSiblings.oct : allowedNumericSeparatorSiblings.bin;
     let invalid = false;
     let total = 0;
-
     for (let i = 0, e = len == null ? Infinity : len; i < e; ++i) {
       const code = this.input.charCodeAt(this.state.pos);
       let val;
-
       if (code === 95) {
         const prev = this.input.charCodeAt(this.state.pos - 1);
         const next = this.input.charCodeAt(this.state.pos + 1);
-
-        if (allowedSiblings.indexOf(next) === -1) {
-          // this.raise(this.state.pos, ErrorMessages.UnexpectedNumericSeparator);
-        } else if (forbiddenSiblings.indexOf(prev) > -1 || forbiddenSiblings.indexOf(next) > -1 || Number.isNaN(next)) {
-          // this.raise(this.state.pos, ErrorMessages.UnexpectedNumericSeparator);
-        }
-
-        if (!allowNumSeparator) {
-          // this.raise(this.state.pos, ErrorMessages.NumericSeparatorInEscapeSequence);
-        }
 
         ++this.state.pos;
         continue;
@@ -365,46 +303,23 @@ export default class Tokenizer  extends CommentsParser{
         const escStart = this.state.pos;
         const identifierCheck = this.state.pos === start ? isIdentifierStart : isIdentifierChar;
 
-        if (this.input.charCodeAt(++this.state.pos) !== 117) {
-          // this.raise(this.state.pos, ErrorMessages.MissingUnicodeEscape);
-          continue;
-        }
-
         ++this.state.pos;
         const esc = this.readCodePoint(true);
-
-        if (esc !== null) {
-          if (!identifierCheck(esc)) {
-            // this.raise(escStart, ErrorMessages.EscapedCharNotAnIdentifier);
-          }
-
-          word += String.fromCodePoint(esc);
-        }
 
         chunkStart = this.state.pos;
       } else {
         break;
       }
     }
-
     return word + this.input.slice(chunkStart, this.state.pos);
   }
   readWord() {
     const word = this.readWord1();
     const type = keywords.get(word) || types.name;
-
-    if (this.state.isIterator && (!this.isIterator(word) || !this.state.inType)) {
-      // this.raise(this.state.pos, ErrorMessages.InvalidIdentifier, word);
-    }
-
     this.finishToken(type, word);
   }
   checkKeywordEscapes() {
-    const kw = this.state.type.keyword;
-
-    if (kw && this.state.containsEsc) {
-      // this.raise(this.state.start, ErrorMessages.InvalidEscapedReservedWord, kw);
-    }
+    // const kw = this.state.type.keyword;
   }
   updateContext(prevType) {
     const type = this.state.type;
