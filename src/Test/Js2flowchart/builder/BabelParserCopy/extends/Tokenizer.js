@@ -62,29 +62,6 @@ export default class Tokenizer{
         case 9:
           ++this.state.pos;
           break;
-        case 13:
-          if (this.input.charCodeAt(this.state.pos + 1) === 10) {
-            ++this.state.pos;
-          }
-        case 10:
-        case 8232:
-        case 8233:
-          ++this.state.pos;
-          ++this.state.curLine;
-          this.state.lineStart = this.state.pos;
-          break;
-        case 47:
-          switch (this.input.charCodeAt(this.state.pos + 1)) {
-            case 42:
-              this.skipBlockComment();
-              break;
-            case 47:
-              this.skipLineComment(2);
-              break;
-            default:
-              break loop;
-          }
-          break;
         default:
           if (isWhitespace(ch)) {
             ++this.state.pos;
@@ -157,42 +134,21 @@ export default class Tokenizer{
       const code = this.input.charCodeAt(this.state.pos);
       // console.log( this.state.pos, this.input[this.state.pos] )
       let val;
-      if (code === 95) {
-        const prev = this.input.charCodeAt(this.state.pos - 1);
-        const next = this.input.charCodeAt(this.state.pos + 1);
-        ++this.state.pos;
-        continue;
-      }
-      if (code >= 97) {
-        val = code - 97 + 10;
-      } else if (code >= 65) {
-        val = code - 65 + 10;
-      } else if (_isDigit(code)) {
+      if (_isDigit(code)) {
         val = code - 48;
       } else {
         val = Infinity;
       }
-
       if (val >= radix) {
         if (this.options.errorRecovery && val <= 9) {
-          val = 0;
-          // this.raise(this.state.start + i + 2, ErrorMessages.InvalidDigit, radix);
         } else if (forceLen) {
-          val = 0;
-          invalid = true;
         } else {
           break;
         }
       }
-
       ++this.state.pos;
       total = total * radix + val;
     }
-
-    if (this.state.pos === start || len != null && this.state.pos - start !== len || invalid) {
-      return null;
-    }
-
     return total;
   }
   readNumber(startsWithDot) {
@@ -206,11 +162,10 @@ export default class Tokenizer{
   }
   readWord1() {
     let word = "";
-    const start = this.state.pos;
     let chunkStart = this.state.pos;
     while (this.state.pos < this.length) {
       const ch = this.input.codePointAt(this.state.pos);
-      console.log( 'this.input['+this.state.pos+']:', this.input[this.state.pos] )
+      // console.log( 'this.input['+this.state.pos+']:', this.input[this.state.pos] )
       if (isIdentifierChar(ch)) {
         this.state.pos += ch <= 0xffff ? 1 : 2;
       } else {
@@ -224,10 +179,5 @@ export default class Tokenizer{
     // console.log( 'word:', word )
     const type = keywords.get(word) || types.name;
     this.finishToken(type, word);
-  }
-  checkKeywordEscapes() {
-    // const kw = this.state.type.keyword;
-  }
-  updateContext(prevType) {
   }
 }

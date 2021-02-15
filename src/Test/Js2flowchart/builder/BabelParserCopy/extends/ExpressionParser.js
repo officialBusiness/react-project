@@ -423,63 +423,17 @@ export default class ExpressionParser extends NodeUtils {
       start,
       type
     } = this.state;
-
     if (type === types.name) {
       name = this.state.value;
-    } else if (type.keyword) {
-      name = type.keyword;
-      const curContext = this.curContext();
-
-      if ((type === types._class || type === types._function) && (curContext === types$1.functionStatement || curContext === types$1.functionExpression)) {
-        this.state.context.pop();
-      }
-    } else {
-      throw this.unexpected();
     }
-
     if (liberal) {
-      this.state.type = types.name;
     } else {
       this.checkReservedWord(name, start, !!type.keyword, false);
     }
-
     this.nextToken();
     return name;
   }
   checkReservedWord(word, startLoc, checkKeywords, isBinding) {
-    if (this.prodParam.hasYield && word === "yield") {
-      // this.raise(startLoc, ErrorMessages.YieldBindingIdentifier);
-      return;
-    }
-
-    if (word === "await") {
-      if (this.prodParam.hasAwait) {
-        // this.raise(startLoc, ErrorMessages.AwaitBindingIdentifier);
-        return;
-      } else {
-        // this.expressionScope.recordAsyncArrowParametersError(startLoc, ErrorMessages.AwaitBindingIdentifier);
-      }
-    }
-
-    if (this.scope.inClass && !this.scope.inNonArrowFunction && word === "arguments") {
-      // this.raise(startLoc, ErrorMessages.ArgumentsInClass);
-      return;
-    }
-
-    if (checkKeywords && isKeyword(word)) {
-      // this.raise(startLoc, ErrorMessages.UnexpectedKeyword, word);
-      return;
-    }
-
-    const reservedTest = !this.state.strict ? isReservedWord : isBinding ? isStrictBindReservedWord : isStrictReservedWord;
-
-    if (reservedTest(word, this.inModule)) {
-      if (!this.prodParam.hasAwait && word === "await") {
-        // this.raise(startLoc, this.hasPlugin("topLevelAwait") ? ErrorMessages.AwaitNotInAsyncContext : ErrorMessages.AwaitNotInAsyncFunction);
-      } else {
-        // this.raise(startLoc, ErrorMessages.UnexpectedReservedWord, word);
-      }
-    }
   }
   allowInAnd(callback) {
     const flags = this.prodParam.currentFlags();
