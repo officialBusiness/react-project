@@ -2,8 +2,6 @@ import NodeUtils from './NodeUtils.js'
 import { isStrictReservedWord, isStrictBindReservedWord, isReservedWord, isKeyword, PARAM , PARAM_AWAIT, SCOPE_PROGRAM , newAsyncArrowScope ,isIdentifierStart, functionFlags, newArrowHeadScope, SCOPE_FUNCTION, SCOPE_SUPER, SCOPE_CLASS, SCOPE_DIRECT_SUPER, SCOPE_ARROW, PARAM_IN, newExpressionScope, PARAM_RETURN, BIND_OUTSIDE, BIND_VAR} from '../Parameter.js'
 import types from '../types.js'
 import types$1 from '../types$1.js'
-import ExpressionErrors from '../ExpressionErrors.js'
-import ExpressionScope from '../ExpressionScope.js'
 
 export default class ExpressionParser extends NodeUtils {
   parseBindingAtom() {
