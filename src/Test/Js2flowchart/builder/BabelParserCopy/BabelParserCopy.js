@@ -1,7 +1,6 @@
 import StatementParser from './extends/StatementParser.js'
 import ProductionParameterHandler from './ProductionParameterHandler.js'
 import State from './State.js'
-import { PARAM, PARAM_AWAIT, SCOPE_PROGRAM } from './Parameter.js'
 
 const defaultOptions = {
   sourceType: "script",
@@ -26,28 +25,18 @@ export default class Parser extends StatementParser {
     super(defaultOptions, code)
     this.options = defaultOptions
     this.prodParam = new ProductionParameterHandler()
-    this.plugins = new Map()
-    this.tokens = [];
     this.state = new State();
     this.state.init(options);
     this.input = code;
     this.length = code.length;
-    this.isLookahead = false;
-    this.sawUnambiguousESM = false;
-    this.ambiguousScriptDifferentAst = false;
-  }
-  raise(pos, errorTemplate, ...params) {
-    return this.raiseWithData(pos, undefined, errorTemplate, ...params);
   }
   parse() {
-    let paramFlags = PARAM;
     const file = this.startNode()
     const program = this.startNode()
     this.nextToken();
     this.parseTopLevel(file, program)
     // console.log( 'program:', program )
     // console.log( 'file:', file )
-    return file;
-    // return []
+    return file
   }
 }

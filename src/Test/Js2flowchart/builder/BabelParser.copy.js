@@ -1,6 +1,6 @@
 'use strict';
 
-// Object.defineProperty(exports, '__esModule', { value: true });
+Object.defineProperty(exports, '__esModule', { value: true });
 
 const beforeExpr = true;
 const startsExpr = true;
@@ -781,7 +781,7 @@ var estree = (superClass => class extends superClass {
     let bigInt;
 
     try {
-      // bigInt = BigInt(value);
+      bigInt = BigInt(value);
     } catch (_unused) {
       bigInt = null;
     }
@@ -13380,8 +13380,7 @@ class ClassScopeHandler {
 
 }
 
-
-export default class Parser extends StatementParser {
+class Parser extends StatementParser {
   constructor(options, input) {
     options = getOptions(options);
     super(options, input);
@@ -13510,3 +13509,8 @@ function getParserClass(pluginsFromOptions) {
 
   return cls;
 }
+
+exports.parse = parse;
+exports.parseExpression = parseExpression;
+exports.tokTypes = types;
+//# sourceMappingURL=index.js.map

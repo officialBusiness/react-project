@@ -1,7 +1,7 @@
 import React from 'react'
 // import * as babelParser from '@babel/parser';
 import { convertCodeToSvg } from './Js2flowchart/Js2flowchart.js';
-
+import { dealDropFiles } from '../utils.js'
 const code = `
 	(function (global, factory) {
 			typeof exports === 'object' && typeof module !== 'undefined' ? factory(exports) :
@@ -1181,6 +1181,7 @@ const testCode = `var a = 123`
 
 export default class JsCodeToSvgFlowchart extends React.Component{
 	componentDidMount(){
+		// console.log( 'BabelParserCode:', BabelParserCode )
 		this.flowchartDom.innerHTML = convertCodeToSvg(testCode)
 		// this.flowchartDom.innerHTML = convertCodeToSvg(code)
 		// console.log( babelParser.parse )
@@ -1198,10 +1199,29 @@ export default class JsCodeToSvgFlowchart extends React.Component{
 		// 	]
 		// }))
 	}
+	preventstop(e){
+		e.preventDefault()
+		e.stopPropagation()
+	}
 	render(){
 		return (
-			<div className={'JsCodeToSvgFlowchart'} ref={(dom)=>{
+			<div className={'JsCodeToSvgFlowchart full'} ref={(dom)=>{
 				this.flowchartDom = dom
+			}}
+			onDragEnter={this.preventstop}
+			onDragOver={this.preventstop}
+			onDragLeave={this.preventstop}
+			onDrop={(e)=>{
+				let that = this
+				that.preventstop(e)
+			 	var reader = new FileReader();
+        reader.onload = function() {
+          if(reader.result) {
+          	that.flowchartDom.innerHTML = convertCodeToSvg(reader.result)
+          	// console.log( 'reader.result:', reader.result )
+          }
+        };
+        reader.readAsText(dealDropFiles(e)[0]);
 			}}>
 			</div>
 		)

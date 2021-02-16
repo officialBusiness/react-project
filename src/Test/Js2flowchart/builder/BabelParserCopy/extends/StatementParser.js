@@ -3,6 +3,7 @@ import types from '../types.js'
 
 export default class StatementParser extends ExpressionParser {
   parseTopLevel(file, program) {
+    console.log( 'parseTopLevel' )
       // console.log( 'this.state.type.label:' , this.state.type.label )
     this.parseBlockBody(program, true, true, types.eof);
     file.program = this.finishNode(program, "Program")
@@ -36,15 +37,6 @@ export default class StatementParser extends ExpressionParser {
         return this.parseVarStatement(node, kind);
       default:
     }
-  }
-  parseInterpreterDirective() {
-    if (!this.match(types.interpreterDirective)) {
-      return null;
-    }
-    const node = this.startNode();
-    node.value = this.state.value;
-    this.next();
-    return this.finishNode(node, "InterpreterDirective");
   }
   parseVarStatement(node, kind) {
     this.nextToken();

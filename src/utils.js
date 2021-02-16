@@ -1,28 +1,28 @@
 
 // 获取display为none的dom的宽高位置
 export function getSize(dom, display){
-  let backup = {
-    position: dom.style.position,
-    visibility: dom.style.visibility,
-    display: dom.style.display,
-  }
-  dom.style.position = 'absolute'
-  dom.style.visibility = 'hidden'
-  if ( display ) {
-    dom.style.display = display
-  } else{
-    dom.style.display = 'block'
-  }
-  let attr = {
-    height: dom.offsetHeight,
-    width: dom.offsetWidth,
-    offsetLeft: dom.offsetLeft,
-    offsetTop: dom.offsetTop
-  }
-  dom.style.position = backup.position
-  dom.style.visibility = backup.visibility
-  dom.style.display = backup.display
-  return attr
+	let backup = {
+		position: dom.style.position,
+		visibility: dom.style.visibility,
+		display: dom.style.display,
+	}
+	dom.style.position = 'absolute'
+	dom.style.visibility = 'hidden'
+	if ( display ) {
+		dom.style.display = display
+	} else{
+		dom.style.display = 'block'
+	}
+	let attr = {
+		height: dom.offsetHeight,
+		width: dom.offsetWidth,
+		offsetLeft: dom.offsetLeft,
+		offsetTop: dom.offsetTop
+	}
+	dom.style.position = backup.position
+	dom.style.visibility = backup.visibility
+	dom.style.display = backup.display
+	return attr
 }
 // 获取当前时间
 export const now$1 = window.performance.now.bind(window.performance)
@@ -72,9 +72,9 @@ export function Animation({
 			animationId = requestAnimationFrame(doAnimation)
 		}
 	}
-  return function(){
-    cancelAnimationFrame(animationId)
-  }
+	return function(){
+		cancelAnimationFrame(animationId)
+	}
 }
 
 function updateProperties(from, to, object, percentage){
@@ -208,4 +208,27 @@ export function exportTxt({
 
 export function stringIsColor(str){
 	return /^([0-9a-fA-F]{6}|[0-9a-fA-F]{3})$/.test( str )
+}
+
+export function dealDropFiles(e){
+	// console.log('e:', e)
+	var df = e.dataTransfer,
+			dropFiles = []; // 存放拖拽的文件对象
+	if(df.items !== undefined) {
+		// Chrome有items属性，对Chrome的单独处理
+		for(var i = 0; i < df.items.length; i++) {
+				var item = df.items[i];
+				// 用webkitGetAsEntry禁止上传目录
+				if(item.kind === "file" && item.webkitGetAsEntry().isFile) {
+						var file = item.getAsFile();
+						// console.log( 'file:', file )
+						dropFiles.push(file);
+				}
+		}
+		return dropFiles
+	}else{
+
+	}
+
+
 }
