@@ -2,28 +2,11 @@ import StatementParser from './extends/StatementParser.js'
 import ProductionParameterHandler from './ProductionParameterHandler.js'
 import State from './State.js'
 
-const defaultOptions = {
-  sourceType: "script",
-  sourceFilename: undefined,
-  startLine: 1,
-  allowAwaitOutsideFunction: false,
-  allowReturnOutsideFunction: false,
-  allowImportExportEverywhere: false,
-  allowSuperOutsideMethod: false,
-  allowUndeclaredExports: false,
-  plugins: [],
-  strictMode: null,
-  ranges: false,
-  tokens: false,
-  createParenthesizedExpressions: false,
-  errorRecovery: false
-}
-
 export default class Parser extends StatementParser {
   constructor(options, code) {
     console.log( 'Parser解析初始化' )
-    super(defaultOptions, code)
-    this.options = defaultOptions
+    super({}, code)
+    this.options = {}
     this.prodParam = new ProductionParameterHandler()
     this.state = new State();
     this.state.init(options);
