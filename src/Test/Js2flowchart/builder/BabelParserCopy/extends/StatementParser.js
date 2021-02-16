@@ -1,6 +1,5 @@
 import ExpressionParser from './ExpressionParser.js'
 import types from '../types.js'
-import { loneSurrogate, lineBreak, BIND_CLASS, CLASS_ELEMENT_INSTANCE_SETTER, CLASS_ELEMENT_STATIC_SETTER, CLASS_ELEMENT_INSTANCE_GETTER, CLASS_ELEMENT_STATIC_GETTER, CLASS_ELEMENT_OTHER, PARAM, newExpressionScope, SCOPE_SUPER, SCOPE_CLASS, BIND_FUNCTION, newParameterDeclarationScope, functionFlags, SCOPE_FUNCTION, FUNC_NULLABLE_ID, FUNC_NO_FLAGS, BIND_VAR, BIND_LEXICAL, SCOPE_SIMPLE_CATCH, switchLabel, isIdentifierStart, isIdentifierChar, keywordRelationalOperator, loopLabel, SCOPE_OTHER, FUNC_STATEMENT, FUNC_HANGING_STATEMENT } from '../Parameter.js'
 
 export default class StatementParser extends ExpressionParser {
   parseTopLevel(file, program) {

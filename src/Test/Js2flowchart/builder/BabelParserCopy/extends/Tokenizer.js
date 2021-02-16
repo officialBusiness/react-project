@@ -1,6 +1,5 @@
 import types from '../types.js'
-import types$1 from '../types$1.js'
-import { isInAstralSet, astralIdentifierStartCodes, Token, _isDigit, forbiddenNumericSeparatorSiblings, VALID_REGEX_FLAGS, lineBreak,nonASCIIidentifierStart, allowedNumericSeparatorSiblings, keywords, isIdentifierChar, isWhitespace, skipWhiteSpace , SourceLocation, lineBreakG, isNewLine } from '../Parameter.js'
+import { isInAstralSet, astralIdentifierStartCodes, _isDigit, forbiddenNumericSeparatorSiblings,nonASCIIidentifierStart, allowedNumericSeparatorSiblings, keywords, isIdentifierChar, isWhitespace } from '../Parameter.js'
 
 function isIdentifierStart(code) {
   if (code < 65) return code === 36;

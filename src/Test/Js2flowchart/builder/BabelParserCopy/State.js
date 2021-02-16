@@ -1,4 +1,3 @@
-import types from './types.js'
 import types$1 from './types$1.js'
 
 export default class State {

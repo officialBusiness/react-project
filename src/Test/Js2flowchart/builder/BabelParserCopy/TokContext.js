@@ -1,5 +1,3 @@
-
-
 export default class TokContext {
   constructor(token, isExpr, preserveSpace, override) {
     this.token = void 0;

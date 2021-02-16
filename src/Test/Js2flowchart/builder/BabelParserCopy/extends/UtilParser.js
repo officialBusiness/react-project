@@ -1,7 +1,5 @@
 import Tokenizer from './Tokenizer.js'
 import types from '../types.js'
-import { isIdentifierChar, lineBreak } from '../Parameter.js'
-
 
 export default class UtilParser extends Tokenizer {
   addExtra(node, key, val) {
