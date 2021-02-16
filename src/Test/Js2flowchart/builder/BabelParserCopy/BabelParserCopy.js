@@ -1,5 +1,4 @@
 import StatementParser from './extends/StatementParser.js'
-import ScopeHandler from './ScopeHandler.js'
 import ProductionParameterHandler from './ProductionParameterHandler.js'
 import State from './State.js'
 import { PARAM, PARAM_AWAIT, SCOPE_PROGRAM } from './Parameter.js'
@@ -26,7 +25,6 @@ export default class Parser extends StatementParser {
     console.log( 'Parser解析初始化' )
     super(defaultOptions, code)
     this.options = defaultOptions
-    this.scope = new ScopeHandler(this.raise.bind(this), this.inModule)
     this.prodParam = new ProductionParameterHandler()
     this.plugins = new Map()
     this.tokens = [];
