@@ -1,4 +1,3 @@
-const types$1 = {}
 class Tokenizer{
 	eat(type) {
 		if (this.match(type)) {
@@ -18,8 +17,6 @@ class Tokenizer{
 				break;
 			default:
 		}
-		this.state.start = this.state.pos;
-		this.state.startLoc = this.state.curPosition()
 		if (this.state.pos >= this.length) {
 			this.finishToken(types.eof);
 			return;
@@ -45,7 +42,23 @@ class Tokenizer{
 			this.state.pos += 2
 			return;
 		}
-		this.finishOp(code === 61 ? types.eq : types.bang, 1);
+		this.finishOp(void 0, 1);
+	}
+	readWord() {
+		let word = ""
+		let chunkStart = this.state.pos
+		while (this.state.pos < this.length) {
+			console.log(this.state.pos, this.input[this.state.pos] , this.input.codePointAt(this.state.pos) , 'readWord')
+			const ch = this.input.codePointAt(this.state.pos)
+			if (isIdentifierChar(ch)) {
+				this.state.pos += ch <= 0xffff ? 1 : 2;
+			} else {
+				break;
+			}
+		}
+		word += this.input.slice(chunkStart, this.state.pos)
+		// console.log( 'word:', word )
+		this.finishToken(void 0, word);
 	}
 	finishOp(type, size) {
 		const str = this.input.slice(this.state.pos, this.state.pos + size);
@@ -64,39 +77,49 @@ class Tokenizer{
 		node.loc.end = this.state.lastTokEndLoc
 		return node
 	}
-	readWord() {
-		let word = ""
-		let chunkStart = this.state.pos
-		while (this.state.pos < this.length) {
-			console.log(this.state.pos, this.input[this.state.pos] , this.input.codePointAt(this.state.pos) , 'readWord')
-			const ch = this.input.codePointAt(this.state.pos)
-			if (isIdentifierChar(ch)) {
-				this.state.pos += ch <= 0xffff ? 1 : 2;
-			} else {
-				break;
+}
+class StatementParser extends Tokenizer {
+	parseTopLevel(file, program) {
+		console.log(this.state.pos, this.input[this.state.pos] , 'parseTopLevel')
+		const body = program.body = []
+		const stmt = this.parseStatementContent(null, true)
+		body.push(stmt)
+		console.log(this.state.pos, this.input[this.state.pos] , 'after body.push(stmt)')
+		file.program = this.finishNode(program, "Program")
+		this.finishNode(file, "File")
+	}
+	parseStatementContent(context, topLevel) {
+		console.log('parseStatementContent',this.state.pos, this.input[this.state.pos])
+		let starttype = this.state.type
+		const node = new Node(this, this.state.start, this.state.startLoc)
+		let kind
+		switch (starttype) {
+			case types._const:
+			case types._var:
+				kind = kind || this.state.value
+				this.nextToken()
+				this.parseVar(node, false, kind)
+				return this.finishNode(node, "VariableDeclaration")
+			default:
+		}
+	}
+	parseVar(node, isFor, kind) {
+		const declarations = node.declarations = [];
+		node.kind = kind;
+		for (;;) {
+			const decl = new Node(this, this.state.start, this.state.startLoc)
+			decl.id = this.parseIdentifier()
+			if (this.eat(types.eq)) {
+				decl.init = this.parseExprAtom()
+			}
+			declarations.push(this.finishNode(decl, "VariableDeclarator"));
+			if (!this.eat(types.comma)) {
+				break
 			}
 		}
-		word += this.input.slice(chunkStart, this.state.pos)
-		// console.log( 'word:', word )
-		this.finishToken(void 0, word);
+		return node;
 	}
-}
-class ExpressionParser extends Tokenizer {
-	parseExprSubscripts(refExpressionErrors) {
-		const startPos = this.state.start;
-		const startLoc = this.state.startLoc;
-		const expr = this.parseExprAtom(refExpressionErrors);
-		return this.parseSubscripts(expr, startPos, startLoc);
-	}
-	parseSubscripts(base, startPos, startLoc, noCalls) {
-		const state = { stop: false }
-		do {
-			state.stop = true;
-			state.maybeAsyncArrow = false;
-		} while (!state.stop);
-		return base;
-	}
-	parseExprAtom(refExpressionErrors) {
+	parseExprAtom() {
 		switch (this.state.type) {
 			case types.num:
 				const node = new Node(this, this.state.start, this.state.startLoc)
@@ -119,50 +142,6 @@ class ExpressionParser extends Tokenizer {
 		node.name = name;
 		node.loc.identifierName = name;
 		return this.finishNode(node, "Identifier")
-	}
-}
-class StatementParser extends ExpressionParser {
-	parseTopLevel(file, program) {
-		console.log(this.state.pos, this.input[this.state.pos] , 'parseTopLevel')
-		const body = program.body = []
-		const stmt = this.parseStatementContent(null, true)
-		body.push(stmt)
-		this.nextToken()
-		file.program = this.finishNode(program, "Program")
-		this.finishNode(file, "File")
-	}
-	parseStatementContent(context, topLevel) {
-		let starttype = this.state.type
-		const node = new Node(this, this.state.start, this.state.startLoc)
-		let kind
-		switch (starttype) {
-			case types._const:
-			case types._var:
-				kind = kind || this.state.value;
-				return this.parseVarStatement(node, kind);
-			default:
-		}
-	}
-	parseVarStatement(node, kind) {
-		this.nextToken()
-		this.parseVar(node, false, kind)
-		return this.finishNode(node, "VariableDeclaration");
-	}
-	parseVar(node, isFor, kind) {
-		const declarations = node.declarations = [];
-		node.kind = kind;
-		for (;;) {
-			const decl = new Node(this, this.state.start, this.state.startLoc)
-			decl.id = this.parseIdentifier()
-			if (this.eat(types.eq)) {
-				decl.init = this.parseExprSubscripts()
-			}
-			declarations.push(this.finishNode(decl, "VariableDeclarator"));
-			if (!this.eat(types.comma)) {
-				break
-			}
-		}
-		return node;
 	}
 }
 export default class Parser extends StatementParser {
@@ -197,7 +176,7 @@ class Node {
 class State {
 	constructor() {
 		this.pos = 0
-		this.context = [types$1.braceStatement]
+		this.context = [void 0]
 	}
 	init(options) {
 		this.curLine = options.startLine
