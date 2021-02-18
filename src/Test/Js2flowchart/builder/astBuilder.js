@@ -19,7 +19,7 @@ export const parseCodeToAST = (code, config = {}) => {
         // let testAst = new Parser(mergeObjectStructures(defaultAstConfig, config), code).parse()
         // console.log( 'testAst:', testAst )
         // ast = babelParser.parse(code, mergeObjectStructures(defaultAstConfig, config));
-        console.log('ast:', ast)
+        // console.log('ast:', ast)
     } catch (e) {
         logError('Error at parseCodeToAST: ' + e.message, e.loc, e.stack);
         throw e;
