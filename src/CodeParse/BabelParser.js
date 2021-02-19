@@ -781,7 +781,7 @@ var estree = (superClass => class extends superClass {
     let bigInt;
 
     try {
-      bigInt = BigInt(value);
+      // bigInt = BigInt(value);
     } catch (_unused) {
       bigInt = null;
     }
