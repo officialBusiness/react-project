@@ -126,6 +126,7 @@ class StatementParser extends Tokenizer {
 				node.value = this.state.value
 				this.nextToken()
 				return this.finishNode(node, 'NumericLiteral')
+			default:
 		}
 	}
 	parseIdentifier(liberal) {

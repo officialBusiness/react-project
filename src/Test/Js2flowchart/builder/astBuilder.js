@@ -1,4 +1,4 @@
-import * as babelParser from '@babel/parser';
+// import * as babelParser from '@babel/parser';
 // import Parser from './BabelParser.copy.js'
 // import Parser from './BabelParserCopy/BabelParserCopy.js'
 import Parser from './BabelParser.onlyVar.js'
