@@ -1,5 +1,9 @@
 export default class State {
-	constructor({code}) {
-		this.code = code  
+	// constructor() {
+	// }
+	init(){
+		this.index = 0
+		this.curLine = 0
+		this.curColumn = 0
 	}
 }

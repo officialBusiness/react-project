@@ -6,10 +6,7 @@ export default class Components extends React.Component{
 	constructor(props) {
 		super(props)
 
-		new Parser({
-			code: 'var a = 1, b = 2',
-			opt: {}
-		})
+		new Parser({}).start('var a = 1, b = 2')
 		// console.log( parse('var a = 1, b = 2', {}) )
 	}
 	render(){

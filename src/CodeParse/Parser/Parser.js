@@ -1,7 +1,11 @@
-// import Ast from './Access/Ast.js'
+import State from './Parsing/State.js'
 export default class Parser{
-	constructor({code, options}){
+	constructor(options){
+		this.state = new State()
+	}
+	start(code){
 		this.code = code
 		this.codeLength = code.length
+		this.state.init()
 	}
 }
