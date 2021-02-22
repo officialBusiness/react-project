@@ -1,3 +1,4 @@
+// buildVisitor中传入ast抽象语法树
 export const setupPointer = cache => ({
     list: cache ? [cache] : [],
 

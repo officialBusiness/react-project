@@ -17,9 +17,10 @@ import {
 import { TOKEN_TYPES } from '../shared/constants';
 import { logError } from '../shared/utils/logger';
 
+// 将babel生成的ast树astTree转化为jstoflowchart需要的对象
 const buildFlowTree = (astTree, astVisitorConfig) => {
     const treeNodes = [];
-
+    // babel的遍历节点用的API
     traverse(astTree, buildVisitor(astVisitorConfig, treeNodes));
 
     const root = (treeNodes.length && treeNodes[0]) || {};
@@ -57,6 +58,8 @@ export default function flowTreeBuilder({ astParser = {}, astVisitor = {} } = {}
         },
 
         build(code) {
+            // console.log( 'this.buildAst(code):', this.buildAst(code) )
+            // console.log( 'this.buildFlowTreeFromAst( this.buildAst(code) ):', this.buildFlowTreeFromAst( this.buildAst(code) ) )
             return this.buildFlowTreeFromAst( this.buildAst(code) );
         },
 
@@ -68,8 +71,11 @@ export default function flowTreeBuilder({ astParser = {}, astVisitor = {} } = {}
             let flowTree = [];
 
             try {
-                flowTree = buildFlowTree(ast, astVisitorConfig);
-                defaultModifier.applyToFlowTree(flowTree);
+                // 将babel生成的ast树转化为jstoflowchart需要的对象
+                // console.log( 'astVisitorConfig:', astVisitorConfig )
+                flowTree = buildFlowTree(ast, astVisitorConfig)
+                // 不知道是用来干啥的，注释掉了也没啥影响
+                defaultModifier.applyToFlowTree(flowTree)
                 // console.log( 'flowTree:', flowTree )
             } catch (e) {
                 logError('Error at buildFlowTreeFromAst' + e.message, e.stack);

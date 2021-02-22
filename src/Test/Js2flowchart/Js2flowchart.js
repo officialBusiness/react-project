@@ -24,8 +24,9 @@ import SVGRender from './render/svg/SVGRender';
 export const convertCodeToSvg = (code, printConfig) => convertFlowTreeToSvg(convertCodeToFlowTree(code), printConfig);
 
 export const convertCodeToFlowTree = (code) => {
+	// console.log( 'FlowTreeBuilder():', FlowTreeBuilder() )
 	// console.log( 'FlowTreeBuilder().build(code):', FlowTreeBuilder().build(code) )
-		return FlowTreeBuilder().build(code);
+	return FlowTreeBuilder().build(code);
 };
 
 export const convertFlowTreeToSvg = (flowTree, printConfig) => {

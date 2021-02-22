@@ -1,7 +1,8 @@
 import React from 'react'
-// import * as babelParser from '@babel/parser';
+import * as babelParser from '@babel/parser';
 import { convertCodeToSvg } from './Js2flowchart/Js2flowchart.js';
 import { dealDropFiles } from '../utils.js'
+// import * as babelParser from 'babel-core';
 // const code = `
 // 	(function (global, factory) {
 // 			typeof exports === 'object' && typeof module !== 'undefined' ? factory(exports) :
@@ -1214,14 +1215,14 @@ export default class JsCodeToSvgFlowchart extends React.Component{
 			onDrop={(e)=>{
 				let that = this
 				that.preventstop(e)
-			 	var reader = new FileReader();
-        reader.onload = function() {
-          if(reader.result) {
-          	that.flowchartDom.innerHTML = convertCodeToSvg(reader.result)
-          	// console.log( 'reader.result:', reader.result )
-          }
-        };
-        reader.readAsText(dealDropFiles(e)[0]);
+				var reader = new FileReader();
+				reader.onload = function() {
+					if(reader.result) {
+						that.flowchartDom.innerHTML = convertCodeToSvg(reader.result)
+						// console.log( 'reader.result:', reader.result )
+					}
+				};
+				reader.readAsText(dealDropFiles(e)[0]);
 			}}>
 			</div>
 		)
